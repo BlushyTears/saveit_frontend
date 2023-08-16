@@ -56,7 +56,7 @@
       if (response.ok) {
         const data = await response.json();
         console.log('User registered successfully:', data);
-        window.location.reload();
+        // window.location.reload();
       } else {
         const errorData = await response.json();
         console.error('Registration failed:', errorData);

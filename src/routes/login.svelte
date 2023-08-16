@@ -33,7 +33,7 @@
         const token = data.token; // Assuming the response returns the token
         localStorage.setItem('token', token);
         console.log('Login successful:', data);
-        window.location.reload();
+        // window.location.reload();
       } else {
         const errorData = await response.json();
         console.error('Login failed:', errorData);
