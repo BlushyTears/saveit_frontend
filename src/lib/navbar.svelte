@@ -14,6 +14,7 @@
 
     function logOutClick() {
       localStorage.removeItem('token');
+      setTimeout(delayedAction, 50);
     }
 
     // Sometimes the navbar sticks in layout.svelte or router doesn't route back to home.svelte
