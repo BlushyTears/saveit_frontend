@@ -23,7 +23,7 @@
     }
     function handleNavbarClick() {
         showNavbar.set(false); 
-        // setTimeout(delayedAction, 50);
+        setTimeout(delayedAction, 50);
     }
   </script>
 
