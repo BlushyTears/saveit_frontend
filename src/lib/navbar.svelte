@@ -25,11 +25,13 @@
         showNavbar.set(false); 
         setTimeout(delayedAction, 50);
     }
+
+    export let url = "/";
   </script>
 
 {#if showNavbar}
    <nav>
-    <Router>
+    <Router {url}>
         <div class="navbar-wrapper">
         <nav class="navbar">
 
