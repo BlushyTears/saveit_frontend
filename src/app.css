@@ -1,0 +1,15 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* For some reason svelte-routing gives a default text decoration to navbar links so this is a quickfix for now */
+a.nav-link {
+  text-decoration: none;
+}
+
+/* Fill in gap at top above navbar where there normally is margin & causes white color border (Might be bad) */
+/* #app {
+  background-color: #37C84C;
+} */
+

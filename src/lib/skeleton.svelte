@@ -1,0 +1,1 @@
+<!-- Skeleton.svelte should copy most things from layout except content, which is something it'll fetch from API's each time -->
