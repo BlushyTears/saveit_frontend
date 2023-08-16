@@ -5,6 +5,7 @@
     import MyPage from "../routes/mypage.svelte";
     import Login from "../routes/login.svelte";
     import Register from "../routes/register.svelte";
+    import NotFound from "../routes/notfound.svelte";
 
     import { showNavbar } from './navbarStore.js';
     import Mypage from "../routes/mypage.svelte";
@@ -64,6 +65,7 @@
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/layout" component={Layout} />
+          <Route component={NotFound}/>
         </div>
     </Router>
    </nav>
