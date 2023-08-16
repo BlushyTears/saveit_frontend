@@ -46,7 +46,7 @@
             {/if}
 
             {#if !isLoggedIn}
-              <Link to="/register" let:active class="nav-link"><a>Register</a></Link>
+              <Link to="/register" class="nav-link"><a>Register</a></Link>
               <Link to="/login" class="nav-link"><a>Login</a></Link>
             {/if}
 
