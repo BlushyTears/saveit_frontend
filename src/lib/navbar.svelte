@@ -12,15 +12,45 @@
 
     let isLoggedIn = localStorage.getItem('token') !== null;
 
-    function logOutClick() {
-      localStorage.removeItem('token');
-      setTimeout(delayedAction, 50);
+    // function logOutClick() {
+    //   localStorage.removeItem('token');
+    //   setTimeout(delayedAction, 50);
+    // }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function logInClick() {
-      localStorage.removeItem('token');
-      setTimeout(delayedAction, 50);
+    async function logOutClick(event) {
+    event.preventDefault();
+
+    const csrfToken = getCookie('csrftoken');
+
+    try {
+      const response = await fetch('https://saveit.fly.dev/api/logout/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('User logged out successfully:', data);
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData);
+      }
+    } catch (error) {
+      console.error('Other error during logut:', error);
     }
+
+    localStorage.removeItem('token');
+  }
 
     // Sometimes the navbar sticks in layout.svelte or router doesn't route back to home.svelte
     // because the Store values do not manage to update before the router sometimes
