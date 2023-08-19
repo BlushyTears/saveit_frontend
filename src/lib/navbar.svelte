@@ -17,6 +17,11 @@
       setTimeout(delayedAction, 50);
     }
 
+    function logInClick() {
+      localStorage.removeItem('token');
+      setTimeout(delayedAction, 50);
+    }
+
     // Sometimes the navbar sticks in layout.svelte or router doesn't route back to home.svelte
     // because the Store values do not manage to update before the router sometimes
     // (usually happens by removing the /layout part of the url and going back a few times) so a quick refresh is a ducktaped solution
