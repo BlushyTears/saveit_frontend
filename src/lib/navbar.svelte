@@ -10,12 +10,15 @@
     import { showNavbar } from './navbarStore.js';
     import Mypage from "../routes/mypage.svelte";
 
+    export let url = "/";
     let isLoggedIn = localStorage.getItem('token') !== null;
 
     // function logOutClick() {
     //   localStorage.removeItem('token');
     //   setTimeout(delayedAction, 50);
     // }
+
+    const token = localStorage.getItem('token');
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -33,66 +36,53 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken
+          'X-CSRFToken': csrfToken,
+          'Authorization': `Token ${token}`,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log('User logged out successfully:', data);
+        localStorage.removeItem('token');  // Remove the token from local storage
         window.location.reload();
       } else {
         const errorData = await response.json();
         console.error('Logout failed:', errorData);
       }
     } catch (error) {
-      console.error('Other error during logut:', error);
+      console.error('Other error during logout:', error);
     }
-
-    localStorage.removeItem('token');
   }
-
-    // Sometimes the navbar sticks in layout.svelte or router doesn't route back to home.svelte
-    // because the Store values do not manage to update before the router sometimes
-    // (usually happens by removing the /layout part of the url and going back a few times) so a quick refresh is a ducktaped solution
-    function delayedAction() {
-      window.location.reload();
-    }
-    function handleNavbarClick() {
-        showNavbar.set(false); 
-        setTimeout(delayedAction, 50);
-    }
-
-    export let url = "/";
-  </script>
+</script>
 
 {#if showNavbar}
    <nav>
     <Router {url}>
         <div class="navbar-wrapper">
-        <nav class="navbar">
+          <nav class="navbar">
 
-            <Link to="/" class="nav-link"><a>Home</a></Link>
+              <Link to="/" class="nav-link"><a>Home</a></Link>
 
-            <div class="nav-links-right">
+              <div class="nav-links-right">
 
-            {#if isLoggedIn}
-              <Link to="/mypage" class="nav-link"><a>My page</a></Link>
-              <Link to="/" class="nav-link" on:click={logOutClick}><a>Log out</a></Link>
-            {/if}
+              {#if isLoggedIn}
+                <Link to="/mypage" class="nav-link"><a>My page</a></Link>
+                <Link to="/" class="nav-link" on:click={logOutClick}><a>Log out</a></Link>
+              {/if}
 
-            {#if !isLoggedIn}
-              <Link to="/register" class="nav-link"><a>Register</a></Link>
-              <Link to="/login" class="nav-link"><a>Login</a></Link>
-            {/if}
+              {#if !isLoggedIn}
+                <Link to="/register" class="nav-link"><a>Register</a></Link>
+                <Link to="/login" class="nav-link"><a>Login</a></Link>
+              {/if}
 
-            <Link to="/layout" class="nav-link" on:click={handleNavbarClick}>
-                <a>Layout</a>
-            </Link>
+              <a href="/layout" class="nav-link">
+                Layout
+              </a>
 
-            <!-- <a class="nav-link" on:click={toggleLayout}><a>Layout</a></a> -->
-            </div>
-        </nav>
+              <!-- <a class="nav-link" on:click={toggleLayout}><a>Layout</a></a> -->
+              </div>
+          </nav>
         </div>
     
         <div>
@@ -108,7 +98,6 @@
  {/if}
 
 <style>
-      
 .navbar-wrapper {
   position: sticky;
   top: 2rem;

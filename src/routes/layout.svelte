@@ -10,13 +10,7 @@
   import ProfileImg from '../assets/profile.png';
   import cookieImage from '../assets/cookies.png';
   import coffeeImage from '../assets/coffee.png';
-
-  import { showNavbar } from '../lib/navbarStore.js';
-
-  import { Router, Link, Route } from "svelte-routing";
-
   import Logo from '../assets/logo.jpg';
-  import Home from './home.svelte';
 
   // create an array of boolean variables, one for each modal (button that opens)
   let showModal = [false, false];
@@ -31,10 +25,6 @@
     showModal[index] = false;
   }
 
-  function handleClick() {
-    showNavbar.set(true); 
-  }
-  
 </script>
 
 <main>
@@ -141,12 +131,9 @@
         </Modal>
     </div>
     <div class="footer">
-        <Router>
-            <Link to="/" class="nav-link" on:click={handleClick}>
-              <img class="logo" src={Logo} alt="Logo" />
-            </Link>
-            <Route path="/home" component={Home} />
-          </Router>
+          <a href="/home" class="nav-link">
+            <img class="logo" src={Logo} alt="Logo" />
+          </a>
     </div>
 </main>
 
