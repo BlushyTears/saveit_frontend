@@ -57,7 +57,7 @@
   function loginWithGoogle() {
     // Redirect to Google's OAuth 2.0 login
     const googleClientId = "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
-    const redirectUri = frontend_url; // Replace with your callback URL
+    const redirectUri = backend_url; // Replace with your callback URL
     const scope = "email profile openid";
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   }
