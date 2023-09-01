@@ -6,6 +6,7 @@
     import Register from "../routes/register.svelte";
 
     let username = '';
+    let email = '';
     let password = '';
     let confirmPassword = '';
 
@@ -38,13 +39,14 @@
 
     const userData = {
       username,
+      email,
       password,
     };
 
     console.log("userdata: ", userData);
 
     try {
-      const response = await fetch('https://saveit.fly.dev/api/register/', {
+      const response = await fetch('http://127.0.0.1:8000/api/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,6 +74,7 @@
     <h2>Register Form</h2>
     <form on:submit={handleSubmit}>
       <input type="text" id="username" bind:value={username} required placeholder="Username">
+      <input type="text" id="email" bind:value={email} required placeholder="Email">
       <input type="password" id="password" bind:value={password} required placeholder="Password">
       <input type="password" id="confirm_password" bind:value={confirmPassword} required placeholder="Confirm Password">
       <button type="submit">Register</button>

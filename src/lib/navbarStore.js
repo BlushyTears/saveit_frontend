@@ -1,12 +1,13 @@
 import { writable } from 'svelte/store';
 
-// Initialize the store with a default value, using localStorage as fallback
-const navbarStored = localStorage.getItem('showNavbar');
-const navbarInit = navbarStored !== null ? navbarStored === 'true' : true;
-export const showNavbar = writable(navbarInit);
+const storedValue = localStorage.getItem('setting');
+const defaultSetting = 'navbar'; // Set a default value if you like
+const initSetting = storedValue !== null ? storedValue : defaultSetting;
+export const currentSetting = writable(initSetting);
 
 // Subscribe to changes in the store and update localStorage accordingly
-showNavbar.subscribe(value => {
-  localStorage.setItem('showNavbar', value.toString()); // Convert boolean to string
+currentSetting.subscribe(value => {
+  if (['navbar', 'layout', 'oauth'].includes(value)) {
+    localStorage.setItem('setting', value);
+  }
 });
-

@@ -2,32 +2,43 @@
   import { Router, Link, Route } from "svelte-routing";
   import Home from "./routes/home.svelte";
   import Layout from "./routes/layout.svelte";
+  import Oauth from "./routes/oauth.svelte";
   import Login from "./routes/login.svelte";
   import Register from "./routes/register.svelte";
 
   import Navbar from "./lib/navbar.svelte";
-
-  import { showNavbar } from './lib/navbarStore.js';
-
   import { onMount } from "svelte";
 
-  let shouldShowNavbar; 
-  showNavbar.subscribe(value => {
-    shouldShowNavbar = value;
+  import { currentSetting } from './lib/navbarStore.js';
+
+  let current; 
+  currentSetting.subscribe(value => {
+    current = value;
   });
 
   onMount(() => {
     let currentUrl = window.location.href;
-    shouldShowNavbar = !currentUrl.endsWith('/layout');
+
+    if (currentUrl.endsWith('/layout')) {
+      currentSetting.set('layout');
+    } else if (currentUrl.endsWith('/oauth')) {
+      currentSetting.set('oauth');
+    } else {
+      // Set to navbar or any other default behavior
+      currentSetting.set('navbar');
+    }
   });
+
 
 </script>
 
 <div class="app-container">
 
-{#if shouldShowNavbar == false}
-  <Layout/>
-{:else}
+{#if current === 'layout'}
+  <Layout />
+{:else if current === 'oauth'}
+  <Oauth />
+{:else if current === 'navbar'}
   <Navbar />
 {/if}
 

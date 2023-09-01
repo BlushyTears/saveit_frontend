@@ -1,4 +1,9 @@
 <script>
+    import { onMount } from 'svelte';
+    import Spinner from '../lib/loadspinner.svelte';
+
+    let isLoading = false;
+
     let username = '';
     let password = '';
 
@@ -11,6 +16,8 @@
     async function handleSubmit(event) {
     event.preventDefault();
 
+    isLoading = true;
+
     const csrfToken = getCookie('csrftoken');
 
     const loginData = {
@@ -19,7 +26,7 @@
     };
 
     try {
-      const response = await fetch('https://saveit.fly.dev/api/login/', {
+      const response = await fetch('http://127.0.0.1:8000/api/login/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -41,52 +48,96 @@
     } catch (error) {
       console.error('Error during login:', error);
     }
+    isLoading = false;
   }
 
-  
+  function loginWithGoogle() {
+    // Redirect to Google's OAuth 2.0 login
+    const googleClientId = "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
+    const redirectUri = "http://localhost:5173"; // Replace with your callback URL
+    const scope = "email profile openid";
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+  }
+
 </script>
 
-<div class="login-form">
-    <h2>Login Form</h2>
+<div class="all-login-form">
+  <div class="login-form">
+    <div style="display: flex;" class="login-title">
+      <h2>Login Form</h2> 
+      {#if isLoading}
+        <Spinner />
+      {/if}
+    </div>
     <form on:submit={handleSubmit}>
       <input type="text" id="username" bind:value={username} required placeholder="Username">
       <input type="password" id="password" bind:value={password} required placeholder="Password">
       <button type="submit">Login</button>
     </form>
   </div>
+      <button class="google-login-btn" on:click={loginWithGoogle}>Login with Google</button>
+</div>
 
 <style>
-    .login-form {
-        /* Poorly hardcoded height cause i couldn't find a better way */
-        height: 61rem; 
-        max-width: 400px;
-        margin: 0 auto;
-        margin-left: 25%;
-        margin-top: 5rem;
-        border: none;
-        border-radius: 5px;
-    }
+  .all-login-form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center;
+    height: 61rem; 
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 5rem;
+    border-radius: 5px;
+  }
 
-    .login-form input {
-        width: 100%;
-        padding: 0.8rem;
-        margin-bottom: 10px;
-        border: none;
-        background-color: rgb(236, 236, 236);
-        border-radius: 0.5rem;
-    }
+  .login-form {
+    width: 100%;
+  }
 
-    .login-form button {
-        padding: 0.5rem 2rem;
-        font-size: 1.1em;
-        background-color: #bf15e9;
-        color: #fff;
-        border: none;
-        border-radius: 2rem;
-        cursor: pointer;
-    }
-    .login-form button:hover {
-        background-color: #8b0aac;
-        cursor: pointer;
-    }
+  .login-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .login-form input {
+      width: 93%;
+      padding: 0.8rem;
+      margin-bottom: 0.3rem;
+      border: none;
+      background-color: rgb(236, 236, 236);
+      border-radius: 0.5rem;
+  }
+
+  .login-form button {
+    display: block; /* Display block to take full width */
+    width: 100%;
+    padding: 0.5rem 1.2rem;
+    font-size: 1.1em;
+    background-color: #bf15e9;
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+  .login-form button:hover {
+      background-color: #8b0aac;
+  }
+
+  .google-login-btn {
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.5rem 1.2rem;
+    font-size: 1.1em;
+    background-color: aqua;
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+
+  .google-login-btn:hover {
+    background-color: rgb(0, 172, 172);
+  }
+
 </style>
