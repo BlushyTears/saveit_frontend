@@ -5,7 +5,7 @@
 
 // Production:
 
-export const backend_url = "http://saveit.fly.dev";
-export const frontend_url = "http://saveit-neon.vercel.app";
+export const backend_url = "https://saveit.fly.dev";
+export const frontend_url = "https://saveit-neon.vercel.app";
 
 // 
