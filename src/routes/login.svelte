@@ -2,6 +2,8 @@
     import { onMount } from 'svelte';
     import Spinner from '../lib/loadspinner.svelte';
 
+    import { backend_url, frontend_url } from '../lib/urls';
+
     let isLoading = false;
 
     let username = '';
@@ -26,7 +28,7 @@
     };
 
     try {
-      const response = await fetch('https://saveit-git-main-blushytears.vercel.app/home/api/login/', {
+      const response = await fetch(backend_url + "/api/login/", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -44,6 +46,7 @@
       } else {
         const errorData = await response.json();
         console.error('Login failed:', errorData);
+        console.error("Error:", response);
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -54,7 +57,7 @@
   function loginWithGoogle() {
     // Redirect to Google's OAuth 2.0 login
     const googleClientId = "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
-    const redirectUri = "https://saveit-git-main-blushytears.vercel.app/home"; // Replace with your callback URL
+    const redirectUri = frontend_url; // Replace with your callback URL
     const scope = "email profile openid";
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   }

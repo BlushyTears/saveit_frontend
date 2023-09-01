@@ -5,6 +5,8 @@
     import Login from "../routes/login.svelte";
     import Register from "../routes/register.svelte";
 
+    import { backend_url, frontend_url } from '../lib/urls';
+
     let username = '';
     let email = '';
     let password = '';
@@ -43,10 +45,10 @@
       password,
     };
 
-    console.log("userdata: ", userData);
+    console.log("userdata: ", userData); 
 
     try {
-      const response = await fetch('https://saveit-git-main-blushytears.vercel.app/home/api/register/', {
+      const response = await fetch(backend_url + '/home/api/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

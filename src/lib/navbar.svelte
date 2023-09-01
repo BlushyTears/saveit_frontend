@@ -13,6 +13,8 @@
     import { currentSetting } from './navbarStore.js';
     import Mypage from "../routes/mypage.svelte";
 
+    import { backend_url, frontend_url } from '../lib/urls';
+
     export let url = "/";
     let isLoggedIn = localStorage.getItem('token') !== null;
     let isLoading = false;
@@ -39,7 +41,7 @@
     const csrfToken = getCookie('csrftoken');
 
     try {
-      const response = await fetch('https://saveit-git-main-blushytears.vercel.app/home/api/logout/', {
+      const response = await fetch(backend_url + '/home/api/logout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -12,6 +12,9 @@
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import { onMount } from 'svelte';
 
+  // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
+  import { backend_url, frontend_url } from '../lib/urls';
+
   let claimLink = "";
 
   function handleSubmit(event) {
@@ -34,9 +37,9 @@
 
   // In case the user has multiple google accounts, we need to give it a unique name
   // localStorage.setItem('oauthtoken', code);
-
+  
   if(code) {
-    fetch("https://saveit-git-main-blushytears.vercel.app/api/googleauth/", {
+    fetch(backend_url + "/api/googleauth/", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
