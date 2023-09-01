@@ -36,7 +36,7 @@
   // localStorage.setItem('oauthtoken', code);
 
   if(code) {
-    fetch("http://127.0.0.1:8000/api/googleauth/", {
+    fetch("https://saveit-git-main-blushytears.vercel.app/api/googleauth/", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

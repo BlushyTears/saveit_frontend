@@ -18,6 +18,6 @@
   "dependencies": {
     "@macfja/svelte-oauth2": "^1.1.0",
     "gapi-client": "^0.0.3",
-    "svelte-routing": "^2.0.0"
+    "svelte-routing": "^2.2.0"
   }
 }
