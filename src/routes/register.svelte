@@ -48,7 +48,7 @@
     console.log("userdata: ", userData); 
 
     try {
-      const response = await fetch(backend_url + '/home/api/register/', {
+      const response = await fetch(backend_url + '/api/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
