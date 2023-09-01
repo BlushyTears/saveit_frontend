@@ -39,7 +39,7 @@
     const csrfToken = getCookie('csrftoken');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/logout/', {
+      const response = await fetch('https://saveit-git-main-blushytears.vercel.app/home/api/logout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
