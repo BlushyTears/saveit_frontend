@@ -90,8 +90,9 @@
   </section>
   <section class="section2">
     <br />
-    <h3 style="margin-bottom: 1rem;">Get started in literally minutes</h3>
-
+    <h3>Get started in literally minutes</h3>
+    <br />
+    <br />
     <div class="main">
       <form on:submit={handleSubmit}>
         <input
@@ -115,8 +116,8 @@
   </section>
   <section class="section3">
     <br />
-    <h3>Explore new foods</h3>
     <br />
+    <h3>Explore new foods</h3>
     <p>
       Faveit is a hub of hubs where you explore new food and drink with others
       that have similar preferences to you in order to more effectively find
@@ -149,8 +150,8 @@
     display: flex;
     align-items: center;
     background-color: #37c84c;
-    margin-top: 5rem;
-    height: 75rem;
+    height: 60rem;
+    margin-bottom: 10rem;
   }
 
   .section1-illustration {
@@ -159,7 +160,6 @@
 
   .text-chunk-section1 {
     width: calc(20vw + 10rem);
-    margin-bottom: 5rem;
   }
 
   /* Section 1 END */
@@ -240,10 +240,12 @@
   @media screen and (max-width: 800px) {
     .section1 {
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
+      margin-top: 4rem;
     }
     .section1-illustration {
       margin: 0 auto;
+      margin-top: 2rem;
     }
 
     .section2 form {
