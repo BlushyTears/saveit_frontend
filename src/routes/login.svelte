@@ -57,7 +57,7 @@
   function loginWithGoogle() {
     // Redirect to Google's OAuth 2.0 login
     const googleClientId = "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
-    const redirectUri = frontend_url; // Replace with your callback URL (http://localhost:5173)
+    const redirectUri = frontend_url;
     const scope = "email profile openid";
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   }
@@ -88,7 +88,7 @@
     align-items: center;
     height: 61rem; 
     max-width: 400px;
-    margin: 0 auto;
+    margin-left: 25%;
     margin-top: 5rem;
     border-radius: 5px;
   }
@@ -143,4 +143,11 @@
     background-color: rgb(0, 172, 172);
   }
 
+@media screen and (max-width: 568px) {
+  .all-login-form {
+    max-width: 65vw;
+    margin: 0 auto;
+    margin-top: 5rem;
+  }
+}
 </style>

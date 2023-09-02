@@ -13,11 +13,14 @@
     import { currentSetting } from './navbarStore.js';
     import Mypage from "../routes/mypage.svelte";
 
+    import { onMount } from 'svelte';
+
     import { backend_url, frontend_url } from '../lib/urls';
 
     export let url = "/";
     let isLoggedIn = localStorage.getItem('token') !== null;
     let isLoading = false;
+
 
     // Check if navbar is active or no
     let current; 
@@ -63,17 +66,51 @@
     localStorage.removeItem('token');  // Remove the token from local storage
     window.location.reload();
   }
+
+  // Hamburger menu logic
+  let showMenu = false;
+let menuElement;  // Reference to the menu DOM element
+
+onMount(() => {
+  const closeMenuOnClickOutside = event => {
+    if (menuElement && !menuElement.contains(event.target)) {
+      showMenu = false;
+    }
+  };
+
+  document.addEventListener('click', closeMenuOnClickOutside);
+
+  return () => {  // Cleanup
+    document.removeEventListener('click', closeMenuOnClickOutside);
+  };
+});
+
+function toggleMenu(event) {
+  showMenu = !showMenu;
+  event.stopPropagation();  // Prevent event from reaching the document
+}
+
 </script>
 
 {#if current === 'navbar'}
-   <nav>
+   <nav class="navbar-container">
     <Router {url}>
         <div class="navbar-wrapper">
           <nav class="navbar">
 
               <Link to="/" class="nav-link"><a>Home</a></Link>
 
-              <div class="nav-links-right">
+              <button 
+              class="hamburger-menu" 
+              on:click={toggleMenu}
+              on:keydown={e => { if (e.key === 'Enter' || e.key === ' ') toggleMenu() }}
+            >
+              <div></div>
+              <div></div>
+              <div></div>
+            </button>
+            
+            <div class="nav-links-right {showMenu ? 'show' : ''}" bind:this={menuElement}>
 
               {#if isLoggedIn}
                 <Link to="/mypage" class="nav-link"><a>My page</a></Link>
@@ -111,11 +148,14 @@
         </div>
     </Router>
    </nav>
- {/if}
-
-
+{/if}
 
 <style>
+
+  .navbar-container {
+    background-color: #37c84c;
+  }
+
 .navbar-wrapper {
   position: sticky;
   top: 2rem;
@@ -154,4 +194,49 @@ a {
 a:hover {
     color: gray;
 }
+
+/* Hamburger menu styling: */
+
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+.hamburger-menu div {
+  width: 25px;
+  height: 2px;
+  background-color: black;
+  margin: 2px 0;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 568px) {
+  .nav-links-right {
+    display: none;
+    flex-direction: column;
+    width: 25%;
+    text-align: center;
+    position: absolute;
+    top: 102%;
+    left: 45%;
+    border-radius: 3rem;
+    padding: 1rem;
+    background-color: #333;
+    line-height: 1.8rem;
+  }
+
+  .nav-links-right.show {
+    display: flex;
+  }
+
+  .hamburger-menu {
+    display: flex;
+    
+  }
+}
+
+
 </style>

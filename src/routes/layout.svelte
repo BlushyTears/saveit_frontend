@@ -182,7 +182,7 @@
         align-items: center;
         border-radius: 3rem;
         margin-top: 1rem;
-        width: 50%;
+        width: calc(60% + 5rem);
         font-size: 1.2em;
     }
 
@@ -220,7 +220,6 @@
     .footer {
         display: none;
     }
-
 }
 
 </style>

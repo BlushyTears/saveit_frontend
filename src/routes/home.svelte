@@ -10,6 +10,7 @@
 <script>
   // import CookingIllustration from '../assets/cooking_illustration.svelte';
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
+  import Example_Page from "../assets/examplepage.png";
   import { onMount } from 'svelte';
 
   // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
@@ -69,10 +70,10 @@
 <main>
   <section class="section1">
     <div class="text-chunk-section1">
-      <h2 style="font-size: calc(2vw + 1.5rem);">
+      <h2 style="font-size: calc(2vw + 1.5rem); margin-bottom: 1rem;">
         Share All Your Delicious Dishes with a Single Link.
       </h2>
-      <p style="font-size: calc(1em + 0.5vw);">
+    <p style="font-size: calc(1em + 0.5vw); ">
         Amplify your brand and expand your reach through the power of sharing
         your cherished recipes. Cultivate your passion while simultaneously
         building a thriving audience for the days ahead.
@@ -89,7 +90,7 @@
   </section>
   <section class="section2">
     <br />
-    <h3>Get started in literally minutes</h3>
+    <h3 style="margin-bottom: 1rem;">Get started in literally minutes</h3>
 
     <div class="main">
       <form on:submit={handleSubmit}>
@@ -103,9 +104,19 @@
         <button type="submit">Claim</button>
       </form>
     </div>
+    <!-- svelte-ignore a11y-img-redundant-alt -->
+    <br />
+
+    <img
+      src={Example_Page}
+      alt="example page picture"
+      style="height: calc(25vw + 10rem); width: calc(25vw + 10rem); margin: 0 auto; border-radius: 1rem;"
+    />
   </section>
   <section class="section3">
+    <br />
     <h3>Explore new foods</h3>
+    <br />
     <p>
       Faveit is a hub of hubs where you explore new food and drink with others
       that have similar preferences to you in order to more effectively find
@@ -118,11 +129,11 @@
 <style>
   h3 {
     color: #ffffff;
+    margin: 0;
   }
   h2 {
     color: #ffffff;
     margin: 0;
-    margin-bottom: 2rem;
   }
   p {
     color: #ffffff;
@@ -138,8 +149,8 @@
     display: flex;
     align-items: center;
     background-color: #37c84c;
-    margin-top: 15rem;
-    margin-bottom: 25rem;
+    margin-top: 5rem;
+    height: 75rem;
   }
 
   .section1-illustration {
@@ -173,7 +184,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 20rem;
+    height: 5rem;
   }
 
   .section2 form {
@@ -214,7 +225,6 @@
   }
 
   .section3 h3 {
-    margin-top: 5rem;
     font-size: 3em;
   }
 
@@ -238,6 +248,7 @@
 
     .section2 form {
       flex-direction: column;
+      margin-bottom: 1rem;
       max-width: fit-content;
     }
     .section2 button {

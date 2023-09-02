@@ -89,7 +89,6 @@
         height: 61rem;
         max-width: 400px;
         margin-left: 25%;
-        margin-top: 5rem;
         border: none;
         border-radius: 5px;
     }
@@ -114,5 +113,14 @@
         background-color: #8b0aac;
         cursor: pointer;
     }
+
+
+@media screen and (max-width: 768px) {
+  .register-form {
+    max-width: 65vw;
+    margin: 0 auto;
+    margin-top: 5rem;
+  }
+}
 
 </style>

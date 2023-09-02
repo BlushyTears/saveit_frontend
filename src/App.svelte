@@ -1,3 +1,12 @@
+<!-- Temp color theme:
+    #37C84C light green
+    #376AC8 light blue
+    #C837B3 magenta
+    #C89537 gold orange
+    #964B00 brown
+    #FFFFFF white
+-->
+
 <script>
   import { Router, Link, Route } from "svelte-routing";
   import Home from "./routes/home.svelte";
@@ -46,7 +55,8 @@
 <style>
 
 .app-container {
-  background-color: #37C84C;
+  width: 100%;
+  background-color: #e9e9e9;
 }
 
 </style>

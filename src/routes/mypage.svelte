@@ -43,9 +43,9 @@
 <div class="body">
     <div class="body-container">
 
-        <div class="stats">
-            <h2>Page editor</h2>
-            <h2>Followers: 1276</h2>
+        <div style="font-size: calc(1em + 1vw);" class="stats">
+            <p style="margin-top: 0;">Page editor</p>
+            <p style="margin-top: 0;">Followers: 1276</p>
         </div>
 
         <div class="button-component">
@@ -54,7 +54,7 @@
                     {#if isEditing}
                         <input bind:value={editedText} style="font-size: 1.5em; margin-right: 1rem;" />
                     {:else}
-                        <span style="font-size: 2em; margin-right: 1rem;">{editedText}</span>
+                        <span style="font-size: calc(0.8em + 2vw); margin-right: 1rem;">{editedText}</span>
                     {/if}
                 </h1>
                 <button
@@ -72,7 +72,7 @@
                         src={isEditing ? SaveIcon : PenIcon}
                         class="pen-icon"
                         alt="pen icon"
-                        style="height: 2.5rem; width: 2.5rem;"
+                        style="height: 4rem; width: 4rem;"
                     />
                 </button>
             </div>
@@ -120,10 +120,11 @@ h1, h2 {
     /* Remove vertical scrolling by Subtracting navbar margin found in navbar.svelte */
     height: calc(100vh - 10.6rem);
     margin-top: 5rem;
+    background-color: #37c84c;
 }
 
 .body-container {
-    background-color: aqua;
+    background-color: rgb(202, 202, 202);
     margin-left: 2%;
     margin-right: 2%;
     height: 96%;
@@ -144,13 +145,14 @@ h1, h2 {
 }
 
 .pen-icon {
+    box-sizing: border-box;
     padding: 0.5rem;
-    border-radius: 1rem;
+    border-radius: 0.1rem;
 }
 
 .pen-icon:hover {
     cursor: pointer;
-    background-color: #ffffffab;
+    border: 1px solid rgb(77, 77, 77);
     transform: scale(1.05); /* Scale the image slightly on hover */
 }
 
@@ -176,7 +178,7 @@ h1, h2 {
         padding: 1rem;
         border-radius: 3rem;
         margin-top: 1rem;
-        width: 50%;
+        width: calc(60% + 5rem);
         font-size: 1.2em;
     }
 
