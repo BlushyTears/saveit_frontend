@@ -91,6 +91,7 @@
         margin-left: 25%;
         border: none;
         border-radius: 5px;
+        margin-top: 5rem;
     }
     .register-form input {
         width: 100%;
