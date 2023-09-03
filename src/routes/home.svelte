@@ -11,10 +11,10 @@
   // import CookingIllustration from '../assets/cooking_illustration.svelte';
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Example_Page from "../assets/examplepage.png";
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
-  import { backend_url, frontend_url } from '../lib/urls';
+  import { backend_url, frontend_url } from "../lib/urls";
 
   let claimLink = "";
 
@@ -23,48 +23,49 @@
   }
 
   function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
 
-  const token = localStorage.getItem('token');
-  const csrfToken = getCookie('csrftoken');
+  const token = localStorage.getItem("token");
+  const csrfToken = getCookie("csrftoken");
 
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get('code');
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
 
-  // In case the user has multiple google accounts, we need to give it a unique name
-  // localStorage.setItem('oauthtoken', code);
-  
-  if(code) {
-    fetch(backend_url + "/api/googleauth/", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ code })
-    })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`Failed to exchange code for access tokeroni: ${res.status} ${res.statusText}`);
-      }
-      
-      return res.json();
-    })
-    .then(data => {
-      // Login was successful here
-      localStorage.setItem('token', data);
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error("An error occurred:", error);
-    });
-  }
-});
+    // In case the user has multiple google accounts, we need to give it a unique name
+    // localStorage.setItem('oauthtoken', code);
 
+    if (code) {
+      fetch(backend_url + "/api/googleauth/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(
+              `Failed to exchange code for access tokeroni: ${res.status} ${res.statusText}`
+            );
+          }
+
+          return res.json();
+        })
+        .then((data) => {
+          // Login was successful here
+          localStorage.setItem("token", data);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("An error occurred:", error);
+        });
+    }
+  });
 </script>
 
 <main>
@@ -73,7 +74,7 @@
       <h2 style="font-size: calc(2vw + 1.5rem); margin-bottom: 1rem;">
         Share All Your Delicious Dishes with a Single Link.
       </h2>
-    <p style="font-size: calc(1em + 0.5vw); ">
+      <p style="font-size: calc(1em + 0.5vw); ">
         Amplify your brand and expand your reach through the power of sharing
         your cherished recipes. Cultivate your passion while simultaneously
         building a thriving audience for the days ahead.
@@ -117,6 +118,7 @@
   <section class="section3">
     <br />
     <br />
+
     <h3>Explore new foods</h3>
     <p>
       Faveit is a hub of hubs where you explore new food and drink with others
@@ -128,6 +130,9 @@
 </main>
 
 <style>
+  main {
+    overflow-x: hidden;
+  }
   h3 {
     color: #ffffff;
     margin: 0;
@@ -149,7 +154,6 @@
     justify-content: space-around;
     display: flex;
     align-items: center;
-    background-color: #37c84c;
     height: 60rem;
     margin-bottom: 10rem;
   }
@@ -166,11 +170,27 @@
 
   /* Section 2: */
   .section2 {
-    height: 80rem;
+    height: 90rem;
     text-align: center;
-    background-color: #c837b3;
+    background: linear-gradient(60deg, #c837b3, #ff61a6);
+    position: relative;
   }
 
+  .section2::after {
+    content: "";
+    position: absolute;
+    width: 150%;
+    bottom: 0;
+    padding: 5rem;
+    border-radius: 150% 50%;
+    left: 0;
+    overflow-x: hidden;
+    border-top: 15rem solid #37c84c; /* match the bottom gradient color */
+    z-index: 1;
+    transform: translate(-15%, 42%);
+  }
+
+  /*  */
   .section2 h3 {
     margin-top: 5rem;
     font-size: 3em;
@@ -222,6 +242,7 @@
     height: 60rem;
     text-align: center;
     background-color: #37c84c;
+    z-index: 5;
   }
 
   .section3 h3 {
@@ -242,10 +263,16 @@
       flex-direction: column;
       justify-content: flex-start;
       margin-top: 4rem;
+      height: 50rem;
+      margin-bottom: 0;
     }
     .section1-illustration {
       margin: 0 auto;
       margin-top: 2rem;
+    }
+
+    .section2 {
+      height: 70rem;
     }
 
     .section2 form {
