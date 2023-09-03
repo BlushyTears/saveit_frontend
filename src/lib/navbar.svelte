@@ -2,7 +2,6 @@
   import { Router, Link, Route } from "svelte-routing";
   import Home from "../routes/home.svelte";
   import Layout from "../routes/layout.svelte";
-  import Oauth from "../routes/oauth.svelte";
   import MyPage from "../routes/mypage.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
@@ -147,7 +146,6 @@
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/layout" component={Layout} />
-        <Route path="/oauth" component={Oauth} />
         <Route component={NotFound} />
       </div>
     </Router>

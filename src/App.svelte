@@ -11,46 +11,48 @@
   import { Router, Link, Route } from "svelte-routing";
   import Home from "./routes/home.svelte";
   import Layout from "./routes/layout.svelte";
-  import Oauth from "./routes/oauth.svelte";
   import Login from "./routes/login.svelte";
   import Register from "./routes/register.svelte";
 
   import Navbar from "./lib/navbar.svelte";
   import { onMount } from "svelte";
 
-  import { currentSetting } from "./lib/navbarStore.js";
+  import { currentSetting } from './lib/navbarStore.js';
 
-  let current;
-  currentSetting.subscribe((value) => {
+  let current; 
+  currentSetting.subscribe(value => {
     current = value;
   });
 
   onMount(() => {
     let currentUrl = window.location.href;
 
-    if (currentUrl.endsWith("/layout")) {
-      currentSetting.set("layout");
-    } else if (currentUrl.endsWith("/oauth")) {
-      currentSetting.set("oauth");
+    if (currentUrl.endsWith('/layout')) {
+      currentSetting.set('layout');
+    } else if (currentUrl.endsWith('/oauth')) {
+      currentSetting.set('oauth');
     } else {
       // Set to navbar or any other default behavior
-      currentSetting.set("navbar");
+      currentSetting.set('navbar');
     }
   });
+
 </script>
 
 <div class="app-container">
-  {#if current === "layout"}
-    <Layout />
-  {:else if current === "oauth"}
-    <Oauth />
-  {:else if current === "navbar"}
-    <Navbar />
-  {/if}
+
+{#if current === 'layout'}
+  <Layout />
+{:else if current === 'navbar'}
+  <Navbar />
+{/if}
+
 </div>
 
 <style>
-  .app-container {
-    width: 100%;
-  }
+
+.app-container {
+  width: 100%;
+}
+
 </style>
