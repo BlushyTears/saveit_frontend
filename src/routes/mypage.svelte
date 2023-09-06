@@ -5,6 +5,20 @@
     #C89537 gold orange
     #964B00 brown
     #FFFFFF white
+
+
+    Existing color 1: #212a3e
+    Existing color 2: #394867
+
+    Lighter blue: #567aa5
+    Even Lighter blue: #7a9dcb
+    Complementary warm color: #A57F60
+    Soft gray: #A9A9A9
+    Off-white: #F2F2F2
+    Darker gray: #666666
+    Contrast color (green): #6AB187
+    Accent color (coral): #FF6B6B
+
 -->
 
 <!-- A RANDOM GETQUEST FOR QUERY SERVER DIRECTLY = ACCOUNTABILITY FOR IF BACKEND IS OPERATIONAL YES YES -->
@@ -24,7 +38,7 @@
 
   onMount(() => {
     // DispatchEvent changes color upon load
-    dispatchEvent(new CustomEvent("set-color", { detail: "#9BA4B5" }));
+    dispatchEvent(new CustomEvent("set-color", { detail: "#8a8a8a" }));
   });
 
   // function to open a specific modal
@@ -58,8 +72,8 @@
 <div class="body">
   <div class="body-container">
     <div class="stats">
-      <p style="margin-top: 0;">Page editor</p>
-      <p style="margin-top: 0;">Followers: 1276</p>
+      <p style="margin-top: 0; background-color: #425375; padding: 1.5rem; border-radius: 1rem;">Page editor</p>
+      <p style="margin-top: 0; background-color: #425375; padding: 1.5rem; border-radius: 1rem;">Followers: 1276</p>
     </div>
 
     <div class="button-component">
@@ -126,6 +140,19 @@
   </div>
 </div>
 
+<!-- 
+Existing color 1: #212a3e
+Existing color 2: #394867
+
+Lighter blue: #567aa5
+Even Lighter blue: #7a9dcb
+Complementary warm color: #A57F60
+Soft gray: #A9A9A9
+Off-white: #F2F2F2
+Darker gray: #666666
+Contrast color (green): #6AB187
+Accent color (coral): #FF6B6B -->
+
 <style>
   @font-face {
     font-family: "Monofonto";
@@ -143,7 +170,7 @@
   h1,
   h2,
   p {
-    color: #ffffff;
+    color: #F2F2F2;
     margin: 0;
     padding: 0;
   }
@@ -152,22 +179,22 @@
     /* Remove vertical scrolling by Subtracting navbar margin found in navbar.svelte */
     height: calc(100vh - 10.6rem);
     margin-top: 5rem;
-    background-color: #9ba4b5d3;
+    background-color: #8a8a8a;
   }
 
   .body-container {
-    background-color: #212a3ecc;
-    margin-left: 2%;
-    margin-right: 2%;
-    min-height: 96%;
+    background-color: #212a3e;
     height: auto;
     border-radius: 1rem;
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    min-height: 95%;
+    width: 90%;
+    margin: 0 auto;
   }
 
   .stats {
     font-size: calc(1.1em + 1vw);
-    padding: 3rem;
+    padding: 1.5rem;
     border-radius: 1rem;
     margin-bottom: 5rem;
     display: flex;
@@ -242,7 +269,7 @@
   }
 
   .recipe-link:hover {
-    background-color: #212a3e70;
+    background-color: #A57F60;
     transition: 0.15s ease-in-out;
   }
 

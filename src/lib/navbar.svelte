@@ -164,6 +164,19 @@
   </nav>
 {/if}
 
+<!-- 
+Existing main color 1: #212a3e
+Existing main color 2: #394867
+
+Lighter blue: #567aa5
+Even Lighter blue: #7a9dcb
+Complementary warm color: #A57F60
+Soft gray: #A9A9A9
+Off-white: #F2F2F2
+Darker gray: #666666
+Contrast color (green): #6AB187
+Accent color (coral): #FF6B6B -->
+
 <style>
   .navbar-container {
     margin: 0;
@@ -178,7 +191,7 @@
   }
 
   .navbar {
-    background-color: #333;
+    background-color: #2a3552;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -207,7 +220,7 @@
   }
 
   a:hover {
-    color: gray;
+    color: #A9A9A9;
   }
 
   /* Hamburger menu styling: */
@@ -239,7 +252,7 @@
       left: 45%;
       border-radius: 3rem;
       padding: 1rem;
-      background-color: #333;
+      background-color: #2a3552;
       line-height: 1.8rem;
     }
 

@@ -5,6 +5,13 @@
     #C89537 gold orange
     #964B00 brown
     #FFFFFF white
+
+
+    Temp color theme 2:
+    #272829 black
+    #61677A gray
+    #D8D9DA light gray
+    #FFF6E0 white
 -->
 
 <script>
@@ -34,7 +41,7 @@
   const csrfToken = getCookie("csrftoken");
 
   onMount(() => {
-    dispatchEvent(new CustomEvent('set-color', { detail: '#53c964' }));
+    dispatchEvent(new CustomEvent('set-color', { detail: '#212a3e' }));
   });
 
   // This onMount checks if the user is logged in upon redirection
@@ -136,7 +143,45 @@
     </p>
   </section>
 
+  <section class="section4">
+    <br />
+    <br />
 
+    <div style="text-align: center; min-height: 60rem; padding-bottom: 1rem;" class="section-4-container">
+      <h3 style="font-size: 2em;">Q&A</h3>
+      <br>
+      <p >
+        Faveit is a hub of hubs where you explore new food and drink with others
+      </p>
+      <br>
+      <p >
+        Faveit is a hub of hubs where you explore new food and drink with others
+      </p>
+      <br>
+      <p >
+        Faveit is a hub of hubs where you explore new food and drink with others
+      </p>
+      <br>
+      <p >
+        Faveit is a hub of hubs where you explore new food and drink with others
+      </p>
+      <br>
+
+    </div>
+  </section>
+
+  <section class="footer">
+    <br />
+    <h3 style="font-size: 2em;">Terms of service</h3>
+
+    <div style="max-width: 50%; margin: 0 auto;">
+      <p style="font-size: 1em;">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus aliquam recusandae reiciendis ea, 
+        voluptates id, molestiae sequi repellendus voluptatem corrupti modi expedita rerum perferendis pariatur quisquam, totam magni quis facilis 
+        nulla nesciunt vitae quod atque quam vero. Praesentium quaerat veniam rem sed aperiam eius accusamus quas, facere exercitationem perspiciatis minima!
+      </p>
+    </div>
+  </section>
 </main>
 
 <style>
@@ -176,7 +221,7 @@ h1, h2, h3, p, a {
     align-items: center;
     height: 80rem;
   
-    background: #53c964;
+    background: #212a3e;
   }
 
   .section1-illustration {
@@ -195,7 +240,7 @@ h1, h2, h3, p, a {
   .section2 {
     height: 90rem;
     text-align: center;
-    background: linear-gradient(60deg, #c837b3, #ff61a6);
+    background: linear-gradient(60deg, #96dab3, #6AB187);
     position: relative;
   }
 
@@ -208,7 +253,7 @@ h1, h2, h3, p, a {
   left: 0;
   overflow-x: hidden;
   border-top: 10rem solid transparent;
-  background: #37c84c;
+  background: #FF6B6B;
   transform: translate(-15%, 35%);
 }
 
@@ -258,7 +303,7 @@ h1, h2, h3, p, a {
   .section3 {
     height: 60rem;
     text-align: center;
-    background: #37c84c;
+    background: #FF6B6B;
   }
 
   .section3 h3 {
@@ -272,6 +317,13 @@ h1, h2, h3, p, a {
   }
 
   /* Section 3 END */
+
+  .footer {
+    background-color: #666666;
+    font-size: 1em;
+    min-height: 10rem;
+    text-align: center;
+  }
 
 
   /* Media Queries: */
