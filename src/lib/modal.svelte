@@ -62,8 +62,18 @@
   }
 
   .close-modal-btn {
-    padding: 0.5rem;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem;
+    border: none;
+    background: none;
     display: block;
     float: right;
+    margin: 0;
+    transition: 0.1s ease-in-out;
+  }
+
+  .close-modal-btn:hover {
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.18);
   }
 </style>

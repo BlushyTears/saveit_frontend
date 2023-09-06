@@ -47,7 +47,7 @@
       </div>
       <br />
       <button style="margin-bottom: 1rem;" class="save-edits-btn"
-        >Save changes ✉</button
+        >Save ✉</button
       >
       <div>
         <div class="slot-wrapper" contenteditable="true" />
@@ -57,7 +57,6 @@
 </dialog>
 
 <style>
-
   dialog {
     margin-top: 8%;
     width: 40%;
@@ -95,11 +94,20 @@
   }
 
   .close-modal-btn {
-    padding: 0.5rem;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem;
+    border: none;
+    background: none;
     display: block;
     float: right;
+    margin: 0;
+    transition: 0.1s ease-in-out;
   }
 
+  .close-modal-btn:hover {
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.18);
+  }
   .focused-btn {
     border: none;
     font-family: "Roboto Condensed", sans-serif;
@@ -111,7 +119,7 @@
     border-radius: 3rem;
     margin-top: 1rem;
     width: 100%;
-    font-size: calc(0.8em + 0.4vw);
+    font-size: calc(0.5em + 0.4vw);
   }
 
   .focused-btn:hover {

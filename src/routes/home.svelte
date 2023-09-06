@@ -12,6 +12,7 @@
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Example_Page from "../assets/examplepage.png";
   import { onMount } from "svelte";
+  import Cooking from "../assets/cooking.jpg";
 
   // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
   import { backend_url, frontend_url } from "../lib/urls";
@@ -94,9 +95,10 @@
       height="500"
     />
   </section>
+
   <section class="section2">
     <br />
-    <h3>Get started in literally minutes</h3>
+    <p style="font-size: calc(2em + 1vw); font-weight: bold; margin-top: 3rem;">Get started in literally minutes</p>
     <br />
     <br />
     <div class="main">
@@ -111,7 +113,6 @@
         <button type="submit">Claim</button>
       </form>
     </div>
-    <!-- svelte-ignore a11y-img-redundant-alt -->
     <br />
 
     <img
@@ -119,11 +120,9 @@
       alt="example page picture"
       style="height: calc(25vw + 10rem); width: calc(25vw + 10rem); margin: 0 auto; border-radius: 1rem;"
     />
+
   </section>
   <section class="section3">
-    <!-- Lots of manual line breaks because of :after element overlaping between sections -->
-    <br />
-    <br />
     <br />
     <br />
     <br />
@@ -136,9 +135,21 @@
       release a new recipe
     </p>
   </section>
+
+
 </main>
 
 <style>
+@font-face {
+  font-family: 'Monofonto';
+  src: url('/fonts/monofonto rg.otf') format('opentype');
+}
+    
+h1, h2, h3, p, a {
+    font-family: 'Monofonto', fallback, sans-serif;
+    
+  }
+
   main {
     overflow-x: hidden;
   }
@@ -163,16 +174,18 @@
     justify-content: space-around;
     display: flex;
     align-items: center;
-    height: 60rem;
+    height: 80rem;
   
     background: #53c964;
   }
 
   .section1-illustration {
+    margin-top: -20rem;
     margin-left: -10vw;
   }
 
   .text-chunk-section1 {
+    margin-top: -20rem;
     width: calc(20vw + 10rem);
   }
 
@@ -184,7 +197,6 @@
     text-align: center;
     background: linear-gradient(60deg, #c837b3, #ff61a6);
     position: relative;
-    z-index: 5;
   }
 
   .section2::after {
@@ -192,20 +204,14 @@
   position: absolute;
   width: 150%;
   bottom: 0;
-  padding: 5rem;
   border-radius: 150% 50%;
   left: 0;
   overflow-x: hidden;
-  border-top: 15rem solid transparent;
+  border-top: 10rem solid transparent;
   background: #37c84c;
-  transform: translate(-15%, 25%);
+  transform: translate(-15%, 35%);
 }
 
-  /*  */
-  .section2 h3 {
-    margin-top: 5rem;
-    font-size: 3em;
-  }
 
   .section2 p {
     font-size: 1.2em;
@@ -267,6 +273,7 @@
 
   /* Section 3 END */
 
+
   /* Media Queries: */
   @media screen and (max-width: 800px) {
     .section1 {
@@ -279,6 +286,10 @@
     .section1-illustration {
       margin: 0 auto;
       margin-top: 2rem;
+    }
+
+    .text-chunk-section1 {
+      margin-top: 0;
     }
 
     .section2 {

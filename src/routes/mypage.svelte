@@ -24,7 +24,7 @@
 
   onMount(() => {
     // DispatchEvent changes color upon load
-    dispatchEvent(new CustomEvent('set-color', { detail: '#9BA4B5' }));
+    dispatchEvent(new CustomEvent("set-color", { detail: "#9BA4B5" }));
   });
 
   // function to open a specific modal
@@ -57,22 +57,21 @@
 
 <div class="body">
   <div class="body-container">
-    <br />
-    <div style="font-size: calc(1em + 1vw);" class="stats">
+    <div class="stats">
       <p style="margin-top: 0;">Page editor</p>
       <p style="margin-top: 0;">Followers: 1276</p>
     </div>
 
-    <div  class="button-component">
-      <div class="title" style="display: flex; align-items: center;">
+    <div class="button-component">
+      <div style="display: flex; align-items: center;">
         <h1>
           {#if isEditing}
             <input
               bind:value={editedText}
-              style="font-size: 1.5em; margin-right: 1rem; width: 50vw;"
+              style="font-size: calc(1.5em + 0.5vw); margin-right: 1rem; width: calc(5rem + 20vw); padding: 0.5rem;" 
             />
           {:else}
-            <span style="font-size: calc(0.8em + 1vw); margin-right: 1rem;"
+            <span style="font-size: calc(1.5em + 0.5vw); margin-right: 1rem;"
               >{editedText}</span
             >
           {/if}
@@ -103,12 +102,12 @@
           <h2 class="modal-btn-text">Chocolate Chip Cookies</h2>
         </button>
         <button class="edit-button-btn" on:click={() => openEditBtnModal(0)}
-          ><p></p>Edit</button
+          ><p />
+          Edit</button
         >
       </div>
     </div>
   </div>
-
 
   <div class="template-container">
     <Editmodal
@@ -128,8 +127,22 @@
 </div>
 
 <style>
+  @font-face {
+    font-family: "Monofonto";
+    src: url("/fonts/monofonto rg.otf") format("opentype");
+  }
+
   h1,
-  h2, p {
+  h2,
+  h3,
+  p,
+  a {
+    font-family: "Monofonto", fallback, sans-serif;
+  }
+
+  h1,
+  h2,
+  p {
     color: #ffffff;
     margin: 0;
     padding: 0;
@@ -149,17 +162,14 @@
     min-height: 96%;
     height: auto;
     border-radius: 1rem;
-    border-right: 2px solid rgb(165, 165, 165); /* 2px width, solid style, red color */
-    border-bottom: 2px solid rgb(165, 165, 165); /* 2px width, solid style, red color */
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
   }
 
   .stats {
-    font-size: 1.2em;
-    padding: 1.5rem;
+    font-size: calc(1.1em + 1vw);
+    padding: 3rem;
     border-radius: 1rem;
     margin-bottom: 5rem;
-    margin-right: 2rem;
-    margin-left: 2rem;
     display: flex;
     background-color: #394867;
     justify-content: space-between; /* Space items between the edges */
@@ -179,18 +189,20 @@
 
   .pen-icon:hover {
     cursor: pointer;
-    border: 1px solid rgb(77, 77, 77);
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
     transform: scale(1.05); /* Scale the image slightly on hover */
   }
 
   /* Button styling starts */
 
   .button-component {
+    font-size: calc(0.6em + 0.5vw);
     font-family: "Comme", sans-serif;
     margin: 0;
     align-items: center;
     display: flex;
-    flex-direction: column; /* Stacks the template-container divs vertically */
+    flex-direction: column;
   }
 
   .btn-container {
@@ -203,17 +215,19 @@
     border: none;
     background-color: rgba(12, 218, 22, 0);
     margin-top: 4rem;
-    font-size: 2em;
+    font-size: 1.2em;
+    color: #bebebe;
   }
 
   .edit-button-btn:hover {
-    color: blue;
+    color: #ffffff;
+    transition: 0.1s ease-in-out;
   }
 
   .recipe-link {
     border: none;
     font-family: "Roboto Condensed", sans-serif;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
     color: rgb(223, 223, 223);
     background-size: cover;
@@ -228,7 +242,7 @@
   }
 
   .recipe-link:hover {
-    background-color: rgba(28, 39, 59, 0.8);
+    background-color: #212a3e70;
     transition: 0.15s ease-in-out;
   }
 
@@ -243,5 +257,4 @@
     text-align: center;
     margin-right: 2vw;
   }
-
 </style>

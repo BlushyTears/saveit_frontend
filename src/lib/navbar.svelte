@@ -90,14 +90,14 @@
     event.stopPropagation(); // Prevent event from reaching the document
   }
 
-  let navbarBgColor = "#ffffff";  // default background color
+  // Manually sets a color on top as the user navigates between diff routes (bad solution)
+  let navbarBgColor = "#ffffff";  // default background color for navbar
 
   function setColor(event) {
     if (event.type === 'set-color') {
       navbarBgColor = event.detail;
     }
   }
-
   document.addEventListener('set-color', setColor);
   window.addEventListener('set-color', setColor);
 </script>
@@ -192,7 +192,7 @@
   }
 
   .nav-links-right {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
     display: flex;
     align-items: center;
   }

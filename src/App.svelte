@@ -36,6 +36,7 @@
 </script>
 
 <div class="app-container">
+  
 
 {#if current === 'layout'}
   <Layout />
@@ -46,6 +47,7 @@
 </div>
 
 <style>
+  
 
 .app-container {
   width: 100%;

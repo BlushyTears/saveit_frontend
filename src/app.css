@@ -8,6 +8,11 @@ a.nav-link {
   text-decoration: none;
 }
 
+  /* Standard font is set here by default */
+h1, h2, h3, p, a {
+  font-family: 'Roboto', sans-serif;
+}
+
 /* Fill in gap at top above navbar where there normally is margin & causes white color border (Might be bad) */
 /* #app {
   background-color: #37C84C;
