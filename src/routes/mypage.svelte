@@ -10,13 +10,22 @@
 <!-- A RANDOM GETQUEST FOR QUERY SERVER DIRECTLY = ACCOUNTABILITY FOR IF BACKEND IS OPERATIONAL YES YES -->
 <script>
   import Modal from "../lib/modal.svelte";
+  import Editmodal from "../lib/editmodal.svelte";
+  import BtnEditModal from "../lib/editbtnmodal.svelte";
   import PenIcon from "../assets/pen.png";
   import SaveIcon from "../assets/accept.png";
+  import { onMount } from "svelte";
 
   let showModal = [false, false];
+  let showEditBtnModal = [false];
 
   let isEditing = false;
   let editedText = "Ellie's Recipes!";
+
+  onMount(() => {
+    // DispatchEvent changes color upon load
+    dispatchEvent(new CustomEvent('set-color', { detail: '#9BA4B5' }));
+  });
 
   // function to open a specific modal
   function openModal(index) {
@@ -35,6 +44,15 @@
   function saveEdit() {
     isEditing = false;
   }
+
+  function openEditBtnModal(index) {
+    showEditBtnModal[index] = true;
+  }
+
+  // function to close a specific modal
+  function closeEditBtnModal(index) {
+    showEditBtnModal[index] = false;
+  }
 </script>
 
 <div class="body">
@@ -45,7 +63,7 @@
       <p style="margin-top: 0;">Followers: 1276</p>
     </div>
 
-    <div class="button-component">
+    <div  class="button-component">
       <div class="title" style="display: flex; align-items: center;">
         <h1>
           {#if isEditing}
@@ -54,7 +72,7 @@
               style="font-size: 1.5em; margin-right: 1rem; width: 50vw;"
             />
           {:else}
-            <span style="font-size: calc(0.8em + 2vw); margin-right: 1rem;"
+            <span style="font-size: calc(0.8em + 1vw); margin-right: 1rem;"
               >{editedText}</span
             >
           {/if}
@@ -79,48 +97,39 @@
         </button>
       </div>
 
-      <button class="recipe-link" on:click={() => openModal(0)}>
-        <span class="emoji">🍪</span>
-        <h2 class="modal-btn-text">Chocolate Chip Cookies</h2>
-      </button>
+      <div class="btn-container">
+        <button class="recipe-link" on:click={() => openModal(0)}>
+          <span class="emoji">🍪</span>
+          <h2 class="modal-btn-text">Chocolate Chip Cookies</h2>
+        </button>
+        <button class="edit-button-btn" on:click={() => openEditBtnModal(0)}
+          ><p></p>Edit</button
+        >
+      </div>
     </div>
   </div>
 
+
   <div class="template-container">
-    <Modal bind:showModal={showModal[0]} on:closeModal={() => closeModal(0)}>
-      <!-- modal content example hardcoded -->
-      <h1 class="modal-title" style="color: black;">
-        Chocolate Chip Cookies 🍪
-      </h1>
+    <Editmodal
+      bind:showModal={showModal[0]}
+      on:closeModal={() => closeModal(0)}
+    />
+  </div>
 
-      <h2 style="color: black;">Ingredients:</h2>
-      <ul>
-        <li>1 cup of logic-inspired flour</li>
-        <li>1/2 cup of procedural provisions sugar</li>
-        <li>1 teaspoon of musical mode vanilla extract</li>
-        <li>1/4 cup of structural substance butter (room temperature)</li>
-        <li>2 large grammatical eggs</li>
-        <li>A pinch of statistical mode salt</li>
-      </ul>
-
-      <br />
-      <p>
-        Your delightful Modal Cookies are now ready to be enjoyed! Store any
-        leftovers in an airtight container to keep them fresh.
-      </p>
-
-      <p>
-        These cookies offer a unique blend of logic-inspired flavors, musical
-        mode sweetness, and structural substance textures, making them a truly
-        exceptional treat for any cookie enthusiast!
-      </p>
-    </Modal>
+  <div class="template-container">
+    <BtnEditModal
+      bind:showModal={showEditBtnModal[0]}
+      on:closeEditBtnModal={() => closeEditBtnModal(0)}
+    >
+      <h1>asds</h1>
+    </BtnEditModal>
   </div>
 </div>
 
 <style>
   h1,
-  h2 {
+  h2, p {
     color: #ffffff;
     margin: 0;
     padding: 0;
@@ -130,16 +139,18 @@
     /* Remove vertical scrolling by Subtracting navbar margin found in navbar.svelte */
     height: calc(100vh - 10.6rem);
     margin-top: 5rem;
+    background-color: #9ba4b5d3;
   }
 
   .body-container {
-    background-color: rgb(228, 228, 228);
+    background-color: #212a3ecc;
     margin-left: 2%;
     margin-right: 2%;
-    height: 96%;
+    min-height: 96%;
+    height: auto;
     border-radius: 1rem;
-    border-bottom: 2px solid gray; /* 2px width, solid style, red color */
-    border-right: 2px solid gray;
+    border-right: 2px solid rgb(165, 165, 165); /* 2px width, solid style, red color */
+    border-bottom: 2px solid rgb(165, 165, 165); /* 2px width, solid style, red color */
   }
 
   .stats {
@@ -150,11 +161,10 @@
     margin-right: 2rem;
     margin-left: 2rem;
     display: flex;
-    background-color: rgb(235, 235, 235);
+    background-color: #394867;
     justify-content: space-between; /* Space items between the edges */
     align-items: center;
-    border-bottom: 2px solid gray; /* 2px width, solid style, red color */
-    border-right: 2px solid gray;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.15);
   }
 
   .stats p {
@@ -183,27 +193,43 @@
     flex-direction: column; /* Stacks the template-container divs vertically */
   }
 
+  .btn-container {
+    width: calc(50% + 4rem);
+    display: flex;
+  }
+
+  .edit-button-btn {
+    cursor: pointer;
+    border: none;
+    background-color: rgba(12, 218, 22, 0);
+    margin-top: 4rem;
+    font-size: 2em;
+  }
+
+  .edit-button-btn:hover {
+    color: blue;
+  }
+
   .recipe-link {
+    border: none;
     font-family: "Roboto Condensed", sans-serif;
-    background-color: rgb(12, 218, 22);
+    background-color: rgba(0,0,0,0);
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
     color: rgb(223, 223, 223);
     background-size: cover;
     cursor: pointer;
-    border: none;
     display: flex;
     align-items: center;
     padding: 1rem;
     border-radius: 3rem;
     margin-top: 1rem;
-    width: calc(60% + 5rem);
-    font-size: 1.2em;
-    border-bottom: 2px solid rgb(7, 148, 14); /* 2px width, solid style, red color */
-    border-right: 2px solid rgb(7, 148, 14);
-    transition: 0.1s ease-in-out;
+    width: 100%;
+    font-size: calc(0.8em + 0.4vw);
   }
 
   .recipe-link:hover {
-    background-color: rgb(13, 201, 22);
+    background-color: rgba(28, 39, 59, 0.8);
+    transition: 0.15s ease-in-out;
   }
 
   .emoji {
@@ -217,4 +243,5 @@
     text-align: center;
     margin-right: 2vw;
   }
+
 </style>

@@ -55,6 +55,7 @@
   }
 
   function loginWithGoogle() {
+    isLoading = true;
     // Redirect to Google's OAuth 2.0 login
     const googleClientId =
       "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";

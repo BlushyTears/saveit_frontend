@@ -14,6 +14,7 @@
 
   import { onMount } from "svelte";
 
+
   import { backend_url, frontend_url } from "../lib/urls";
 
   export let url = "/";
@@ -88,10 +89,21 @@
     showMenu = !showMenu;
     event.stopPropagation(); // Prevent event from reaching the document
   }
+
+  let navbarBgColor = "#ffffff";  // default background color
+
+  function setColor(event) {
+    if (event.type === 'set-color') {
+      navbarBgColor = event.detail;
+    }
+  }
+
+  document.addEventListener('set-color', setColor);
+  window.addEventListener('set-color', setColor);
 </script>
 
 {#if current === "navbar"}
-  <nav class="navbar-container">
+  <nav style="background-color: {navbarBgColor};" class="navbar-container">
     <Router {url}>
       <div class="navbar-wrapper">
         <nav class="navbar">
@@ -141,7 +153,7 @@
       </div>
 
       <div>
-        <Route path="/" component={Home} />
+        <Route path="/" component={Home}/>
         <Route path="/mypage" component={Mypage} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
@@ -154,18 +166,14 @@
 
 <style>
   .navbar-container {
-    background: rgb(92, 230, 111);
-    background: linear-gradient(
-      90deg,
-      rgba(92, 230, 111, 1) 16%,
-      rgba(69, 215, 90, 1) 49%,
-      rgba(22, 157, 41, 1) 80%
-    );
+    margin: 0;
   }
 
   .navbar-wrapper {
+    width: 80%;
+    margin: 0 auto;
     position: sticky;
-    top: 2rem;
+    top: 1rem;
     z-index: 1000; /* Ensure the navbar is above other content */
   }
 

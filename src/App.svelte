@@ -8,11 +8,7 @@
 -->
 
 <script>
-  import { Router, Link, Route } from "svelte-routing";
-  import Home from "./routes/home.svelte";
   import Layout from "./routes/layout.svelte";
-  import Login from "./routes/login.svelte";
-  import Register from "./routes/register.svelte";
 
   import Navbar from "./lib/navbar.svelte";
   import { onMount } from "svelte";

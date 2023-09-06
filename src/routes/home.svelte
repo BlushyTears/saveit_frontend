@@ -28,16 +28,22 @@
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
+  // Maybe add these to post request below at some point if needed
   const token = localStorage.getItem("token");
   const csrfToken = getCookie("csrftoken");
 
+  onMount(() => {
+    dispatchEvent(new CustomEvent('set-color', { detail: '#53c964' }));
+  });
+
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
+    // DispatchEvent changes color upon load
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
 
     // In case the user has multiple google accounts, we need to give it a unique name
-    // localStorage.setItem('oauthtoken', code);
 
     if (code) {
       fetch(backend_url + "/api/googleauth/", {
@@ -53,7 +59,6 @@
               `Failed to exchange code for access tokeroni: ${res.status} ${res.statusText}`
             );
           }
-
           return res.json();
         })
         .then((data) => {
@@ -116,6 +121,10 @@
     />
   </section>
   <section class="section3">
+    <!-- Lots of manual line breaks because of :after element overlaping between sections -->
+    <br />
+    <br />
+    <br />
     <br />
     <br />
 
@@ -155,7 +164,8 @@
     display: flex;
     align-items: center;
     height: 60rem;
-    margin-bottom: 10rem;
+  
+    background: #53c964;
   }
 
   .section1-illustration {
@@ -174,21 +184,22 @@
     text-align: center;
     background: linear-gradient(60deg, #c837b3, #ff61a6);
     position: relative;
+    z-index: 5;
   }
 
   .section2::after {
-    content: "";
-    position: absolute;
-    width: 150%;
-    bottom: 0;
-    padding: 5rem;
-    border-radius: 150% 50%;
-    left: 0;
-    overflow-x: hidden;
-    border-top: 15rem solid #37c84c; /* match the bottom gradient color */
-    z-index: 1;
-    transform: translate(-15%, 42%);
-  }
+  content: "";
+  position: absolute;
+  width: 150%;
+  bottom: 0;
+  padding: 5rem;
+  border-radius: 150% 50%;
+  left: 0;
+  overflow-x: hidden;
+  border-top: 15rem solid transparent;
+  background: #37c84c;
+  transform: translate(-15%, 25%);
+}
 
   /*  */
   .section2 h3 {
@@ -241,8 +252,7 @@
   .section3 {
     height: 60rem;
     text-align: center;
-    background-color: #37c84c;
-    z-index: 5;
+    background: #37c84c;
   }
 
   .section3 h3 {
