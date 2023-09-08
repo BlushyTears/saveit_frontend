@@ -1,8 +1,8 @@
 <script>
   import { Router, Link, Route } from "svelte-routing";
   import Home from "../routes/home.svelte";
-  import Layout from "../routes/layout.svelte";
-  import MyPage from "../routes/mypage.svelte";
+  import Mypage from "../routes/mypage.svelte";
+  import Builder from "../routes/builder.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
   import NotFound from "../routes/notfound.svelte";
@@ -10,12 +10,10 @@
   import Spinner from "../lib/loadspinner.svelte";
 
   import { currentSetting } from "./navbarStore.js";
-  import Mypage from "../routes/mypage.svelte";
 
   import { onMount } from "svelte";
 
-
-  import { backend_url, frontend_url } from "../lib/urls";
+  import { backend_url } from "../lib/urls";
 
   export let url = "/";
   let isLoggedIn = localStorage.getItem("token") !== null;
@@ -126,7 +124,7 @@
             bind:this={menuElement}
           >
             {#if isLoggedIn}
-              <Link to="/mypage" class="nav-link"><a>My page</a></Link>
+              <Link to="/builder" class="nav-link"><a>Builder</a></Link>
               <Link to="/" class="nav-link" on:click={logOutClick}
                 ><a>Log out</a></Link
               >
@@ -137,7 +135,7 @@
               <Link to="/login" class="nav-link"><a>Login</a></Link>
             {/if}
 
-            <a href="/layout" class="nav-link"> Layout </a>
+            <a href="/mypage" class="nav-link"> My page </a>
 
             <!-- <a class="nav-link" on:click={toggleLayout}><a>Layout</a></a> -->
           </div>
@@ -154,10 +152,10 @@
 
       <div>
         <Route path="/" component={Home}/>
-        <Route path="/mypage" component={Mypage} />
+        <Route path="/builder" component={Builder} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/layout" component={Layout} />
+        <Route path="/mypage" component={Mypage} />
         <Route component={NotFound} />
       </div>
     </Router>

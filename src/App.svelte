@@ -8,7 +8,7 @@
 -->
 
 <script>
-  import Layout from "./routes/layout.svelte";
+  import MyPage from "./routes/mypage.svelte";
 
   import Navbar from "./lib/navbar.svelte";
   import { onMount } from "svelte";
@@ -23,8 +23,8 @@
   onMount(() => {
     let currentUrl = window.location.href;
 
-    if (currentUrl.endsWith('/layout')) {
-      currentSetting.set('layout');
+    if (currentUrl.endsWith('/mypage')) {
+      currentSetting.set('mypage');
     } else if (currentUrl.endsWith('/oauth')) {
       currentSetting.set('oauth');
     } else {
@@ -38,8 +38,8 @@
 <div class="app-container">
   
 
-{#if current === 'layout'}
-  <Layout />
+{#if current === 'mypage'}
+  <MyPage />
 {:else if current === 'navbar'}
   <Navbar />
 {/if}

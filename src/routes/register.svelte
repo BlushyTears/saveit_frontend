@@ -1,6 +1,6 @@
 <script>
   import Home from "../routes/home.svelte";
-  import Layout from "../routes/layout.svelte";
+  import Layout from "./mypage.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
 
