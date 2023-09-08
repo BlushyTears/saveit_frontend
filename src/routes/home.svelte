@@ -253,7 +253,6 @@ Accent color (coral): #FF6B6B -->
     display: flex;
     align-items: center;
     height: 80rem;
-
     background: #212a3e;
   }
 
@@ -299,7 +298,7 @@ Accent color (coral): #FF6B6B -->
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: clamp(70%, calc(65% + 1vw), 80%);
+    max-width: clamp(80%, calc(65% + 1vw), 90%);
     margin: 0 auto;
     flex-wrap: wrap;
     gap: 0.5rem;
