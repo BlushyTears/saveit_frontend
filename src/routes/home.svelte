@@ -20,6 +20,7 @@
   import Barista_illustration from "../assets/barista_illustration.svg";
   import Accordion from "../lib/accordation.svelte";
   import Example_Page from "../assets/examplepage.png";
+  import Carusel from "../lib/carusel.svelte";
   import { onMount } from "svelte";
   import Cooking from "../assets/cooking.jpg";
 
@@ -116,7 +117,7 @@
     <br />
 
     <div
-      style="background-color: #6ab187; margin-left: 10vw; margin-right: 10vw; margin-top: 5vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.2); text-align: center;"
+      style="background-color: #3d8a5c; margin-left: 10vw; margin-right: 10vw; margin-top: 5vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
         style="font-size: calc(1.55em + 3vw); color: #F2F2F2; padding: 0.4rem;"
@@ -128,11 +129,8 @@
     <br />
     <br />
 
-    <div class="image-container">
-      <img src={Example_Page} alt="example page picture" class="image" />
-      <img src={Example_Page} alt="example page picture" class="image" />
-      <img src={Example_Page} alt="example page picture" class="image" />
-    </div>
+    <Carusel />
+
   </section>
   <section class="section3">
     <div class="section3-main">
@@ -279,9 +277,10 @@
 
   /* Section 1 END */
 
+  /* ASIOUJDOIASJWEOIFSJIOFJSDFSDFWSEG */
   /* Section 2: */
   .section2 {
-    height: 100rem;
+    min-height: 120rem;
     background: linear-gradient(60deg, #96dab3, #6ab187);
     position: relative;
   }
@@ -420,15 +419,15 @@
     .text-chunk-section3 {
       margin: 0 auto;
     }
+    .section2 {
+      height: 225rem;
+    }
     .section3-illustration {
       margin: 0 auto;
     }
     .section3-main {
       flex-direction: column;
       justify-content: center;
-    }
-    .section3 {
-      height: 110rem;
     }
   }
 
@@ -448,21 +447,11 @@
     .text-chunk-section1 {
       margin-top: 0;
     }
-
-    .section3 {
-      height: 105rem;
-    }
     .section3 .claimInput {
       margin-top: 0rem;
     }
   }
 
-  @media only screen and (min-width: 770px) {
-    .image-container {
-      flex-direction: row;
-      justify-content: space-evenly;
-    }
-  }
 </style>
 
 
