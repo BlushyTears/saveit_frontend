@@ -18,19 +18,18 @@
   import { Router, Link, Route } from "svelte-routing";
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
-  import Accordion from '../lib/accordation.svelte';
+  import Accordion from "../lib/accordation.svelte";
   import Example_Page from "../assets/examplepage.png";
   import { onMount } from "svelte";
   import Cooking from "../assets/cooking.jpg";
-  
 
   // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
   import { backend_url, frontend_url } from "../lib/urls";
 
   let claimLink = "";
 
-  export let accordation_title = '';
-  export let accordation_content = '';
+  export let accordation_title = "";
+  export let accordation_content = "";
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -85,8 +84,6 @@
         });
     }
   });
-
-
 </script>
 
 <main>
@@ -97,7 +94,9 @@
       >
         Share All Your Delicious Dishes with a Single Link.
       </h2>
-      <p style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);">
+      <p
+        style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
+      >
         Amplify your brand and expand your reach through the power of sharing
         your cherished recipes. Cultivate your passion while simultaneously
         building a thriving audience for the days ahead.
@@ -116,8 +115,12 @@
   <section class="section2">
     <br />
 
-    <div style="background-color: #6ab187; margin-left: 10vw; margin-right: 10vw; margin-top: 5vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.2);">
-      <h1 style="font-size: calc(1.55em + 3vw); color: #F2F2F2; padding: 0.4rem;">
+    <div
+      style="background-color: #6ab187; margin-left: 10vw; margin-right: 10vw; margin-top: 5vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.2); text-align: center;"
+    >
+      <h1
+        style="font-size: calc(1.55em + 3vw); color: #F2F2F2; padding: 0.4rem;"
+      >
         Example Layouts:
       </h1>
     </div>
@@ -132,37 +135,32 @@
     </div>
   </section>
   <section class="section3">
-
-
     <div class="section3-main">
       <br />
-        <img
-      class="section3-illustration"
-      src={Barista_illustration}
-      alt="Coffee Illustration"
-      width="300"
-      height="300"
-    />
+      <img
+        class="section3-illustration"
+        src={Barista_illustration}
+        alt="Coffee Illustration"
+      />
 
-    <div class="text-chunk-section3">
-      <h2
-        style="color: #F2F2F2; font-size: calc(3em + 3vw); font-weight: bold; text-decoration: underline;"
-      >
-      Minutes Away from Getting Started.
-      </h2>
-    <br />
+      <div class="text-chunk-section3">
+        <h2
+          style="color: #F2F2F2; font-size: calc(3em + 3vw); font-weight: bold; text-decoration: underline;"
+        >
+          Minutes Away from Getting Started.
+        </h2>
+        <br />
 
-      <p style="font-size: calc(1.5em + 0.5vw);">
-        Faveit is a hub of hubs where you explore new food and drink with others
-        that have similar preferences to you in order to more effectively find
-        what you like: You can follow creators and be notified whenever they
-        release a new recipe
-      </p>
-    </div>
+        <p style="font-size: calc(1.5em + 0.5vw);">
+          Faveit is a hub of hubs where you explore new food and drink with
+          others that have similar preferences to you in order to more
+          effectively find what you like: You can follow creators and be
+          notified whenever they release a new recipe
+        </p>
+      </div>
     </div>
 
-
-    <div class="section-3-btn-container">
+    <div style="display: flex; justify-content: center;">
       <form on:submit={handleSubmit}>
         <input
           type="text"
@@ -170,6 +168,7 @@
           bind:value={claimLink}
           required
           placeholder="faveit/clusteredTomatoes"
+          style="width: calc(10rem + 5vw);"
         />
         <button type="submit">Claim</button>
       </form>
@@ -177,15 +176,41 @@
   </section>
 
   <section class="section4">
-    <br>
+    <br />
 
-    <div style="text-align: center; min-height: 60rem; padding-bottom: 1rem;" class="section-4-container">
-      <h3 style="font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; border-radius: 0.5rem 0.5rem 0 0; padding: 1rem;">Q&A</h3>
-      
-      <Accordion title="Question 1" content="Faveit is a hub of hubs where you explore new food and drink with others" />
-      <Accordion title="Question 2" content="Faveit is a hub of hubs where you explore new food and drink with others" />
-      <Accordion title="Question 3" content="Faveit is a hub of hubs where you explore new food and drink with others" />
-      <Accordion title="Question 4" content="Faveit is a hub of hubs where you explore new food and drink with others" />
+    <div
+      style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
+      class="section-4-container"
+    >
+      <h3
+        style="font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem;"
+      >
+        Q&A
+      </h3>
+
+      <Accordion
+        title="What is Faveit?"
+        content="Faveit is a hub of hubs where anyone can explore new foods and drinks."
+      />
+      <Accordion
+        title="Can I make money on this?"
+        content="Faveit is designed to empower creators to help them build their own personal brand.
+         If you can do that, monetizing it will be the easy part."
+      />
+      <Accordion
+        title="How do I get started"
+        content="You'll need to create an account (So that your recipes don't get lost),
+         then you'll customize your own page and start creating in our intuitive site builder."
+      />
+      <Accordion
+        title="What value do I get as a user who isn't looking to become a food influencer??"
+        content="You can use Faveit to discover new food and drinks at a convenience unheard of before.
+         You'll also be able to discover things without making an effort. Normally when you want a new 
+         recipe or a drink you'd have to search for something specific -- but now you can get notified whenever your
+          favorite creators release something new and be able to trust that what they make is to your liking! . We believe
+           in the 'Tiktokification era' where things move faster than ever and few people have the time and energy to invest into
+            what they shall eat a certain day."
+      />
     </div>
   </section>
 
@@ -270,12 +295,8 @@
     left: 0;
     overflow-x: hidden;
     border-top: 20rem solid transparent;
-    background: #8EA8C3;
+    background: #8ea8c3;
     transform: translate(-15%, 55%);
-  }
-
-  .section2 p {
-    font-size: 1.2em;
   }
 
   .image-container {
@@ -303,25 +324,21 @@
   /* Section 2 END */
 
   /* Section 3: */
-  .section3 {
-    height: 100rem;
-    text-align: center;
-    background: #8EA8C3;
-  }
 
+  .section3 {
+    height: calc(85rem + 10vw);
+    text-align: center;
+    background-color: #8ea8c3;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background: #8ea8c3;
+  }
+  
   .section3 p {
     margin: 0 auto;
     font-size: 1.5em;
     max-width: 35rem;
-  }
-
-  .section3 {
-    background-color: #8EA8C3;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    height: 110rem;
-    background: #8EA8C3;
   }
 
   /* Includes image and text contents into a container */
@@ -332,10 +349,9 @@
 
   /* Only image contents within the main container */
   .section3-illustration {
-    margin-top: 5rem;
     margin-left: 10vw;
-    width: calc(30vw + 15rem); 
-    height: calc(30vw + 15rem); 
+    width: calc(30vw + 20rem);
+    height: calc(30vw + 20rem);
   }
 
   /* Only text contents within the main container */
@@ -346,29 +362,27 @@
   }
 
   .section3 form {
+    padding: 5rem 10rem;
+    border-radius: 0.5rem;
     margin: 0 auto;
-    padding: 5rem;
-    max-width: 45rem;
-    border-radius: 1rem;
-    margin-top: 5rem;
-
   }
 
   .section3 .claimInput {
-    padding: calc(0.5vw + 1rem) calc(1.2vw + 0.5rem);
-    font-size: calc(0.9em + 0.5vw);
+    padding: 1rem 2rem;
+    font-size: calc(1.2em + 0.5vw);
     border: 1px solid #ccc;
     border-radius: 1rem;
+    margin-top: clamp(15rem, calc(3rem + 10%), 5vw);
     margin-right: 0.5rem;
   }
 
   .section3 button {
-    padding: calc(0.5vw + 1rem) calc(1.2vw + 0.5rem);
-    font-size: calc(0.9em + 0.5vw);
+    padding: 1rem 2rem;
+    font-size: calc(1.2em + 0.5vw);
     background-color: #6ab187;
     color: white;
     border: none;
-    border-radius: 2rem;
+    border-radius: 1rem;
     cursor: pointer;
   }
 
@@ -380,6 +394,15 @@
 
   /* Section 3 END */
 
+  /* Section 4 START */
+
+  .section4 {
+    display: block;
+    margin-top: 4rem;
+    margin-bottom: 0;
+  }
+
+  /* Section 4 END */
 
   /* FOOTER START */
   .footer {
@@ -391,23 +414,22 @@
 
   /* FOOTER END */
 
-
   /* Media Queries: */
 
   @media screen and (max-width: 1200px) {
-
     .text-chunk-section3 {
       margin: 0 auto;
     }
     .section3-illustration {
       margin: 0 auto;
-      margin-top: 15rem;
-  }
-  .section3-main {
-    flex-direction: column;
-    justify-content: center;
-  }
-
+    }
+    .section3-main {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .section3 {
+      height: 110rem;
+    }
   }
 
   @media screen and (max-width: 800px) {
@@ -427,21 +449,22 @@
       margin-top: 0;
     }
 
-    .section4 {
-      display: block;
-      margin-top: 4rem;
-      height: 65rem;
-      margin-bottom: 0;
+    .section3 {
+      height: 105rem;
+    }
+    .section3 .claimInput {
+      margin-top: 0rem;
     }
   }
 
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 770px) {
     .image-container {
       flex-direction: row;
       justify-content: space-evenly;
     }
   }
 </style>
+
 
 <!-- 
 Existing color 1: #212a3e
