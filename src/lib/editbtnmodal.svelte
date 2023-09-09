@@ -1,10 +1,25 @@
 <script>
   export let showModal = false;
+  import SaveIcon from "../assets/accept.png";
+
+  import Colorpicker from "./colorpicker.svelte";
 
   let dialog;
   let dragging = false;
+  let isEditing = false;
 
   let btnText = "Button Title";
+
+  let boxes = ["F", "O", "N", "T", "S"];
+
+
+  function startEditing() {
+    isEditing = true;
+  }
+
+  function saveEdit() {
+    isEditing = false;
+  }
 
   $: if (dialog && showModal) dialog.showModal();
 
@@ -40,26 +55,88 @@
       >
         X
       </button>
-      <div style="width: calc(25% + 5rem); margin-left: 5%;">
+      <!-- <div style="width: calc(25% + 5rem); margin-left: 5%;" contenteditable="true">
         <button class="focused-btn">
           <h2 class="modal-btn-text">{btnText}</h2>
         </button>
+      </div> -->
+      <div class="button-component">
+        <div style="display: flex;">
+          <h1>
+            {#if isEditing}
+              <input
+                bind:value={btnText}
+                class="editing-text"
+              />
+            {:else}
+            <button
+            on:click={() => startEditing()}
+            on:keydown={(e) => e.key === 'Enter' && startEditing()}
+            class="edited-text"
+          >
+            {btnText}
+          </button>
+            {/if}
+          </h1>
+          <button
+            class="edit-button"
+            on:click={isEditing ? saveEdit : startEditing}
+            on:keydown={(e) => {
+              if (e.key === "Enter" || e.key === "Space") {
+                isEditing ? saveEdit() : startEditing();
+              }
+            }}
+            tabindex="0"
+            style="background: none; border: none; padding: 0; cursor: pointer;"
+          >
+          {#if isEditing}
+            <img
+              src={SaveIcon}
+              class="ok-btn"
+              alt="ok icon"
+            />
+          {/if}
+          </button>
+        </div>
+      
+      <br />
+
+      <div class="color-pickers">
+        <Colorpicker nameType={"Button:"}/>
+
+      <br />
+        <Colorpicker nameType={"Hover:"}/>
+        <br/>
+        <Colorpicker nameType={"Border:"}/>
+      <br/>
+        <Colorpicker nameType={"Shadow:"}/>
       </div>
       <br />
-      <button style="margin-bottom: 1rem;" class="save-edits-btn"
+
+      <div class="font-boxes">
+        {#each boxes as box}
+          <div class="box">
+            {box}
+            <div class="tooltip">Roboto</div>
+          </div>
+        {/each}
+      </div>
+
+      <hr>
+      
+      <button class="save-edits-btn"
         >Save ✉</button
       >
-      <div>
-        <div class="slot-wrapper" contenteditable="true" />
-      </div>
+
     </div>
+
   </div>
 </dialog>
 
 <style>
   dialog {
     margin-top: 8%;
-    width: 40%;
+    width: calc(20% + 20rem);
     border-radius: 1rem;
     border: none;
     padding: 0;
@@ -108,38 +185,134 @@
   .close-modal-btn:hover {
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.18);
   }
-  .focused-btn {
-    border: none;
-    font-family: "Roboto Condensed", sans-serif;
-    background-color: rgb(12, 218, 22);
-    border-bottom: 2px solid rgb(7, 148, 14); /* 2px width, solid style, red color */
-    border-right: 2px solid rgb(7, 148, 14);
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    border-radius: 3rem;
-    margin-top: 1rem;
-    width: 100%;
-    font-size: calc(0.5em + 0.4vw);
+
+  .button-component {
+    font-size: calc(0.6em + 0.3vw);
+    font-family: "Comme", sans-serif;
+    margin: 0;
+    flex-direction: column;
   }
 
-  .focused-btn:hover {
-    background-color: rgb(13, 201, 22);
-    transition: 0.1s ease-in-out;
+  .editing-text {
+    color: #F2F2F2;
+    font-size: calc(1.15em + 0.5vw);
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #27324b;
+    border: none;
+    cursor: text;
+    max-width: clamp(15vw + 5rem, calc(25vw + 1rem), 30vw + 15rem);
+  }
+
+  .edited-text {
+    color: #F2F2F2;
+    font-size: calc(1.15em + 0.5vw);
+    width: calc(5rem + 15vw);
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #212a3e;
+    border: none;
+    cursor: text;
+  }
+
+  .edited-text:hover {
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .ok-btn {
+    height: calc(3.2rem + 1vw); 
+    width: calc(3.2rem + 1vw);
+    box-sizing: border-box;
+    padding: 0.5rem;
+  }
+
+  .ok-btn:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    transform: scale(1.05); /* Scale the image slightly on hover */
+  }
+
+  .color-pickers {
+    display: flex; 
+  }
+
+  .font-boxes {
+    margin-top: 3rem;
+    gap: 1rem;
+    display: flex;
+  }
+  .box {
+    position: relative; /* Make the box a relative container for the tooltip */
+    border: 2px solid gray;
+    width: calc(2.5vw + 2rem);
+    height: calc(2.5vw + 2rem);
+    font-size: calc(1em + 1vw);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Indicates that the box is interactive */
+  }
+
+  .box:hover {
+    border: 2px solid black;
+  }
+
+  .tooltip {
+    font-size: 0.5em;
+    visibility: hidden;
+    background-color: gray;
+    color: white;
+    text-align: center;
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%; /* Position at the top of the box */
+    left: 50%;
+    transform: translate(-20%, -0.5rem); /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .box:hover .tooltip {
+    visibility: visible;
+    opacity: 0.95;
+  }
+
+  .box .tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: gray transparent transparent transparent;
   }
 
   .save-edits-btn {
-    float: right;
-    padding: 0.6rem;
+    width: 20%;
+    padding: 0.5rem;
     font-size: 1.3em;
     border: none;
     border-radius: 1rem;
     background-color: #d69d32;
-    transition: 0.05s ease-in-out;
     border-bottom: 1px solid rgb(148, 92, 7); /* 2px width, solid style, red color */
     border-right: 1px solid rgb(148, 92, 7);
+    margin-bottom: 0.5rem;
+    float: right;
   }
 
   .save-edits-btn:hover {
+    transition: 0.05s ease-in-out;
     background-color: #f1aa25;
+  }
+
+  /* Media queries: */
+
+  @media only screen and (max-width: 1000px) {
+    .color-pickers {
+      display: block;
+    }
   }
 </style>

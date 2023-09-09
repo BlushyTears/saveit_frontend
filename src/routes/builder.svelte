@@ -26,7 +26,6 @@
   import Modal from "../lib/modal.svelte";
   import Editmodal from "../lib/editmodal.svelte";
   import BtnEditModal from "../lib/editbtnmodal.svelte";
-  import PenIcon from "../assets/pen.png";
   import SaveIcon from "../assets/accept.png";
   import { onMount } from "svelte";
 
@@ -38,7 +37,7 @@
 
   onMount(() => {
     // DispatchEvent changes color upon load
-    dispatchEvent(new CustomEvent("set-color", { detail: "#8a8a8a" }));
+    dispatchEvent(new CustomEvent("set-color", { detail: "#8EA8C3" }));
   });
 
   // function to open a specific modal
@@ -109,7 +108,7 @@
           <img
             src={SaveIcon}
             class="ok-btn"
-            alt="pen icon"
+            alt="ok icon"
             style="height: 4rem; width: 4rem;"
           />
         {/if}
@@ -159,7 +158,17 @@ Soft gray: #A9A9A9
 Off-white: #F2F2F2
 Darker gray: #666666
 Contrast color (green): #6AB187
-Accent color (coral): #FF6B6B -->
+Accent color (coral): #FF6B6B 
+
+V2:
+
+#212A3E Blue 
+#F7C4A5 Apricot orange
+#9E7682 Pink
+#8EA8C3 Soft blue (rly nice)
+
+
+-->
 
 <style>
   @font-face {
@@ -185,13 +194,13 @@ Accent color (coral): #FF6B6B -->
 
   .body {
     /* Remove vertical scrolling by Subtracting navbar margin found in navbar.svelte */
-    height: calc(100vh - 10.6rem);
+    height: 100vh;
     margin-top: 3rem;
-    background-color: #8a8a8a;
+    background-color: #8EA8C3;
   }
 
   .body-container {
-    background-color: #212a3e;
+    background-color: #212a3eec;
     height: auto;
     border-radius: 0.5rem;
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
@@ -207,7 +216,7 @@ Accent color (coral): #FF6B6B -->
     margin-right: 1rem; 
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #27324b;
+    background-color: #212a3ec9;
     border: none;
     cursor: text;
   }
@@ -218,7 +227,7 @@ Accent color (coral): #FF6B6B -->
     margin-right: 1rem; 
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #212a3e;
+    background-color: #212a3ec9;
     border: none;
     cursor: text;
   }
@@ -303,7 +312,7 @@ Accent color (coral): #FF6B6B -->
   }
 
   .recipe-link:hover {
-    background-color: #A57F60;
+    background-color: #F7C4A5;
     transition: 0.15s ease-in-out;
   }
 

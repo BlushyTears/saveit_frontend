@@ -17,6 +17,8 @@
 <script>
   import { Router, Link, Route } from "svelte-routing";
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
+  import Barista_illustration from "../assets/barista_illustration.svg";
+  import Accordion from '../lib/accordation.svelte';
   import Example_Page from "../assets/examplepage.png";
   import { onMount } from "svelte";
   import Cooking from "../assets/cooking.jpg";
@@ -26,6 +28,9 @@
   import { backend_url, frontend_url } from "../lib/urls";
 
   let claimLink = "";
+
+  export let accordation_title = '';
+  export let accordation_content = '';
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -42,7 +47,7 @@
   const csrfToken = getCookie("csrftoken");
 
   onMount(() => {
-    dispatchEvent(new CustomEvent("set-color", { detail: "#212a3e" }));
+    dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
   });
 
   // This onMount checks if the user is logged in upon redirection
@@ -80,21 +85,9 @@
         });
     }
   });
+
+
 </script>
-
-<!-- 
-Existing color 1: #212a3e
-Existing color 2: #394867
-
-Lighter blue: #567aa5
-Even Lighter blue: #7a9dcb
-Complementary warm color: #A57F60
-Soft gray: #A9A9A9
-Off-white: #F2F2F2
-Darker gray: #666666
-Contrast color (green): #6AB187
-Accent color (coral): #FF6B6B -->
-
 
 <main>
   <section class="section1">
@@ -104,7 +97,7 @@ Accent color (coral): #FF6B6B -->
       >
         Share All Your Delicious Dishes with a Single Link.
       </h2>
-      <p style="color: #F2F2F2; font-size: calc(1em + 0.5vw); ">
+      <p style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);">
         Amplify your brand and expand your reach through the power of sharing
         your cherished recipes. Cultivate your passion while simultaneously
         building a thriving audience for the days ahead.
@@ -123,11 +116,14 @@ Accent color (coral): #FF6B6B -->
   <section class="section2">
     <br />
 
-    <div style="margin-left: 2vw; margin-right: 2vw; margin-top: 10vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 20px 5px rgba(255, 255, 255, 0.35);">
-      <h1 style="font-size: calc(1em + 3vw); color: #F2F2F2; padding: 1rem;">
+    <div style="background-color: #6ab187; margin-left: 10vw; margin-right: 10vw; margin-top: 5vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.2);">
+      <h1 style="font-size: calc(1.55em + 3vw); color: #F2F2F2; padding: 0.4rem;">
         Example Layouts:
       </h1>
     </div>
+    <br />
+    <br />
+    <br />
 
     <div class="image-container">
       <img src={Example_Page} alt="example page picture" class="image" />
@@ -136,25 +132,37 @@ Accent color (coral): #FF6B6B -->
     </div>
   </section>
   <section class="section3">
-    <br />
-    <br />
-    <br />
 
-    <p
-      style="color: #F2F2F2; font-size: calc(4em + 2vw); font-weight: bold; text-decoration: underline; max-width: 40rem; margin: 0 auto; margin-top: 5rem;"
-    >
+
+    <div class="section3-main">
+      <br />
+        <img
+      class="section3-illustration"
+      src={Barista_illustration}
+      alt="Coffee Illustration"
+      width="300"
+      height="300"
+    />
+
+    <div class="text-chunk-section3">
+      <h2
+        style="color: #F2F2F2; font-size: calc(3em + 3vw); font-weight: bold; text-decoration: underline;"
+      >
       Minutes Away from Getting Started.
-    </p>
-    <p>
-      Faveit is a hub of hubs where you explore new food and drink with others
-      that have similar preferences to you in order to more effectively find
-      what you like: You can follow creators and be notified whenever they
-      release a new recipe
-    </p>
-
+      </h2>
     <br />
 
-    <div class="main">
+      <p style="font-size: calc(1.5em + 0.5vw);">
+        Faveit is a hub of hubs where you explore new food and drink with others
+        that have similar preferences to you in order to more effectively find
+        what you like: You can follow creators and be notified whenever they
+        release a new recipe
+      </p>
+    </div>
+    </div>
+
+
+    <div class="section-3-btn-container">
       <form on:submit={handleSubmit}>
         <input
           type="text"
@@ -169,31 +177,15 @@ Accent color (coral): #FF6B6B -->
   </section>
 
   <section class="section4">
-    <br />
-    <br />
+    <br>
 
-    <div
-      style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
-      class="section-4-container"
-    >
-      <h3 style="font-size: 2em;">Q&A</h3>
-      <br />
-      <p>
-        Faveit is a hub of hubs where you explore new food and drink with others
-      </p>
-      <br />
-      <p>
-        Faveit is a hub of hubs where you explore new food and drink with others
-      </p>
-      <br />
-      <p>
-        Faveit is a hub of hubs where you explore new food and drink with others
-      </p>
-      <br />
-      <p>
-        Faveit is a hub of hubs where you explore new food and drink with others
-      </p>
-      <br />
+    <div style="text-align: center; min-height: 60rem; padding-bottom: 1rem;" class="section-4-container">
+      <h3 style="font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; border-radius: 0.5rem 0.5rem 0 0; padding: 1rem;">Q&A</h3>
+      
+      <Accordion title="Question 1" content="Faveit is a hub of hubs where you explore new food and drink with others" />
+      <Accordion title="Question 2" content="Faveit is a hub of hubs where you explore new food and drink with others" />
+      <Accordion title="Question 3" content="Faveit is a hub of hubs where you explore new food and drink with others" />
+      <Accordion title="Question 4" content="Faveit is a hub of hubs where you explore new food and drink with others" />
     </div>
   </section>
 
@@ -214,6 +206,7 @@ Accent color (coral): #FF6B6B -->
   </section>
 </main>
 
+
 <style>
   @font-face {
     font-family: "Monofonto";
@@ -226,23 +219,16 @@ Accent color (coral): #FF6B6B -->
   p,
   a {
     font-family: "Monofonto", fallback, sans-serif;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
   }
 
   main {
     overflow-x: hidden;
   }
-  h3 {
-    color: #ffffff;
-    margin: 0;
-  }
-  h2 {
-    color: #ffffff;
-    margin: 0;
-  }
+
   p {
-    color: #ffffff;
-    padding: 0;
-    margin: 0;
     font-size: 1.5em;
   }
 
@@ -253,7 +239,7 @@ Accent color (coral): #FF6B6B -->
     display: flex;
     align-items: center;
     height: 80rem;
-    background: #212a3e;
+    background: #394867;
   }
 
   .section1-illustration {
@@ -271,7 +257,6 @@ Accent color (coral): #FF6B6B -->
   /* Section 2: */
   .section2 {
     height: 100rem;
-    text-align: center;
     background: linear-gradient(60deg, #96dab3, #6ab187);
     position: relative;
   }
@@ -279,14 +264,14 @@ Accent color (coral): #FF6B6B -->
   .section2::after {
     content: "";
     position: absolute;
-    width: 150%;
+    width: 250%;
     bottom: 0;
-    border-radius: 150% 50%;
+    border-radius: 50% 30%;
     left: 0;
     overflow-x: hidden;
-    border-top: 10rem solid transparent;
-    background: #FF8888;
-    transform: translate(-15%, 35%);
+    border-top: 20rem solid transparent;
+    background: #8EA8C3;
+    transform: translate(-15%, 55%);
   }
 
   .section2 p {
@@ -301,7 +286,6 @@ Accent color (coral): #FF6B6B -->
     max-width: clamp(80%, calc(65% + 1vw), 90%);
     margin: 0 auto;
     flex-wrap: wrap;
-    gap: 0.5rem;
   }
 
   .image {
@@ -320,13 +304,9 @@ Accent color (coral): #FF6B6B -->
 
   /* Section 3: */
   .section3 {
-    height: 90rem;
+    height: 100rem;
     text-align: center;
-    background: #FF8888;
-  }
-
-  .section3 h3 {
-    font-size: 3em;
+    background: #8EA8C3;
   }
 
   .section3 p {
@@ -335,34 +315,56 @@ Accent color (coral): #FF6B6B -->
     max-width: 35rem;
   }
 
-  .section3 .main {
+  .section3 {
+    background-color: #8EA8C3;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 110rem;
+    background: #8EA8C3;
+  }
+
+  /* Includes image and text contents into a container */
+  .section3-main {
+    margin-top: 10rem;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 5rem;
+  }
+
+  /* Only image contents within the main container */
+  .section3-illustration {
+    margin-top: 5rem;
+    margin-left: 10vw;
+    width: calc(30vw + 15rem); 
+    height: calc(30vw + 15rem); 
+  }
+
+  /* Only text contents within the main container */
+  .text-chunk-section3 {
+    max-width: 50%;
+    margin-right: 5rem;
+    margin-top: 20rem;
   }
 
   .section3 form {
-    display: flex;
-    align-items: center;
     margin: 0 auto;
     padding: 5rem;
-    max-width: 35rem;
+    max-width: 45rem;
     border-radius: 1rem;
+    margin-top: 5rem;
+
   }
 
   .section3 .claimInput {
-    padding: 1rem;
-    font-size: 1.2em;
+    padding: calc(0.5vw + 1rem) calc(1.2vw + 0.5rem);
+    font-size: calc(0.9em + 0.5vw);
     border: 1px solid #ccc;
     border-radius: 1rem;
     margin-right: 0.5rem;
-    width: 100%;
   }
 
   .section3 button {
-    padding: 1rem 3rem;
-    font-size: 1.2em;
+    padding: calc(0.5vw + 1rem) calc(1.2vw + 0.5rem);
+    font-size: calc(0.9em + 0.5vw);
     background-color: #6ab187;
     color: white;
     border: none;
@@ -378,6 +380,8 @@ Accent color (coral): #FF6B6B -->
 
   /* Section 3 END */
 
+
+  /* FOOTER START */
   .footer {
     background-color: #666666;
     font-size: 1em;
@@ -385,7 +389,27 @@ Accent color (coral): #FF6B6B -->
     text-align: center;
   }
 
+  /* FOOTER END */
+
+
   /* Media Queries: */
+
+  @media screen and (max-width: 1200px) {
+
+    .text-chunk-section3 {
+      margin: 0 auto;
+    }
+    .section3-illustration {
+      margin: 0 auto;
+      margin-top: 15rem;
+  }
+  .section3-main {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  }
+
   @media screen and (max-width: 800px) {
     .section1 {
       flex-direction: column;
@@ -402,6 +426,13 @@ Accent color (coral): #FF6B6B -->
     .text-chunk-section1 {
       margin-top: 0;
     }
+
+    .section4 {
+      display: block;
+      margin-top: 4rem;
+      height: 65rem;
+      margin-bottom: 0;
+    }
   }
 
   @media only screen and (min-width: 768px) {
@@ -411,3 +442,16 @@ Accent color (coral): #FF6B6B -->
     }
   }
 </style>
+
+<!-- 
+Existing color 1: #212a3e
+Existing color 2: #394867
+
+Lighter blue: #567aa5
+Even Lighter blue: #7a9dcb
+Complementary warm color: #A57F60
+Soft gray: #A9A9A9
+Off-white: #F2F2F2
+Darker gray: #666666
+Contrast color (green): #6AB187
+Accent color (coral): #FF6B6B -->
