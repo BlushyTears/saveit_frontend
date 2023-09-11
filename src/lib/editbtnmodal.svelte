@@ -89,13 +89,16 @@
             tabindex="0"
             style="background: none; border: none; padding: 0; cursor: pointer;"
           >
-          {#if isEditing}
+          <!-- This is an example of a feedback button they press when they're done editing.
+            It's not technically needed since they can just click outside of the text area to finish editing. 
+            Undecided if needed or not so just commented out for now -->
+          <!-- {#if isEditing}
             <img
               src={SaveIcon}
               class="ok-btn"
               alt="ok icon"
             />
-          {/if}
+          {/if} -->
           </button>
         </div>
       

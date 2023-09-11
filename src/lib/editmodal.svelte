@@ -1,25 +1,12 @@
 <script>
-    import { writable } from "svelte/store";
   
     export let showModal = false;
   
     let dialog;
-    let editableContent = writable("Content");
     let dragging = false;
+    let buttonTitleName = "Button Title";
 
     let inputText = "Hello, Svelte!";
-    
-    function applyTag(tagName, editableDivId) {
-      const editableDiv = document.getElementById(editableDivId);
-      editableDiv.focus();
-      const selection = window.getSelection();
-      if (selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        const tagElement = document.createElement(tagName);
-        range.surroundContents(tagElement);
-        editableContent.set(editableDiv.innerHTML);
-      }
-    }
     
     $: if (dialog && showModal) dialog.showModal();
     
@@ -28,9 +15,13 @@
     function displayPreview() {
       previewModal = !previewModal;
     }
+
+    function saveContentChanges() {
+      console.log(buttonTitleName);
+    }
 </script>
   
-  <dialog
+<dialog
   bind:this={dialog}
   on:close={() => (showModal = false)}
   on:mousedown={() => (dragging = true)}
@@ -62,14 +53,14 @@
       <div
         style="font-size: 1.5em; width: calc(10vw + 10rem);"
       >
-        <h3 style="margin: 0;">Button Title</h3>
+        <h3 style="margin: 0;" contenteditable="true" bind:innerText={buttonTitleName}></h3>
       </div>
       <br />
       <div style="justify-content: space-between; display: flex;">
         <div style="margin: 0;">
-          <button on:click={() => applyTag('b', 'editable-content')}>B</button>
-          <button on:click={() => applyTag('i', 'editable-content')}>I</button>
-          <button on:click={() => applyTag('u', 'editable-content')}>U</button>
+          <button >B</button>
+          <button >I</button>
+          <button >U</button>
         </div>
       </div>
       <hr />
@@ -83,7 +74,7 @@
         </div>
         <hr />
         <button class="preview-btn" on:click={() => displayPreview()}>Preview ↓</button>
-        <button class="save-edits-btn">Save ✉</button>
+        <button class="save-edits-btn" on:click={() => saveContentChanges()}>Save ✉</button>
         <br />
       </div>
       

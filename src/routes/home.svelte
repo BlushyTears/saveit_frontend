@@ -29,9 +29,6 @@
 
   let claimLink = "";
 
-  export let accordation_title = "";
-  export let accordation_content = "";
-
   function handleSubmit(event) {
     event.preventDefault();
   }
@@ -111,16 +108,59 @@
       width="500"
       height="500"
     />
+
   </section>
 
-  <section class="section2">
+  <div>
+    <form on:submit={handleSubmit} class="formBtnClaim">
+      <input
+        type="text"
+        class="claimInput"
+        bind:value={claimLink}
+        required
+        placeholder="faveit/clusteredTomatoes"
+      />
+      <button class="claimButton" type="submit">Claim</button>
+    </form>
+  </div>
+
+    <section class="section2">
+    <div class="section2-main">
+      <br />
+      <img
+        class="section2-illustration"
+        src={Barista_illustration}
+        alt="Coffee Illustration"
+      />
+
+      <div class="text-chunk-section2">
+        <h2
+          style="color: #F2F2F2; font-size: calc(3em + 1vw); font-weight: bold; text-decoration: underline;"
+        >
+          Minutes Away from Getting Started.
+        </h2>
+        <br />
+
+        <p style="font-size: calc(1.4em + 0.5vw);">
+          Faveit is a hub of hubs where you explore new food and drink with
+          others that have similar preferences to you in order to more
+          effectively find what you like: You can follow creators and be
+          notified whenever they release a new recipe
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="section3">
+    <!-- Don't remove this "<br>" blindly lol -->
     <br />
 
     <div
-      style="background-color: #3d8a5c; margin-left: 10vw; margin-right: 10vw; margin-top: 5vw; border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
+      style="background-color: #3d8a5c; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
-        style="font-size: calc(1.55em + 3vw); color: #F2F2F2; padding: 0.4rem;"
+        style="font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
       >
         Example Layouts:
       </h1>
@@ -131,46 +171,6 @@
 
     <Carusel />
 
-  </section>
-  <section class="section3">
-    <div class="section3-main">
-      <br />
-      <img
-        class="section3-illustration"
-        src={Barista_illustration}
-        alt="Coffee Illustration"
-      />
-
-      <div class="text-chunk-section3">
-        <h2
-          style="color: #F2F2F2; font-size: calc(3em + 3vw); font-weight: bold; text-decoration: underline;"
-        >
-          Minutes Away from Getting Started.
-        </h2>
-        <br />
-
-        <p style="font-size: calc(1.5em + 0.5vw);">
-          Faveit is a hub of hubs where you explore new food and drink with
-          others that have similar preferences to you in order to more
-          effectively find what you like: You can follow creators and be
-          notified whenever they release a new recipe
-        </p>
-      </div>
-    </div>
-
-    <div style="display: flex; justify-content: center;">
-      <form on:submit={handleSubmit}>
-        <input
-          type="text"
-          class="claimInput"
-          bind:value={claimLink}
-          required
-          placeholder="faveit/clusteredTomatoes"
-          style="width: calc(10rem + 5vw);"
-        />
-        <button type="submit">Claim</button>
-      </form>
-    </div>
   </section>
 
   <section class="section4">
@@ -216,7 +216,7 @@
     <br />
     <h3 style="font-size: 2em;">Terms of service</h3>
 
-    <div style="max-width: 50%; margin: 0 auto;">
+    <div style="max-width: 70%; margin: 0 auto;">
       <p style="font-size: 1em;">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus
         aliquam recusandae reiciendis ea, voluptates id, molestiae sequi
@@ -225,10 +225,11 @@
         vero. Praesentium quaerat veniam rem sed aperiam eius accusamus quas,
         facere exercitationem perspiciatis minima!
       </p>
+      <br />
+      <br />
     </div>
   </section>
 </main>
-
 
 <style>
   @font-face {
@@ -275,107 +276,23 @@
     width: calc(18vw + 13rem);
   }
 
-  /* Section 1 END */
-
-  /* ASIOUJDOIASJWEOIFSJIOFJSDFSDFWSEG */
-  /* Section 2: */
-  .section2 {
-    min-height: 120rem;
-    background: linear-gradient(60deg, #96dab3, #6ab187);
-    position: relative;
-  }
-
-  .section2::after {
-    content: "";
-    position: absolute;
-    width: 250%;
-    bottom: 0;
-    border-radius: 50% 30%;
-    left: 0;
-    overflow-x: hidden;
-    border-top: 20rem solid transparent;
-    background: #8ea8c3;
-    transform: translate(-15%, 55%);
-  }
-
-  .image-container {
-    padding: 0;
+  /* Claim link button css */
+  .formBtnClaim {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: clamp(80%, calc(65% + 1vw), 90%);
-    margin: 0 auto;
-    flex-wrap: wrap;
-  }
-
-  .image {
-    height: clamp(18rem, calc(5rem + 35vw), calc(15rem + 10vw));
-    width: clamp(18rem, calc(5rem + 35vw), calc(15rem + 10vw));
-    border-radius: 1rem;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
-  }
-
-  .image:hover {
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.45);
-    transition: 0.05s ease-in-out;
-  }
-
-  /* Section 2 END */
-
-  /* Section 3: */
-
-  .section3 {
-    height: calc(85rem + 10vw);
-    text-align: center;
-    background-color: #8ea8c3;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    background: #8ea8c3;
-  }
-  
-  .section3 p {
-    margin: 0 auto;
-    font-size: 1.5em;
-    max-width: 35rem;
-  }
-
-  /* Includes image and text contents into a container */
-  .section3-main {
-    margin-top: 10rem;
-    display: flex;
-  }
-
-  /* Only image contents within the main container */
-  .section3-illustration {
-    margin-left: 10vw;
-    width: calc(30vw + 20rem);
-    height: calc(30vw + 20rem);
-  }
-
-  /* Only text contents within the main container */
-  .text-chunk-section3 {
-    max-width: 50%;
-    margin-right: 5rem;
-    margin-top: 20rem;
-  }
-
-  .section3 form {
-    padding: 5rem 10rem;
+    justify-content: center;
     border-radius: 0.5rem;
-    margin: 0 auto;
   }
 
-  .section3 .claimInput {
+  .claimInput {
+    width: calc(5rem + 10vw);
     padding: 1rem 2rem;
     font-size: calc(1.2em + 0.5vw);
     border: 1px solid #ccc;
     border-radius: 1rem;
-    margin-top: clamp(15rem, calc(3rem + 10%), 5vw);
-    margin-right: 0.5rem;
   }
 
-  .section3 button {
+  .claimButton {
+    margin-left: 0.2rem;
     padding: 1rem 2rem;
     font-size: calc(1.2em + 0.5vw);
     background-color: #6ab187;
@@ -385,10 +302,71 @@
     cursor: pointer;
   }
 
-  .section3 button:hover {
-    background-color: #6dbe8f;
-    box-shadow: 0px 0px 4px 2px rgba(0, 51, 21, 0.253);
-    transition: 0.1s ease-in-out;
+  .claimButton:hover {
+    background-color: #6fd499;
+    transition: 0.15s ease-in-out;
+  }
+
+  /* Section 1 END */
+  
+  /* Section 2: */
+
+  .section2 {
+    height: calc(65rem + 10vw);
+    background-color: #8ea8c3;
+    background: #8ea8c3;
+  }
+  
+  .section2 p {
+    margin: 0 auto;
+    font-size: 1.5em;
+    max-width: 35rem;
+  }
+
+  /* Includes image and text contents into a container */
+  .section2-main {
+    /* This adds empty space between section 1 and two 
+    otherwise hard to detect why there's space there */
+    margin-top: 5rem;
+    display: flex;
+    text-align: center;
+  }
+
+  /* Only image contents within the main container */
+  .section2-illustration {
+    margin-top: 8rem;
+    margin-left: 17vw;
+    width: calc(20vw + 20rem);
+    height: calc(20vw + 20rem);
+  }
+
+  /* Only text contents within the main container */
+  .text-chunk-section2 {
+    max-width: 30%;
+    margin-top: 20rem;
+  }
+
+  /* Section 2 END */
+
+  /* ASIOUJDOIASJWEOIFSJIOFJSDFSDFWSEG */
+  /* Section 2: */
+  .section3 {
+    min-height: calc(30vw + 70rem);
+    background: linear-gradient(60deg, #96dab3, #6ab187);
+    position: relative;
+  }
+
+  .section3::after {
+    content: "";
+    position: absolute;
+    width: 150%;
+    top: 0;
+    border-radius: 150% 150%;
+    left: 0;
+    overflow-x: hidden;
+    border-top: 20rem solid transparent;
+    background: #8ea8c3;
+    transform: translate(-15%, -10rem);
   }
 
   /* Section 3 END */
@@ -407,7 +385,7 @@
   .footer {
     background-color: #666666;
     font-size: 1em;
-    min-height: 10rem;
+    min-height: 15rem;
     text-align: center;
   }
 
@@ -416,18 +394,31 @@
   /* Media Queries: */
 
   @media screen and (max-width: 1200px) {
-    .text-chunk-section3 {
+    .section2{
+      height: 65rem;
+    }
+    .text-chunk-section2 {
       margin: 0 auto;
     }
-    .section2 {
-      height: 225rem;
-    }
-    .section3-illustration {
+    .section2-illustration {
       margin: 0 auto;
     }
-    .section3-main {
+    .section2-main {
       flex-direction: column;
       justify-content: center;
+    }
+
+    .text-chunk-section2 {
+      max-width: 80%;
+    }
+    
+    .section3 {
+      min-height: 80rem;
+    }
+
+    .section3::after {
+      transform: translate(-15%, -5rem);
+      border-top: 15rem solid transparent;
     }
   }
 
@@ -437,18 +428,18 @@
       justify-content: flex-start;
       margin-top: 4rem;
       height: 65rem;
-      margin-bottom: 0;
     }
     .section1-illustration {
       margin: 0 auto;
       margin-top: 2rem;
     }
-
     .text-chunk-section1 {
       margin-top: 0;
     }
-    .section3 .claimInput {
-      margin-top: 0rem;
+
+    .section3::after {
+      border-top: 10rem solid transparent;
+      transform: translate(-15%, -5rem);
     }
   }
 

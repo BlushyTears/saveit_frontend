@@ -4,6 +4,21 @@
 
   import { backend_url, frontend_url } from "../lib/urls";
 
+  import SuccessNotif from '../lib/notification.svelte';
+  import FailedNotif from '../lib/notification.svelte';
+  import { time_ranges_to_array } from "svelte/internal";
+
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+  
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
+
   let isLoading = false;
 
   let username = "";
@@ -42,10 +57,14 @@
         const token = data.token; // Assuming the response returns the token
         localStorage.setItem("token", token);
         console.log("Login successful:", data);
-        window.location.reload();
+        showSuccessNotification(); // If you're showing a notification
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500); 
       } else {
         const errorData = await response.json();
         console.error("Login failed:", errorData);
+        showFailedNotification();
         console.error("Error:", response);
       }
     } catch (error) {
@@ -64,6 +83,10 @@
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   }
 </script>
+
+<SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" />
+<FailedNotif bind:showBar={ShowFailedBar} message="Login failed." color="#c22d2d" />
+
 
 <div class="all-login-form">
   <div class="login-form">

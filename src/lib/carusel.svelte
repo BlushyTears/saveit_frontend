@@ -1,12 +1,12 @@
+
 <script>
   import { onMount } from "svelte";
-
   import Example_Page from "../assets/examplepage.png";
   import Example_Page2 from "../assets/examplepage.png";
-
   let currentIndex = 0;
   let posts;
   let postWidth;
+  let initialTouchPos = null;
 
   const images = [
     { src: Example_Page, alt: "Carusel image could not load" },
@@ -16,7 +16,8 @@
     { src: Example_Page, alt: "Carusel image could not load" },
     { src: Example_Page2, alt: "Carusel image could not load" },
     { src: Example_Page, alt: "Carusel image could not load" },
-    // add more images here
+
+
   ];
 
   function calculatePostWidth() {
@@ -27,12 +28,11 @@
   }
 
   function updateCarousel() {
-    // Translate the carousel by the pixel width of each post, times the current index
     posts.style.transform = `translateX(-${currentIndex * postWidth}px)`;
   }
 
-  // WARNING: If current index modulus constant exceeds the number of pictures it'll cause a visual bug when you get to the end of the images
-  const modulus = 6;
+  const modulus = images.length;
+
   function moveToNext() {
     currentIndex = (currentIndex + 1) % modulus;
     updateCarousel();
@@ -45,17 +45,36 @@
     }
   }
 
+  function onTouchStart(event) {
+    initialTouchPos = event.touches[0].clientX;
+  }
+
+  function onTouchMove(event) {
+    if (!initialTouchPos) return;
+
+    let diff = initialTouchPos - event.touches[0].clientX;
+    if (Math.abs(diff) > 30) {
+      if (diff > 0) {
+        moveToNext();
+      } else {
+        moveToPrev();
+      }
+      initialTouchPos = null;
+    }
+  }
+
   onMount(() => {
     calculatePostWidth();
     window.addEventListener('resize', calculatePostWidth);
     return () => { window.removeEventListener('resize', calculatePostWidth); }; // Cleanup
   });
-
-  // Automatically start moving when the component mounts
 </script>
 
 <div class="carousel">
-  <div bind:this={posts} class="carousel-container">
+  <div bind:this={posts}
+       class="carousel-container"
+       on:touchstart={onTouchStart}
+       on:touchmove={onTouchMove}>
     {#each images as image}
       <div class="carousel-post">
         <img src={image.src} alt={image.alt} />
@@ -63,14 +82,15 @@
     {/each}
   </div>
   <div class="carousel-controls">
-    <button on:click={moveToPrev}>&lt;</button>
+    <button class="nextNPrevBtns" on:click={moveToPrev}>Prev</button>
     <div class="carousel-dots">
       {#each images as _, i}
         <div
           class={i === currentIndex ? "dot active-dot" : "dot"}
-          on:click={() => ((currentIndex = i), updateCarousel())}
+          on:click={() => { currentIndex = i; updateCarousel(); }}
           on:keydown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();  // Prevent the default action to avoid scrolling the page
               currentIndex = i;
               updateCarousel();
             }
@@ -81,21 +101,22 @@
         />
       {/each}
     </div>
-    <button on:click={moveToNext}>&gt;</button>
+    <button class="nextNPrevBtns" on:click={moveToNext}>Next</button>
   </div>
 </div>
+
+<br>
 
 <style>
   .carousel {
     position: relative;
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     overflow: hidden;
   }
 
   .carousel-container {
-    width: 40%;
-    height: 40%;
+    width: 50%;
     display: flex;
     transition: transform 0.5s ease-in-out;
   }
@@ -116,13 +137,6 @@
     margin-top: 1rem;
   }
 
-  .carousel-controls button {
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
   .carousel-dots {
     display: flex;
     justify-content: center;
@@ -140,5 +154,20 @@
 
   .active-dot {
     background-color: black;
+  }
+
+  .nextNPrevBtns {
+    font-size: 1.5em;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #3d8a5c;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+  }
+
+  .nextNPrevBtns:hover {
+    background-color: rgb(93, 187, 131);
+    transition: 0.1s ease;
   }
 </style>

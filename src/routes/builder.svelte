@@ -50,14 +50,6 @@
     showModal[index] = false;
   }
 
-  function startEditing() {
-    isEditing = true;
-  }
-
-  function saveEdit() {
-    isEditing = false;
-  }
-
   function openEditBtnModal(index) {
     showEditBtnModal[index] = true;
   }
@@ -69,63 +61,43 @@
 </script>
 
 <div class="body">
-  <div class="body-container">
-    <div class="stats">
-      <p style="margin-top: 0; background-color: #2C3A53; padding: 1.5rem; border-radius: 0.5rem;">Page editor</p>
-      <p style="margin-top: 0; background-color: #2C3A53; padding: 1.5rem; border-radius: 0.5rem;">Followers: 1276</p>
-    </div>
-
-    <div class="button-component">
-      <div style="display: flex; align-items: center;">
-        <h1>
-          {#if isEditing}
-            <input
-              bind:value={editedText}
-              class="editing-text"
-            />
-          {:else}
-          <button
-          on:click={() => startEditing()}
-          on:keydown={(e) => e.key === 'Enter' && startEditing()}
-          class="edited-text"
-        >
-          {editedText}
-        </button>
-          {/if}
-        </h1>
-        <button
-          class="edit-button"
-          on:click={isEditing ? saveEdit : startEditing}
-          on:keydown={(e) => {
-            if (e.key === "Enter" || e.key === "Space") {
-              isEditing ? saveEdit() : startEditing();
-            }
-          }}
-          tabindex="0"
-          style="background: none; border: none; padding: 0; cursor: pointer;"
-        >
-        {#if isEditing}
-          <img
-            src={SaveIcon}
-            class="ok-btn"
-            alt="ok icon"
-            style="height: 4rem; width: 4rem;"
-          />
-        {/if}
-        </button>
+  <div class="outer-container">
+    <div class="body-container">
+      <div class="stats">
+        <p style="">Page editor</p>
+        <p style="">Followers: 1276</p>
       </div>
+      <br>
+      <br>
+      <br>
+  
+      <div class="button-component">
+        <div>
+          <h1 style="width: 90%;">
+              <input bind:value={editedText} class="editing-text"/>
+          </h1>
+        </div>
 
-      <div class="btn-container">
-        <button class="recipe-link" on:click={() => openModal(0)}>
-          <span class="emoji">🍪</span>
-          <h2 class="modal-btn-text">Chocolate Chip Cookies</h2>
-        </button>
-        <button class="edit-button-btn" on:click={() => openEditBtnModal(0)}
-          ><p />
-          Edit</button
-        >
+        <div class="btn-container">
+          <button class="recipe-link" on:click={() => openModal(0)}>
+            <span class="emoji">🍪</span>
+            <h2 class="modal-btn-text">Chocolate Chip Cookies</h2>
+          </button>
+          <button class="edit-button-btn" on:click={() => openEditBtnModal(0)}
+            ><p />
+            Edit button</button
+          >
+        </div>
+  
+        <div class="btn-container">
+          <button class="recipe-link" on:click={() => openModal(0)}>
+            <h2 class="modal-btn-text">Add new</h2>
+          </button>
+        </div>
+  
+        <!-- Dummy div for creating some margin on bottom -->
       </div>
-    </div>
+  </div>
   </div>
 
   <div class="template-container">
@@ -199,20 +171,32 @@ V2:
     background-color: #8EA8C3;
   }
 
+  .outer-container {
+    background-color: #27324b;
+    width: calc(42rem + 15vw);
+    max-width: 95%;
+    min-height: 34rem;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+
+  }
+
   .body-container {
     background-color: #212a3eec;
     height: auto;
     border-radius: 0.5rem;
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
-    min-height: 95%;
-    min-width: 20rem;
-    max-width: 60%;
+    width: calc(40rem + 20vw);
+    max-width: 90%;
+    min-height: 32rem;
     margin: 0 auto;
   }
 
   .editing-text {
+    text-align: center;
     color: #F2F2F2;
-    font-size: calc(1.15em + 0.5vw);
+    font-size: calc(1.3em + 0.5vw);
     margin-right: 1rem; 
     padding: 1rem;
     border-radius: 1rem;
@@ -238,9 +222,11 @@ V2:
   }
 
   .stats {
-    font-size: calc(0.7em + 1.1vw);
+    margin-top: 0; 
+    background-color: #2C3A53;
+    padding: 1.5rem;
+    font-size: calc(1em + 0.5vw);
     border-radius: 0.5rem;
-    margin-bottom: 5rem;
     display: flex;
     background-color: #27324b;
     justify-content: space-between; /* Space items between the edges */
@@ -252,22 +238,10 @@ V2:
     margin-bottom: 0;
   }
 
-  .ok-btn {
-    box-sizing: border-box;
-    padding: 0.5rem;
-  }
-
-  .ok-btn:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 1rem;
-    transform: scale(1.05); /* Scale the image slightly on hover */
-  }
-
   /* Button styling starts */
 
   .button-component {
-    font-size: calc(0.6em + 0.3vw);
+    font-size: calc(0.6em + 0.2vw);
     font-family: "Comme", sans-serif;
     margin: 0;
     align-items: center;
