@@ -335,7 +335,7 @@ V2:
 
   .arrow-btn {
     height: 50%;
-    margin-top: 2.5rem;
+    margin-top: 1.7rem;
     border: none;
     margin-left: 0.1rem;
     background: none;
