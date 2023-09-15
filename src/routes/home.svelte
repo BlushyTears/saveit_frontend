@@ -24,6 +24,20 @@
   import { onMount } from "svelte";
   import Cooking from "../assets/cooking.jpg";
 
+  import SuccessNotif from '../lib/notification.svelte';
+  import FailedNotif from '../lib/notification.svelte';
+
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
+
   // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
   import { backend_url, frontend_url } from "../lib/urls";
 
@@ -32,16 +46,6 @@
   function handleSubmit(event) {
     event.preventDefault();
   }
-
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  }
-
-  // Maybe add these to post request below at some point if needed
-  const token = localStorage.getItem("token");
-  const csrfToken = getCookie("csrftoken");
 
   onMount(() => {
     dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
@@ -75,14 +79,19 @@
         .then((data) => {
           // Login was successful here
           localStorage.setItem("token", data);
+          showSuccessNotification();
           window.location.reload();
         })
         .catch((error) => {
+          showFailedNotification();
           console.error("An error occurred:", error);
         });
     }
   });
 </script>
+
+<SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
+<FailedNotif bind:showBar={ShowFailedBar} message="Login failed." color="#c22d2d" textShadow="#ff0037"/>
 
 <main>
   <section class="section1">

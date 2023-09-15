@@ -6,14 +6,23 @@
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
   import NotFound from "../routes/notfound.svelte";
-
   import Spinner from "../lib/loadspinner.svelte";
-
+  import SuccessNotif from '../lib/notification.svelte';
+  import FailedNotif from '../lib/notification.svelte';
   import { currentSetting } from "./navbarStore.js";
-
   import { onMount } from "svelte";
-
   import { backend_url } from "../lib/urls";
+
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+  
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
 
   export let url = "/";
   let isLoggedIn = localStorage.getItem("token") !== null;
@@ -41,7 +50,7 @@
     const csrfToken = getCookie("csrftoken");
 
     try {
-      const response = await fetch(backend_url + "/home/api/logout/", {
+      const response = await fetch(backend_url + "/api/logout/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,15 +62,26 @@
       if (response.ok) {
         const data = await response.json();
         console.log("User logged out successfully:", data);
+        showSuccessNotification(); // If you're showing a notification
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500); 
       } else {
         const errorData = await response.json();
+        showFailedNotification(); // If you're showing a notification
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500); 
         console.error("Logout failed on server:", errorData);
       }
     } catch (error) {
+      showFailedNotification(); // If you're showing a notification
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500); 
       console.error("Other error during logout:", error);
     }
     localStorage.removeItem("token"); // Remove the token from local storage
-    window.location.reload();
   }
 
   // Hamburger menu logic
@@ -161,6 +181,9 @@
     </Router>
   </nav>
 {/if}
+
+<SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
+<FailedNotif bind:showBar={ShowFailedBar} message="Login error." color="#c22d2d" textShadow="#ff0037"/>
 
 <!-- 
 Existing main color 1: #212a3e

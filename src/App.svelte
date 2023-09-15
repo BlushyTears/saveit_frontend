@@ -47,7 +47,6 @@
 </div>
 
 <style>
-  
 
 .app-container {
   width: 100%;

@@ -3,6 +3,7 @@
   export let showBar = false;
   export let message = "This is a notification";
   export let color = "#c22d2d";
+  export let textShadow = "#ff0037;"
   let sinking = false;
 
   async function closeBar() {
@@ -24,18 +25,19 @@
 
 
 {#if showBar}
-<div class={sinking ? 'notification-bar sinking' : 'notification-bar'} style="background-color: {color}">
+<div class={sinking ? 'notification-bar sinking' : 'notification-bar'} style="background-color: {color}; box-shadow: 0px 0px 4px 2px {textShadow};">
 <span>{message}</span>
 </div>
 {/if}
 
 <style>
 .notification-bar {
+  box-shadow: 0px 0px 4px 2px #ff0037;
   position: fixed;
   top: -10px;
   left: 50%;  /* move the left edge to the center of the viewport */
   transform: translateX(-50%);  /* move it back by half its own width */
-  width: 50%;
+  width: 25%;
   background-color: #4CAF50;
   color: white;
   text-align: center;

@@ -1,14 +1,13 @@
 <script>
   export let showModal = false;
-  import SaveIcon from "../assets/accept.png";
-
+  export let index = 0;
   import Colorpicker from "./colorpicker.svelte";
 
+  import {buttonNames} from "../lib/builderstore";
+  
   let dialog;
   let dragging = false;
   let isEditing = false;
-
-  let btnText = "Button Title";
 
   let boxes = ["F", "O", "N", "T", "S"];
 
@@ -21,7 +20,7 @@
     isEditing = false;
   }
 
-  $: if (dialog && showModal) dialog.showModal();
+  $: if (dialog && showModal) dialog.showModal(index);
 
 </script>
 
@@ -65,7 +64,7 @@
           <h1>
             {#if isEditing}
               <input
-                bind:value={btnText}
+                bind:value={$buttonNames[index]}
                 class="editing-text"
               />
             {:else}
@@ -74,7 +73,7 @@
             on:keydown={(e) => e.key === 'Enter' && startEditing()}
             class="edited-text"
           >
-            {btnText}
+            {$buttonNames[index]}
           </button>
             {/if}
           </h1>

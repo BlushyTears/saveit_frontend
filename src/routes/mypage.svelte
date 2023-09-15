@@ -139,8 +139,18 @@
 
 <style>
     /* Roboto and roboto condensed fonts respectively */
-    @import url('https://fonts.googleapis.com/css2?family=Comme:wght@100;300;500&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Comme:wght@100;300;500&family=Roboto+Condensed:wght@300&display=swap');
+    @font-face {
+    font-family: "Monofonto";
+    src: url("/fonts/monofonto rg.otf") format("opentype");
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  a {
+    font-family: "Monofonto", fallback, sans-serif;
+  }
 
     main {
         background: rgb(255,239,207);
@@ -161,7 +171,6 @@
     }
 
     .button-component {
-        font-family: 'Comme', sans-serif;
         margin: 0; 
         align-items: center;
         display: flex;
@@ -169,7 +178,6 @@
     }
 
     .recipe-link {
-        font-family: 'Roboto Condensed', sans-serif;
         background-color: rgba(255, 255, 255, 0.1);
         color: rgb(223, 223, 223);
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;

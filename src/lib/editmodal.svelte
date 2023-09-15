@@ -1,12 +1,12 @@
 <script>
-  
+    import { inputTextList, buttonNames } from '../lib/builderstore'; // Add this import
     export let showModal = false;
+    export let index; // Add this prop to know which element to update
   
     let dialog;
     let dragging = false;
-    let buttonTitleName = "Button Title";
 
-    let inputText = "Hello, Svelte!";
+    export let inputText = "Enter content here";
     
     $: if (dialog && showModal) dialog.showModal();
     
@@ -17,7 +17,12 @@
     }
 
     function saveContentChanges() {
-      console.log(buttonTitleName);
+      inputTextList.update(arr => {
+        arr[index] = inputText;
+        return [...arr];
+      });
+      console.log('Content Saved', $inputTextList);
+      dialog.close();
     }
 </script>
   
@@ -53,7 +58,9 @@
       <div
         style="font-size: 1.5em; width: calc(10vw + 10rem);"
       >
-        <h3 style="margin: 0;" contenteditable="true" bind:innerText={buttonTitleName}></h3>
+
+      <h3 style="margin: 0;" contenteditable="true" bind:innerText={$buttonNames[index]}>Button Title</h3>
+
       </div>
       <br />
       <div style="justify-content: space-between; display: flex;">
@@ -82,7 +89,7 @@
         {#if previewModal}
         <hr />
         <div>
-          <!-- Replace newline characters with <br> tags -->
+          <!-- Replaces newline characters with <br> tags -->
           <p>{@html inputText.split('\n').join('<br>')}</p>
         </div>
         {/if}
@@ -90,12 +97,6 @@
 </dialog>
 
 <style>
-  /* 
-<Modal bind:showModal={showPreviewModal} on:closeModal={() => closeModal}>
-    <!-- modal content example hardcoded -->
-    <h1 class="modal-title">Content delivery</h1>
-  </Modal> */
-
   .input-modal-textarea {
     width: 100%;
     height: 200px;   
