@@ -188,7 +188,7 @@
               class="edit-button-btn"
               on:click={() => openEditBtnModal(index)}
             >
-              Edit button
+              Edit
             </button>
           </div>
         {/each}
