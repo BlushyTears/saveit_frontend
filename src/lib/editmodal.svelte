@@ -1,12 +1,12 @@
 <script>
-    import { inputTextList, buttonNames } from '../lib/builderstore'; // Add this import
+    import { inputTextList, buttonNames} from "../lib/builderstore"; // Add this import
     export let showModal = false;
-    export let index; // Add this prop to know which element to update
+    export let index = 1; // Add this prop to know which element to update
   
     let dialog;
     let dragging = false;
 
-    export let inputText = "Enter content here";
+    // export let inputText = "Enter content here";
     
     $: if (dialog && showModal) dialog.showModal();
     
@@ -18,7 +18,7 @@
 
     function saveContentChanges() {
       inputTextList.update(arr => {
-        arr[index] = inputText;
+        arr[index] = $inputTextList[index];
         return [...arr];
       });
       console.log('Content Saved', $inputTextList);
@@ -59,7 +59,7 @@
         style="font-size: 1.5em; width: calc(10vw + 10rem);"
       >
 
-      <h3 style="margin: 0;" contenteditable="true" bind:innerText={$buttonNames[index]}>Button Title</h3>
+      <h3 style="margin: 0;" contenteditable="true" bind:innerText={$buttonNames[index]}>Title</h3>
 
       </div>
       <br />
@@ -68,6 +68,7 @@
           <button >B</button>
           <button >I</button>
           <button >U</button>
+
         </div>
       </div>
       <hr />
@@ -75,7 +76,7 @@
         <div class="slot-wrapper" contenteditable="true">
           <slot name="header" />
           <div>
-            <textarea class="input-modal-textarea" style="width: 100%;" bind:value={inputText} />
+            <textarea class="input-modal-textarea" style="width: 100%;" bind:value={$inputTextList[index]} />
           </div>
           <slot />
         </div>
@@ -90,7 +91,7 @@
         <hr />
         <div>
           <!-- Replaces newline characters with <br> tags -->
-          <p>{@html inputText.split('\n').join('<br>')}</p>
+          <p>{@html $inputTextList[index].split('\n').join('<br>')}</p>
         </div>
         {/if}
       </div>

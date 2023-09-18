@@ -1,12 +1,3 @@
-<!-- Temp color theme:
-    #37C84C light green
-    #376AC8 light blue
-    #C837B3 magenta
-    #C89537 gold orange
-    #964B00 brown
-    #FFFFFF white
--->
-
 <script>
   import MyPage from "./routes/mypage.svelte";
 

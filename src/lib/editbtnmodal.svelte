@@ -9,8 +9,8 @@
   let dragging = false;
   let isEditing = false;
 
-  let boxes = ["F", "O", "N", "T", "S"];
-
+  // Disabled until we add fonts again
+  // let boxes = ["F", "O", "N", "T", "S"];
 
   function startEditing() {
     isEditing = true;
@@ -54,11 +54,6 @@
       >
         X
       </button>
-      <!-- <div style="width: calc(25% + 5rem); margin-left: 5%;" contenteditable="true">
-        <button class="focused-btn">
-          <h2 class="modal-btn-text">{btnText}</h2>
-        </button>
-      </div> -->
       <div class="button-component">
         <div style="display: flex;">
           <h1>
@@ -88,50 +83,40 @@
             tabindex="0"
             style="background: none; border: none; padding: 0; cursor: pointer;"
           >
-          <!-- This is an example of a feedback button they press when they're done editing.
-            It's not technically needed since they can just click outside of the text area to finish editing. 
-            Undecided if needed or not so just commented out for now -->
-          <!-- {#if isEditing}
-            <img
-              src={SaveIcon}
-              class="ok-btn"
-              alt="ok icon"
-            />
-          {/if} -->
           </button>
         </div>
       
       <br />
 
       <div class="color-pickers">
-        <Colorpicker nameType={"Button:"}/>
-
+        <Colorpicker nameType={"Button"} index={index} subIndex={0}/>
       <br />
-        <Colorpicker nameType={"Hover:"}/>
-        <br/>
-        <Colorpicker nameType={"Border:"}/>
-      <br/>
-        <Colorpicker nameType={"Shadow:"}/>
+        <Colorpicker nameType={"Hover"} index={index} subIndex={0}/>
+      <br />
+        <Colorpicker nameType={"Border"} index={index} subIndex={0}/>
+      <br />
+        <Colorpicker nameType={"Shadow"} index={index} subIndex={0}/>
       </div>
       <br />
 
-      <div class="font-boxes">
+      <!-- Future font layout until we actually add them, not really needed for MVP. Needs: 
+      let boxes = ["F", "O", "N", "T", "S"];
+      in <script> order to work, also has css ready -->
+      <!-- <div class="font-boxes">
         {#each boxes as box}
           <div class="box">
             {box}
             <div class="tooltip">Roboto</div>
           </div>
         {/each}
-      </div>
+      </div> -->
 
       <hr>
-      
-      <button class="save-edits-btn"
+      <button class="save-edits-btn" on:click={() => saveEdit()} on:click={() => dialog.close()}
         >Save ✉</button
       >
 
     </div>
-
   </div>
 </dialog>
 
@@ -239,11 +224,13 @@
     display: flex; 
   }
 
+  /* Unused but shouldn't be removed because it's just disabled */
   .font-boxes {
     margin-top: 3rem;
     gap: 1rem;
     display: flex;
   }
+    /* Unused but shouldn't be removed because it's just disabled */
   .box {
     position: relative; /* Make the box a relative container for the tooltip */
     border: 2px solid gray;
@@ -256,10 +243,12 @@
     cursor: pointer; /* Indicates that the box is interactive */
   }
 
+  /* Unused but shouldn't be removed because it's just disabled */
   .box:hover {
     border: 2px solid black;
   }
 
+  /* Unused but shouldn't be removed because it's just disabled */
   .tooltip {
     font-size: 0.5em;
     visibility: hidden;
@@ -276,15 +265,17 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
+  /* Unused but shouldn't be removed because it's just disabled */
   .box:hover .tooltip {
     visibility: visible;
     opacity: 0.95;
   }
 
+  /* Unused but shouldn't be removed because it's just disabled */
   .box .tooltip::after {
     content: " ";
     position: absolute;
-    top: 100%; /* At the bottom of the tooltip */
+    top: 100%;
     left: 50%;
     margin-left: -5px;
     border-width: 5px;

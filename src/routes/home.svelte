@@ -186,39 +186,36 @@
     <br />
 
     <div
-      style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
-      class="section-4-container"
+    style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
+    class="section-4-container"
+  >
+    <h3
+      style="font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem;"
     >
-      <h3
-        style="font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem;"
-      >
-        Q&A
-      </h3>
-
-      <Accordion
-        title="What is Faveit?"
-        content="Faveit is a hub of hubs where anyone can explore new foods and drinks."
-      />
-      <Accordion
-        title="Can I make money on this?"
-        content="Faveit is designed to empower creators to help them build their own personal brand.
-         If you can do that, monetizing it will be the easy part."
-      />
-      <Accordion
-        title="How do I get started"
-        content="You'll need to create an account (So that your recipes don't get lost),
-         then you'll customize your own page and start creating in our intuitive site builder."
-      />
-      <Accordion
-        title="What value do I get as a user who isn't looking to become a food influencer??"
-        content="You can use Faveit to discover new food and drinks at a convenience unheard of before.
-         You'll also be able to discover things without making an effort. Normally when you want a new 
-         recipe or a drink you'd have to search for something specific -- but now you can get notified whenever your
-          favorite creators release something new and be able to trust that what they make is to your liking! . We believe
-           in the 'Tiktokification era' where things move faster than ever and few people have the time and energy to invest into
-            what they shall eat a certain day."
-      />
-    </div>
+      Q&A
+    </h3>
+  
+    <Accordion
+      title="What is the core concept behind Faveit?"
+      content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
+    />
+  
+    <Accordion
+      title="Is there an opportunity for creators to monetize their content?"
+      content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
+    />
+  
+    <Accordion
+      title="How can I begin my journey on Faveit?"
+      content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
+    />
+  
+    <Accordion
+      title="What benefits does Faveit offer to users who are not aspiring food influencers?"
+      content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
+    />
+  </div>
+  
   </section>
 
   <section class="footer">
@@ -451,9 +448,7 @@
       transform: translate(-15%, -5rem);
     }
   }
-
 </style>
-
 
 <!-- 
 Existing color 1: #212a3e

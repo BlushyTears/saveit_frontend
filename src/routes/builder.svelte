@@ -28,8 +28,8 @@
   import Editmodal from "../lib/editmodal.svelte";
   // @ts-ignore
   import BtnEditModal from "../lib/editbtnmodal.svelte";
-  import SaveIcon from "../assets/accept.png";
   import { onMount } from "svelte";
+  import CopyToClipboard from '../lib/clipboardcopy.svelte';
 
   import {
     showModal,
@@ -39,15 +39,29 @@
     btnCount,
     containerCount,
     buttonNames,
+    buttonColors,
   } from "../lib/builderstore";
 
   function addBtn() {
     const newNames = [...$buttonNames, `Recipe ${$buttonNames.length + 1}`];
     buttonNames.set(newNames);
+
     showModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'
     showEditBtnModal.update((arr) => [...arr, false]); // Same for edit button modal state
 
-    // Update other count variables
+    buttonColors.update((arr) => {
+      const newArr = [...arr];
+      newArr.push([
+        {
+          button: { color: "#ff0000", alpha: 1.0 },
+          hover: { color: "#00ff00", alpha: 1.0 },
+          border: { color: "#0000ff", alpha: 1.0 },
+          shadow: { color: "#ff00ff", alpha: 1.0 },
+        },
+      ]); // Add a new color set in a nested array
+      return newArr;
+    });
+
     $btnCount = newNames.length;
     $containerCount = newNames.length;
   }
@@ -58,41 +72,86 @@
     buttonNames.set(names);
 
     showModal.update((arr) => {
-      arr.pop(); // Remove the last modal state
+      arr.pop();
       return [...arr];
     });
 
     showEditBtnModal.update((arr) => {
-      arr.pop(); // Remove the last edit button modal state
+      arr.pop();
+      return [...arr];
+    });
+
+    buttonColors.update((arr) => {
+      arr.pop();
       return [...arr];
     });
   }
 
-  // Swap two recipe buttons when user presses either arrow
   function swapButtons(index, direction) {
-    $buttonNames = [...$buttonNames]; // Clone for reactivity
+    console.log("Before swap", $buttonColors);
+
+    $buttonNames = [...$buttonNames];
+    $inputTextList = [...$inputTextList];
+    $buttonColors = [...$buttonColors];
+
     if (direction === "up" && index > 0) {
       [$buttonNames[index], $buttonNames[index - 1]] = [
         $buttonNames[index - 1],
         $buttonNames[index],
+      ];
+      [$inputTextList[index], $inputTextList[index - 1]] = [
+        $inputTextList[index - 1],
+        $inputTextList[index],
+      ];
+      [$buttonColors[index], $buttonColors[index - 1]] = [
+        $buttonColors[index - 1],
+        $buttonColors[index],
       ];
     } else if (direction === "down" && index < $buttonNames.length - 1) {
       [$buttonNames[index], $buttonNames[index + 1]] = [
         $buttonNames[index + 1],
         $buttonNames[index],
       ];
+      [$inputTextList[index], $inputTextList[index + 1]] = [
+        $inputTextList[index + 1],
+        $inputTextList[index],
+      ];
+      [$buttonColors[index], $buttonColors[index + 1]] = [
+        $buttonColors[index + 1],
+        $buttonColors[index],
+      ];
     }
-    buttonNames.set($buttonNames); // Update the store
+
+    buttonNames.set($buttonNames);
+    inputTextList.set($inputTextList);
+    buttonColors.set($buttonColors);
+
+    console.log("After swap", $buttonColors);
   }
 
   // Hovering over arrow buttons will also arrow-highlighter the entire component
+  // There is a slight timer of 25 milliseconds to ensure people don't accidentally hover right above the button
+  // And creating a flickering effect since hovering moves down the component and thus pointer is outside of border
+  // Which means it's now false, and thus the border is deleted and the components come back up again 100000x's a second
   let hoveredIndex = null;
+  let canSetToNull = true; // Flag to control cooldown
+  let cooldownTime = 25; // Time in milliseconds for cooldown
+
   function onHover(index) {
-    hoveredIndex = index;
+    if (canSetToNull) {
+      hoveredIndex = index;
+    }
   }
 
   function onLeave() {
-    hoveredIndex = null;
+    if (canSetToNull) {
+      hoveredIndex = null;
+      canSetToNull = false; // Set the flag to false, starting the cooldown
+
+      setTimeout(() => {
+        canSetToNull = true; // Reset the flag after cooldown time
+      }, cooldownTime);
+    }
   }
 
   // Generic modal stuff below
@@ -137,7 +196,8 @@
     <div class="body-container">
       <div class="stats">
         <p style="">Page editor</p>
-        <p style="">Followers: 1276</p>
+        <CopyToClipboard />
+        <!-- <p style="">Followers: 1276</p> -->
       </div>
       <br />
       <br />
@@ -145,11 +205,11 @@
 
       <div class="button-component">
         <div>
-          <h1 style="width: 90%;">
+          <!-- Add margin-left because buttons are not truly centered because of its layout forcing the buttons to the right -->
+          <h1 style="width: 90%; margin-left: 5rem;">
             <input bind:value={$editedText} class="editing-text" />
           </h1>
         </div>
-        <!-- ↑↓ -->
 
         {#each $buttonNames as name, index (index)}
           <div
@@ -159,6 +219,7 @@
           >
             <button
               class="arrow-btn"
+              style="border-radius: 0.5rem 0 0 0.5rem;"
               on:mouseover={() => onHover(index)}
               on:mouseleave={onLeave}
               on:focus={() => onHover(index)}
@@ -170,7 +231,7 @@
 
             <button
               class="arrow-btn"
-              style="margin-right: 0.5rem;"
+              style="margin-right: 0.5rem; border-radius: 0 0.5rem 0.5rem 0;"
               on:mouseover={() => onHover(index)}
               on:mouseleave={onLeave}
               on:focus={() => onHover(index)}
@@ -203,7 +264,6 @@
             </button>
           </div>
         </div>
-        
       </div>
       <br />
       <br />
@@ -224,6 +284,8 @@
       <BtnEditModal
         bind:showModal={$showEditBtnModal[index]}
         on:closeEditBtnModal={() => closeEditBtnModal(index)}
+        inputText={$inputTextList[index]}
+        {index}
       >
         <h1>Content for Container {index}</h1>
       </BtnEditModal>
@@ -290,14 +352,14 @@ V2:
     min-height: 34rem;
     margin: 0 auto;
     border-radius: 0.5rem;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.15);
   }
 
   .body-container {
     background-color: #212a3eec;
     height: auto;
     border-radius: 0.5rem;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
     width: calc(40rem + 20vw);
     max-width: 90%;
     min-height: 32rem;
@@ -317,7 +379,6 @@ V2:
   }
 
   .stats {
-    margin-top: 0;
     background-color: #2c3a53;
     padding: 1.5rem;
     font-size: calc(1em + 0.5vw);
@@ -326,7 +387,7 @@ V2:
     background-color: #27324b;
     justify-content: space-between; /* Space items between the edges */
     align-items: center;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 3px 3px 2px rgba(0, 0, 0, 0.05);
   }
 
   .stats p {
@@ -335,25 +396,25 @@ V2:
 
   .arrow-btn {
     height: 50%;
-    margin-top: 1.7rem;
+    margin-top: 1.5rem;
     border: none;
-    margin-left: 0.1rem;
     background: none;
-    padding: 0.5rem 1rem;
+    padding: 0.8rem 1.3rem;
     font-size: calc(1.5em + 0.3vw);
-    border-radius: 0.5rem;
     background-color: #27324b;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.15);
     color: white;
   }
 
   .arrow-btn:hover {
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.35);
   }
 
   .arrow-highlighter {
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
     transition: 0.1s ease-in-out;
     padding: 0 1rem 1rem 1rem;
+    margin-top: 1rem;
   }
 
   /* Button styling starts */

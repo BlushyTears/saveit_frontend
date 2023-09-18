@@ -204,7 +204,6 @@ Accent color (coral): #FF6B6B -->
   }
 
   .navbar-wrapper {
-    width: 80%;
     margin: 0 auto;
     position: sticky;
     top: 1rem;
@@ -212,13 +211,14 @@ Accent color (coral): #FF6B6B -->
   }
 
   .navbar {
+    box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
     background-color: #2a3552;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
     text-decoration: none;
-    width: 60%;
+    width: calc(5rem + 40%);
     height: 3rem;
     padding: 1.3rem;
     border-radius: 6rem;
@@ -226,7 +226,7 @@ Accent color (coral): #FF6B6B -->
   }
 
   .nav-links-right {
-    margin-left: 0.5rem;
+    margin-left: 2rem;
     display: flex;
     align-items: center;
   }
@@ -237,6 +237,7 @@ Accent color (coral): #FF6B6B -->
     padding: 5px 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    line-height: 2.5rem;
     margin: 0; /* Remove default margin */
   }
 
@@ -264,17 +265,17 @@ Accent color (coral): #FF6B6B -->
   /* Media query for small screens */
   @media screen and (max-width: 568px) {
     .nav-links-right {
+      box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
       display: none;
       flex-direction: column;
-      width: 25%;
+      min-width: 25%;
       text-align: center;
       position: absolute;
       top: 102%;
       left: 45%;
-      border-radius: 3rem;
-      padding: 1rem;
+      border-radius: 4rem;
+      padding: 1rem 0.5rem;
       background-color: #2a3552;
-      line-height: 1.8rem;
     }
 
     .nav-links-right.show {
