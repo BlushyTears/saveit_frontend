@@ -29,7 +29,7 @@
   // @ts-ignore
   import BtnEditModal from "../lib/editbtnmodal.svelte";
   import { onMount } from "svelte";
-  import CopyToClipboard from '../lib/clipboardcopy.svelte';
+  import CopyToClipboard from "../lib/clipboardcopy.svelte";
 
   import {
     showModal,
@@ -43,7 +43,7 @@
   } from "../lib/builderstore";
 
   function addBtn() {
-    const newNames = [...$buttonNames, `Recipe ${$buttonNames.length + 1}`];
+    const newNames = [...$buttonNames, `New recipe`];
     buttonNames.set(newNames);
 
     showModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'
@@ -62,29 +62,55 @@
       return newArr;
     });
 
-    $btnCount = newNames.length;
-    $containerCount = newNames.length;
+    inputTextList.update((arr) => [...arr, ""]); // Add a new empty text field
+
+    btnCount.update((n) => newNames.length);
+    containerCount.update((n) => newNames.length);
   }
 
   function removeLastBtn() {
+    // Remove from buttonNames
     const names = [...$buttonNames];
-    names.pop();
-    buttonNames.set(names);
+    if (names.length > 0) {
+      names.pop();
+      buttonNames.set(names);
+    }
 
+    // Remove from showModal
     showModal.update((arr) => {
-      arr.pop();
+      if (arr.length > 0) {
+        arr.pop();
+      }
       return [...arr];
     });
 
+    // Remove from showEditBtnModal
     showEditBtnModal.update((arr) => {
-      arr.pop();
+      if (arr.length > 0) {
+        arr.pop();
+      }
       return [...arr];
     });
 
+    // Remove from buttonColors
     buttonColors.update((arr) => {
-      arr.pop();
+      if (arr.length > 0) {
+        arr.pop();
+      }
       return [...arr];
     });
+
+    // Remove from inputTextList
+    inputTextList.update((arr) => {
+      if (arr.length > 0) {
+        arr.pop();
+      }
+      return [...arr];
+    });
+
+    // Decrease btnCount
+    btnCount.update((n) => (n > 0 ? n - 1 : 0));
+
   }
 
   function swapButtons(index, direction) {
@@ -130,7 +156,7 @@
   }
 
   // Hovering over arrow buttons will also arrow-highlighter the entire component
-  // There is a slight timer of 25 milliseconds to ensure people don't accidentally hover right above the button
+  // There is a slight timer of 25 milliseconds added to ensure people don't accidentally hover right above the button
   // And creating a flickering effect since hovering moves down the component and thus pointer is outside of border
   // Which means it's now false, and thus the border is deleted and the components come back up again 100000x's a second
   let hoveredIndex = null;
@@ -206,8 +232,12 @@
       <div class="button-component">
         <div>
           <!-- Add margin-left because buttons are not truly centered because of its layout forcing the buttons to the right -->
-          <h1 style="width: 90%; margin-left: 5rem;">
-            <input bind:value={$editedText} class="editing-text" />
+          <h1 style="width: 90%; margin-left: calc(3vw + 1rem);">
+            <input
+              bind:value={$editedText}
+              class="editing-text"
+              style="width: 80%; margin: 0 auto;"
+            />
           </h1>
         </div>
 

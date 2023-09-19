@@ -4,9 +4,8 @@
     export let index = 1; // Add this prop to know which element to update
   
     let dialog;
+    // Dragging is to make sure the user doesn't hold mouse inside modal and let go mouse outside and accidentally close the modal (annoying)
     let dragging = false;
-
-    // export let inputText = "Enter content here";
     
     $: if (dialog && showModal) dialog.showModal();
     
@@ -17,10 +16,6 @@
     }
 
     function saveContentChanges() {
-      inputTextList.update(arr => {
-        arr[index] = $inputTextList[index];
-        return [...arr];
-      });
       console.log('Content Saved', $inputTextList);
       dialog.close();
     }
@@ -74,15 +69,15 @@
       <hr />
       <div>
         <div class="slot-wrapper" contenteditable="true">
-          <slot name="header" />
+          <slot name="header" style="width: 50%;"/>
           <div>
-            <textarea class="input-modal-textarea" style="width: 100%;" bind:value={$inputTextList[index]} />
+            <textarea class="input-modal-textarea"  bind:value={$inputTextList[index]} />
           </div>
           <slot />
         </div>
         <hr />
         <button class="preview-btn" on:click={() => displayPreview()}>Preview ↓</button>
-        <button class="save-edits-btn" on:click={() => saveContentChanges()}>Save ✉</button>
+        <!-- Save button disabled until later -->
         <br />
       </div>
       

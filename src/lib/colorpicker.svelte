@@ -8,6 +8,9 @@
   let colorDisplay: HTMLElement;
   let hiddenInput: HTMLInputElement;
 
+  let safeAlphaValue = 0;
+  $: safeAlphaValue = buttonColors && $buttonColors[index] && $buttonColors[index][subIndex] ? $buttonColors[index][subIndex][nameType.toLowerCase()].alpha : 0;
+
   $: if (buttonColors && $buttonColors[index] && $buttonColors[index][subIndex]) {
     const selected = $buttonColors[index][subIndex][nameType.toLowerCase()];
     if (selected && selected.color && selected.alpha != null && colorDisplay) {
@@ -61,7 +64,7 @@
     <div bind:this={colorDisplay} class="colorDisplay"></div>
   </div>
 
-  <input type="range" min="0" max="1" step="0.01" value={$buttonColors[index][subIndex][nameType.toLowerCase()].alpha} class="alpha-slider" on:input={handleAlphaChange} />
+  <input type="range" min="0" max="1" step="0.01" value={safeAlphaValue} class="alpha-slider" on:input={handleAlphaChange} />
   <input bind:this={hiddenInput} type="color" class="colorPicker hidden" on:input={handleChange} />
 </div>
 

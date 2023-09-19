@@ -166,7 +166,7 @@
     <br />
 
     <div
-      style="background-color: #3d8a5c; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
+      style="background-color: #3c9961; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
         style="font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
@@ -358,7 +358,7 @@
   /* Section 2: */
   .section3 {
     min-height: calc(30vw + 70rem);
-    background: linear-gradient(60deg, #96dab3, #6ab187);
+    background: linear-gradient(180deg, #8acca6, #30925b);
     position: relative;
   }
 

@@ -16,8 +16,6 @@
     { src: Example_Page, alt: "Carusel image could not load" },
     { src: Example_Page2, alt: "Carusel image could not load" },
     { src: Example_Page, alt: "Carusel image could not load" },
-
-
   ];
 
   function calculatePostWidth() {
@@ -116,13 +114,11 @@
   }
 
   .carousel-container {
-    width: 50%;
     display: flex;
     transition: transform 0.5s ease-in-out;
   }
 
   .carousel-post {
-    flex: 0 0 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -144,11 +140,11 @@
   }
 
   .dot {
-    width: 10px;
-    height: 10px;
+    width: 0.6rem;
+    height: 0.6rem;
     background-color: gray;
     border-radius: 50%;
-    margin: 0 5px;
+    margin: 0 0.3rem;
     cursor: pointer;
   }
 
@@ -161,13 +157,19 @@
     border: none;
     cursor: pointer;
     color: white;
-    background-color: #3d8a5c;
+    background-color: #31975a;
     padding: 0.6rem 1.2rem;
     border-radius: 0.5rem;
   }
 
   .nextNPrevBtns:hover {
-    background-color: rgb(93, 187, 131);
+    background-color: #2fb966;
     transition: 0.1s ease;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .carousel {
+    width: 90%;
+  }
   }
 </style>
