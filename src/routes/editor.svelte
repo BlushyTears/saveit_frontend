@@ -110,8 +110,37 @@
 
     // Decrease btnCount
     btnCount.update((n) => (n > 0 ? n - 1 : 0));
-
   }
+
+  // Vital function for making sure the store variables are all reset upon refreshing site
+  // Without this, buttons cannot be opened because browser gets confused if a modal is open or not
+  function updateAllStores() {
+  // Ensure showModal and showEditBtnModal have the correct number of elements
+  const length = $buttonNames.length;
+  showModal.update((arr) => arr.length === length ? arr : new Array(length).fill(false));
+  showEditBtnModal.update((arr) => arr.length === length ? arr : new Array(length).fill(false));
+
+  // Ensure buttonColors has the correct number of elements
+  buttonColors.update((arr) => {
+    while (arr.length < length) {
+      arr.push([
+        {
+          button: { color: "#ff0000", alpha: 1.0 },
+          hover: { color: "#00ff00", alpha: 1.0 },
+          border: { color: "#0000ff", alpha: 1.0 },
+          shadow: { color: "#ff00ff", alpha: 1.0 },
+        },
+      ]);
+    }
+    return arr;
+  });
+
+  // Ensure inputTextList has the correct number of elements
+  inputTextList.update((arr) => arr.length === length ? arr : new Array(length).fill(""));
+  btnCount.set(length);
+  containerCount.set(length);
+}
+
 
   function swapButtons(index, direction) {
     console.log("Before swap", $buttonColors);
@@ -211,22 +240,14 @@
   }
 
   // Updates all the contents for public and saves it on aws server
-  function updatePageChanges(key, initialValue) {
-    // const storedValue = localStorage.getItem(key);
-    // const initial = storedValue ? JSON.parse(storedValue) : initialValue;
-    // const store = writable(initial);
-
-    // store.subscribe(($value) => {
-    //     localStorage.setItem(key, JSON.stringify($value));
-    // });
-
-    // return store;
+  function publishChanges() {
+    console.log("Send data to server function (to be added later)");
   }
-
   // Sets the bg color behind the navbar (funky solution)
   onMount(() => {
     // DispatchEvent changes color upon load
     dispatchEvent(new CustomEvent("set-color", { detail: "#8EA8C3" }));
+    updateAllStores();
   });
 </script>
 
@@ -312,7 +333,7 @@
       <br />
       <br />
       <br />
-      <button class="save-edits-btn" on:click={() => updatePageChanges()}
+      <button class="save-edits-btn" on:click={() => publishChanges()}
         >Publish</button
       >
       <br />
