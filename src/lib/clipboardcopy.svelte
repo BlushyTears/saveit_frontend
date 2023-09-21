@@ -14,11 +14,12 @@
 </script>
 
 <div class="container">
-  <input bind:value={link} type="text" placeholder="Your link here" />
+  <input bind:value={link} type="text" placeholder="Your link here" readonly />
   <button class="copy-button" on:click={copyToClipboard}>
     <img src={CopyIcon} alt="Copy to clipboard" />
   </button>
 </div>
+
 
 <style>
   .container {
@@ -33,8 +34,9 @@
   }
 
   input {
+    background-color: #2a3552;
     font-size: 0.8em;
-    width: calc(6vw + 5rem);
+    width: calc(8vw + 3rem);
     border: none;
     padding: 0.7rem 1rem;
     border-radius: 3rem;

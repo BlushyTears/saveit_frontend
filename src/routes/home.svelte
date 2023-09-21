@@ -97,7 +97,7 @@
   <section class="section1">
     <div class="text-chunk-section1">
       <h2
-        style="color: #FFD700; font-size: calc(2.3vw + 3em); margin-bottom: 1rem; line-height: calc(2.2vw + 2.6rem);"
+        style="color: #FFD700; font-size: calc(2vw + 3em); margin-bottom: 1rem; line-height: calc(2.2vw + 2.6rem);"
       >
         Share All Your Delicious Dishes with a Single Link.
       </h2>
@@ -144,7 +144,7 @@
 
       <div class="text-chunk-section2">
         <h2
-          style="color: #F2F2F2; font-size: calc(3em + 1vw); font-weight: bold; text-decoration: underline;"
+          style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;"
         >
           Minutes Away from Getting Started.
         </h2>
@@ -166,12 +166,12 @@
     <br />
 
     <div
-      style="background-color: #3c9961; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
+      style=" background-color: #3c9961; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
-        style="font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
+        style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
       >
-        Example Layouts:
+        Example Layouts
       </h1>
     </div>
     <br />
@@ -190,7 +190,7 @@
     class="section-4-container"
   >
     <h3
-      style="font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem;"
+      style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem;"
     >
       Q&A
     </h3>
@@ -238,21 +238,10 @@
 </main>
 
 <style>
-  @font-face {
+@font-face {
     font-family: "Monofonto";
-    src: url("/fonts/monofonto rg.otf") format("opentype");
-  }
-
-  h1,
-  h2,
-  h3,
-  p,
-  a {
-    font-family: "Monofonto", fallback, sans-serif;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
-  }
+    src: url("../assets/monofontorg.otf") format("opentype");
+}
 
   main {
     overflow-x: hidden;

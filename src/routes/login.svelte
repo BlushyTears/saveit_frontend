@@ -84,8 +84,8 @@
   }
 </script>
 
-<SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
-<FailedNotif bind:showBar={ShowFailedBar} message="Login failed." color="#c22d2d" textShadow="#ff0037"/>
+<SuccessNotif bind:showBar={showSuccessBar} message="Login success!" color="#2dc23c" textShadow="#00ff48"/>
+<FailedNotif bind:showBar={ShowFailedBar} message="Login fail." color="#c22d2d" textShadow="#ff0037"/>
 
 
 <div class="all-login-form">

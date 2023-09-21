@@ -9,9 +9,36 @@ a.nav-link {
 }
 
   /* Standard font is set here by default */
-h1, h2, h3, p, a {
-  font-family: 'Roboto', sans-serif;
+@font-face {
+    font-family: "Monofonto";
+    src: url("../assets/monofontorg.otf") format("opentype");
 }
+
+@font-face {
+  font-family: "Monofonto";
+  src: url("../assets/timesromance.otf") format("opentype");
+}
+
+button,
+h1,
+h2,
+h3,
+p,
+a,
+input
+{
+  font-family: "Monofonto", fallback, sans-serif;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+/* a {
+  font-family: "Times Romance", serif; 
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+} */
 
 /* Fill in gap at top above navbar where there normally is margin & causes white color border (Might be bad) */
 /* #app {

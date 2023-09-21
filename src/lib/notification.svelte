@@ -37,7 +37,7 @@
   top: -10px;
   left: 50%;  /* move the left edge to the center of the viewport */
   transform: translateX(-50%);  /* move it back by half its own width */
-  width: 25%;
+  width: calc(25% + 10rem);
   background-color: #4CAF50;
   color: white;
   text-align: center;

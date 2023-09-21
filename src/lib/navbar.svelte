@@ -2,7 +2,7 @@
   import { Router, Link, Route } from "svelte-routing";
   import Home from "../routes/home.svelte";
   import Mypage from "../routes/mypage.svelte";
-  import Builder from "../routes/builder.svelte";
+  import Editor from "../routes/editor.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
   import NotFound from "../routes/notfound.svelte";
@@ -144,7 +144,7 @@
             bind:this={menuElement}
           >
             {#if isLoggedIn}
-              <Link to="/builder" class="nav-link"><a>Builder</a></Link>
+              <Link to="/editor" class="nav-link"><a>Editor</a></Link>
               <Link to="/" class="nav-link" on:click={logOutClick}
                 ><a>Log out</a></Link
               >
@@ -172,7 +172,7 @@
 
       <div>
         <Route path="/" component={Home}/>
-        <Route path="/builder" component={Builder} />
+        <Route path="/editor" component={Editor} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/mypage" component={Mypage} />
@@ -182,8 +182,8 @@
   </nav>
 {/if}
 
-<SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
-<FailedNotif bind:showBar={ShowFailedBar} message="Login error." color="#c22d2d" textShadow="#ff0037"/>
+<SuccessNotif bind:showBar={showSuccessBar} message="Success!" color="#2dc23c" textShadow="#00ff48"/>
+<FailedNotif bind:showBar={ShowFailedBar} message="Error" color="#c22d2d" textShadow="#ff0037"/>
 
 <!-- 
 Existing main color 1: #212a3e
@@ -263,7 +263,7 @@ Accent color (coral): #FF6B6B -->
   }
 
   /* Media query for small screens */
-  @media screen and (max-width: 568px) {
+  @media screen and (max-width: 800px) {
     .nav-links-right {
       box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
       display: none;

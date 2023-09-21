@@ -210,6 +210,19 @@
     });
   }
 
+  // Updates all the contents for public and saves it on aws server
+  function updatePageChanges(key, initialValue) {
+    // const storedValue = localStorage.getItem(key);
+    // const initial = storedValue ? JSON.parse(storedValue) : initialValue;
+    // const store = writable(initial);
+
+    // store.subscribe(($value) => {
+    //     localStorage.setItem(key, JSON.stringify($value));
+    // });
+
+    // return store;
+  }
+
   // Sets the bg color behind the navbar (funky solution)
   onMount(() => {
     // DispatchEvent changes color upon load
@@ -220,7 +233,7 @@
 <div class="body">
   <div class="outer-container">
     <div class="body-container">
-      <div class="stats">
+      <div class="page-editor-text">
         <p style="">Page editor</p>
         <CopyToClipboard />
         <!-- <p style="">Followers: 1276</p> -->
@@ -297,7 +310,21 @@
       </div>
       <br />
       <br />
+      <br />
+      <br />
+      <button class="save-edits-btn" on:click={() => updatePageChanges()}
+        >Publish</button
+      >
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
     </div>
+    <br />
+
   </div>
 
   {#each Array($containerCount) as _, index (index)}
@@ -347,19 +374,12 @@ V2:
 -->
 
 <style>
-  @font-face {
+@font-face {
     font-family: "Monofonto";
-    src: url("/fonts/monofonto rg.otf") format("opentype");
-  }
+    src: url("../assets/monofontorg.otf") format("opentype");
+}
 
-  h1,
-  h2,
-  h3,
-  p,
-  a {
-    font-family: "Monofonto", fallback, sans-serif;
-  }
-
+  input,
   h1,
   h2,
   p {
@@ -408,10 +428,10 @@ V2:
     cursor: text;
   }
 
-  .stats {
+  .page-editor-text {
     background-color: #2c3a53;
     padding: 1.5rem;
-    font-size: calc(1em + 0.5vw);
+    font-size: calc(1.3em + 0.5vw);
     border-radius: 0.5rem;
     display: flex;
     background-color: #27324b;
@@ -420,17 +440,17 @@ V2:
     box-shadow: 0px 3px 3px 2px rgba(0, 0, 0, 0.05);
   }
 
-  .stats p {
+  .page-editor-text p {
     margin-bottom: 0;
   }
 
   .arrow-btn {
     height: 50%;
-    margin-top: 1.5rem;
+    margin-top: 1.8rem;
     border: none;
     background: none;
     padding: 0.8rem 1.3rem;
-    font-size: calc(1.5em + 0.3vw);
+    font-size: calc(1em + 1vw);
     background-color: #27324b;
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.15);
     color: white;
@@ -474,6 +494,7 @@ V2:
     margin-top: 4rem;
     font-size: 1.2em;
     color: #bebebe;
+    padding: 0.5rem;
   }
 
   .edit-button-btn:hover {
@@ -533,5 +554,25 @@ V2:
   .modal-btn-text {
     flex: 1;
     text-align: center;
+  }
+
+  .save-edits-btn {
+    padding: 0.5rem 1rem;
+    font-size: 2em;
+    border: none;
+    border-radius: 1rem;
+    color: rgb(240, 240, 240);
+    background-color: #d69d32;
+    border-bottom: 1px solid rgb(148, 92, 7); /* 2px width, solid style, red color */
+    border-right: 1px solid rgb(148, 92, 7);
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 3rem;
+    float: right;
+  }
+
+  .save-edits-btn:hover {
+    transition: 0.05s ease-in-out;
+    background-color: #f1aa25;
   }
 </style>
