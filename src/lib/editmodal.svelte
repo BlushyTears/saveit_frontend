@@ -14,11 +14,6 @@
     function displayPreview() {
       previewModal = !previewModal;
     }
-
-    function saveContentChanges() {
-      console.log('Content Saved', $inputTextList);
-      dialog.close();
-    }
 </script>
   
 <dialog
@@ -51,10 +46,10 @@
         X
       </button>
       <div
-        style="font-size: 1.5em; width: calc(10vw + 10rem);"
+        style="font-size: 2em; width: calc(10vw + 10rem);"
       >
 
-      <h3 style="margin: 0;" contenteditable="true" bind:innerText={$buttonNames[index]}>Title</h3>
+      <h3 style="margin: 0; color: black;" contenteditable="true" bind:innerText={$buttonNames[index]}>Title</h3>
 
       </div>
       <br />
@@ -63,7 +58,6 @@
           <button >B</button>
           <button >I</button>
           <button >U</button>
-
         </div>
       </div>
       <hr />

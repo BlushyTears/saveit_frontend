@@ -53,10 +53,11 @@
       const newArr = [...arr];
       newArr.push([
         {
-          button: { color: "#ff0000", alpha: 1.0 },
-          hover: { color: "#00ff00", alpha: 1.0 },
-          border: { color: "#0000ff", alpha: 1.0 },
-          shadow: { color: "#ff00ff", alpha: 1.0 },
+          // These are intentionally hardcoded values whenever a new button is made
+          button: { color: "#fac3f5", alpha: 1.0 },
+          hover: { color: "#f0adea", alpha: 1.0 },
+          border: { color: "#a17a9d", alpha: 0.5 },
+          shadow: { color: "#d426c2", alpha: 0.1 },
         },
       ]); // Add a new color set in a nested array
       return newArr;
@@ -110,10 +111,12 @@
 
     // Decrease btnCount
     btnCount.update((n) => (n > 0 ? n - 1 : 0));
+    // Update to make sure consistency between stores (important for removal)
+    updateAllStores();
   }
 
   // Vital function for making sure the store variables are all reset upon refreshing site
-  // Without this, buttons cannot be opened because browser gets confused if a modal is open or not
+  // Without this, buttons cannot be opened because browser gets confused if a modal is open or not for instance
   function updateAllStores() {
   // Ensure showModal and showEditBtnModal have the correct number of elements
   const length = $buttonNames.length;
@@ -126,7 +129,7 @@
       arr.push([
         {
           button: { color: "#ff0000", alpha: 1.0 },
-          hover: { color: "#00ff00", alpha: 1.0 },
+          hover: { color: "#ff0000", alpha: 1.0 },
           border: { color: "#0000ff", alpha: 1.0 },
           shadow: { color: "#ff00ff", alpha: 1.0 },
         },
@@ -140,7 +143,6 @@
   btnCount.set(length);
   containerCount.set(length);
 }
-
 
   function swapButtons(index, direction) {
     console.log("Before swap", $buttonColors);
@@ -190,7 +192,6 @@
   // Which means it's now false, and thus the border is deleted and the components come back up again 100000x's a second
   let hoveredIndex = null;
   let canSetToNull = true; // Flag to control cooldown
-  let cooldownTime = 25; // Time in milliseconds for cooldown
 
   function onHover(index) {
     if (canSetToNull) {
@@ -201,11 +202,7 @@
   function onLeave() {
     if (canSetToNull) {
       hoveredIndex = null;
-      canSetToNull = false; // Set the flag to false, starting the cooldown
-
-      setTimeout(() => {
-        canSetToNull = true; // Reset the flag after cooldown time
-      }, cooldownTime);
+      canSetToNull = false; 
     }
   }
 
@@ -277,9 +274,7 @@
 
         {#each $buttonNames as name, index (index)}
           <div
-            class="btn-container {hoveredIndex === index
-              ? 'arrow-highlighter'
-              : ''}"
+            class="btn-container {hoveredIndex === index}"
           >
             <button
               class="arrow-btn"
@@ -481,13 +476,6 @@ V2:
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.35);
   }
 
-  .arrow-highlighter {
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
-    transition: 0.1s ease-in-out;
-    padding: 0 1rem 1rem 1rem;
-    margin-top: 1rem;
-  }
-
   /* Button styling starts */
   .button-component {
     font-size: calc(0.6em + 0.2vw);
@@ -584,8 +572,7 @@ V2:
     border-radius: 1rem;
     color: rgb(240, 240, 240);
     background-color: #d69d32;
-    border-bottom: 1px solid rgb(148, 92, 7); /* 2px width, solid style, red color */
-    border-right: 1px solid rgb(148, 92, 7);
+    border: 1px solid rgb(148, 92, 7); /* 2px width, solid style, red color */
     margin-bottom: 0.5rem;
     margin-right: 0.5rem;
     margin-top: 3rem;
@@ -594,6 +581,7 @@ V2:
 
   .save-edits-btn:hover {
     transition: 0.05s ease-in-out;
-    background-color: #f1aa25;
+    background-color: #ce8c13;
+    border: 2px solid rgb(219, 134, 6); /* 2px width, solid style, red color */
   }
 </style>

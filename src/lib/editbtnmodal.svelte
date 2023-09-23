@@ -2,13 +2,18 @@
   export let showModal = false;
   export let index = 0;
   import Colorpicker from "./colorpicker.svelte";
+  import {buttonNames, buttonColors} from "../lib/builderstore";
 
-  import {buttonNames} from "../lib/builderstore";
-  
+
+
   let dialog;
   let dragging = false;
   let isEditing = false;
 
+  // Manually implement hover button instead of :hover pseudo element since
+  // Svelte can't reactively do that.
+  let isHovering = false;
+  
   // Disabled until we add fonts again
   // let boxes = ["F", "O", "N", "T", "S"];
 
@@ -19,8 +24,66 @@
   function saveEdit() {
     isEditing = false;
   }
+  
+
+  function toggleHover(isHovered) {
+    isHovering = isHovered;
+  }
 
   $: if (dialog && showModal) dialog.showModal(index);
+
+  // console.log($buttonColors[index][0].button.color);
+  // console.log($buttonColors[index][0].button.alpha);
+
+  // console.log($buttonColors[index][0].hover.color);
+  // console.log($buttonColors[index][0].hover.alpha);
+
+  // console.log($buttonColors[index][0].border.color);
+  // console.log($buttonColors[index][0].border.alpha);
+
+  // console.log($buttonColors[index][0].shadow.color);
+  // console.log($buttonColors[index][0].shadow.alpha);
+
+
+  function hexToRgba(hex, alpha) {
+    // Ensure the alpha is between 0 and 1
+    alpha = Math.min(1, Math.max(0, alpha));
+    
+    // Ensure the hex string has the right format
+    if (hex.charAt(0) === '#') {
+        hex = hex.substr(1);
+    }
+    
+    // Check the length of the hex string
+    if (hex.length !== 6 && hex.length !== 8) {
+        console.error('Invalid hex color string');
+        return null;
+    }
+    
+    // Extract the red, green, blue components from the hex string
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    // If the hex string contains alpha, extract it, else default alpha to 1
+    const a = hex.length === 8 ? parseInt(hex.substring(6, 8), 16) / 255 : 1;
+    
+    // Combine the components and the input alpha into an rgba string
+    return `rgba(${r}, ${g}, ${b}, ${alpha * a})`;
+}
+
+
+let btnColor = "";
+let btnHover = "";
+let btnBorder = "";
+let btnShadow = "";
+
+$: {
+    btnColor = hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha);
+    btnHover = hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha);
+    btnBorder = hexToRgba($buttonColors[index][0].border.color, $buttonColors[index][0].border.alpha);
+    btnShadow = hexToRgba($buttonColors[index][0].shadow.color, $buttonColors[index][0].shadow.alpha);
+  }
 
 </script>
 
@@ -58,15 +121,33 @@
         <div style="display: flex;">
           <h1>
             {#if isEditing}
-              <input
-                bind:value={$buttonNames[index]}
-                class="editing-text"
-              />
-            {:else}
-            <button
-            on:click={() => startEditing()}
+            <input
+            bind:value={$buttonNames[index]}
+            class="editing-text"
+            on:mouseover={() => toggleHover(true)}
+            on:mouseout={() => toggleHover(false)}
+            on:focus={() => toggleHover(true)}
+            on:blur={() => toggleHover(false)}
+            style="
+              background-color: {isHovering ? btnHover : btnColor};
+              border: 2px solid {btnBorder};
+              {isHovering ? `box-shadow: 0px 0px 5px 2px ${btnShadow};` : ''}
+            "
+          />
+          {:else}
+          <button
+            on:click={startEditing}
             on:keydown={(e) => e.key === 'Enter' && startEditing()}
             class="edited-text"
+            on:mouseover={() => toggleHover(true)}
+            on:mouseout={() => toggleHover(false)}
+            on:focus={() => toggleHover(true)}
+            on:blur={() => toggleHover(false)}
+            style="
+              background-color: {isHovering ? btnHover : btnColor};
+              border: 2px solid {btnBorder};
+              {isHovering ? `box-shadow: 0px 0px 5px 2px ${btnShadow};` : ''}
+            "
           >
             {$buttonNames[index]}
           </button>
@@ -85,7 +166,6 @@
           >
           </button>
         </div>
-      
       <br />
 
       <div class="color-pickers">
@@ -110,12 +190,12 @@
           </div>
         {/each}
       </div> -->
-
+      
       <hr>
+
       <button class="save-edits-btn" on:click={() => saveEdit()} on:click={() => dialog.close()}
         >Save ✉</button
       >
-
     </div>
   </div>
 </dialog>
@@ -185,7 +265,6 @@
     font-size: calc(1.15em + 0.5vw);
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #27324b;
     border: none;
     cursor: text;
     max-width: clamp(15vw + 5rem, calc(25vw + 1rem), 30vw + 15rem);
@@ -197,9 +276,9 @@
     width: calc(5rem + 15vw);
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #212a3e;
     border: none;
     cursor: text;
+    transition: 0.1s ease-out;
   }
 
   .edited-text:hover {
