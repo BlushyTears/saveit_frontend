@@ -10,7 +10,7 @@
   import ProfileImg from "../assets/profile.png";
   import cookieImage from "../assets/cookies.png";
   import coffeeImage from "../assets/coffee.png";
-  import Logo from "../assets/logo.jpg";
+  import Logo from "../assets/backlogo.png";
   import { onDestroy, onMount } from "svelte";
   import { backend_url } from "../lib/urls";
   import { hexToRgba } from "../lib/helpers.js";
@@ -53,6 +53,10 @@
 
   function toggleHover(isHovered) {
     isHovering = isHovered;
+  }
+
+  function navigateToEditor() {
+    window.location.href = '/editor';
   }
   
 
@@ -154,6 +158,9 @@
   class="output-body"
   style="height: 100vh; background-color: {hexToRgba($bodyBackgroundColor.bodybackground.color, $bodyBackgroundColor.bodybackground.alpha)};"
 >
+    <a href="javascript:void(0);" on:click={navigateToEditor} class="logo-container">
+    <img src={Logo} alt="Logo" class="site-logo" />
+  </a>
   <br />
 
   <h1 class="editing-text" style="margin-top: 2rem; background: none;">
@@ -194,9 +201,30 @@
   {/each}
   <br />
 
+
 </div>
 
+
+
 <style>
+
+.logo-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.site-logo {
+  width: 120px; /* You can adjust the size if needed */
+  height: auto;
+  cursor: pointer;
+}
+.site-logo:hover {
+    background-color: rgba(255, 255,255, 0.1);
+    transform: 0.1s;
+}
+
   .editing-text {
     text-align: center;
     color: #f2f2f2;
@@ -240,6 +268,7 @@
     flex: 1;
     text-align: center;
   }
+  
 
 </style>
 
