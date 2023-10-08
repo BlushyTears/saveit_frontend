@@ -1,76 +1,73 @@
 <script lang="ts">
-  import { inputTextList, buttonNames } from "../lib/builderstore";
-  import { savedChanges } from "../lib/builderstore";
+  import { inputTextList, buttonNames } from "./builderstore"; // Add this import
+  import { savedChanges } from "./builderstore";
   import { onMount } from "svelte";
-  import Quill from "quill";
+  import Quillstance from "quill";
 
   export let showModal = false;
-  export let index = 1;
+  export let index = 1; // Add this prop to know which element to update
 
-  let quill: any;
-  // Because frontend frameworks are reactive sometimes they are also stupid. We need to use "tempText" variable for the content as long as its open
-  // and only upon close do we update the store, as stores being updated can cause the modal to lose focus otherwise.
-  let tempText = $inputTextList[index];
+  let quill_instance: any;
+
   let dialog;
+  // Dragging is to make sure the user doesn't hold mouse inside modal and let go mouse outside and accidentally close the modal (annoying)
   let dragging = false;
 
   $: if (dialog && showModal) dialog.showModal();
 
   function updateStoresAndClose() {
-    // Update the store with the tempText value and then reset tempText
-    $inputTextList[index] = tempText;
+    // Changes to false on purpose to make notification on close ready
     savedChanges.set(false);
     dialog.close();
   }
-  
-  const toolbarOptions = [
-    ['bold', 'italic', 'underline'], // toggled buttons
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'align': [] }],
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-];
 
-onMount(() => {
-    quill = new Quill(`.editor-${index}`, {
-      theme: 'snow',
-      modules: {
-          toolbar: toolbarOptions
+  let rawContent = "";
+
+  onMount(() => {
+  // Initialize Quill editor without a toolbar and in read-only mode
+  quill_instance = new Quillstance(`.preview-editor-${index}`, {
+    theme: 'snow',
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  });
+  
+  // Set the initial content of the Quill editor using the API
+  quill_instance.clipboard.dangerouslyPasteHTML($inputTextList[index] || "");
+  rawContent = quill_instance.getText();
+
+  // Listen for text changes and look for URLs matching image formats
+  quill_instance.on('text-change', function(delta) {
+    delta.ops.forEach(op => {
+      if (op.insert) {
+        const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
+        if (match) {
+          setTimeout(() => {  // We use a timeout to avoid changing the content while in the middle of processing a change.
+            const imageUrl = match[1];
+            const position = quill_instance.getText().indexOf(imageUrl);
+            if (position !== -1) {
+              quill_instance.deleteText(position, imageUrl.length);
+              quill_instance.insertEmbed(position, 'image', imageUrl);
+            }
+          }, 0);
+        }
       }
     });
+  });
 
-quill.on('text-change', function(delta) {
-  delta.ops.forEach(op => {
-    if (op.insert) {
-      const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
-      if (match) {
-        setTimeout(() => {  // We use a timeout to avoid changing the content while in the middle of processing a change.
-          const imageUrl = match[1];
-          const position = quill.getText().indexOf(imageUrl);
-          if (position !== -1) {
-            quill.deleteText(position, imageUrl.length);
-            quill.insertEmbed(position, 'image', imageUrl);
-          }
-        }, 0);
-      }
-    }
+  // Update the inputTextList when there are changes to the editor content
+  quill_instance.on("text-change", () => {
+    $inputTextList[index] = quill_instance.root.innerHTML;
   });
 });
 
-    quill.root.innerHTML = tempText;
+// Reactive statement to update the Quill editor content based on store changes
+$: if (quill_instance && $inputTextList[index] !== quill_instance.root.innerHTML) {
+  quill_instance.clipboard.dangerouslyPasteHTML($inputTextList[index]);
+}
 
-    quill.on("text-change", () => {
-      tempText = quill.root.innerHTML;
-    });
-  });
 </script>
-
-<svelte:head>
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-</svelte:head>
 
 <dialog
   bind:this={dialog}
@@ -99,10 +96,8 @@ quill.on('text-change', function(delta) {
     <div on:click|stopPropagation on:keydown|stopPropagation>
       <button
         class="close-modal-btn"
-        on:click={() => {
-          updateStoresAndClose();
-          dialog.close();
-        }}
+        on:click={() => updateStoresAndClose()}
+        on:click={() => dialog.close()}
       >
         X
       </button>
@@ -120,9 +115,10 @@ quill.on('text-change', function(delta) {
         <!-- Contenteditable = false makes it so you're forced to press on top and create lines with enter.
         But this is on purpose as otherwise it screws the forum editor up when you try to 
         make a text bold, it puts the editor-mouse at the start without bolding the text for instance -->
-        <div class="slot-wrapper" contenteditable="false" style="width: 100%;">
-          <div class={`editor editor-${index}`} style="width: 100%; font-size: 18px;"></div>
+        <div class="preview-slot-wrapper" contenteditable="false" style="width: 100%;">
+          <div class={`preview-editor preview-editor-${index}`} style="width: 100%; font-size: 18px;"></div>
         </div>
+        <hr />
         <br />
       </div>
     </div>
@@ -130,7 +126,7 @@ quill.on('text-change', function(delta) {
 </dialog>
 
 <style>
-.editor {
+.preview-editor {
     min-height: 600px;
     max-height: 800px;
     overflow-y: auto;

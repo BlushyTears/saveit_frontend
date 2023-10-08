@@ -16,16 +16,17 @@
 
 <script>
   import { Router, Link, Route } from "svelte-routing";
+  import { onMount } from "svelte";
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
   import Accordion from "../lib/accordation.svelte";
   import Example_Page from "../assets/examplepage.png";
   import Carusel from "../lib/carusel.svelte";
-  import { onMount } from "svelte";
   import Cooking from "../assets/cooking.jpg";
-
   import SuccessNotif from '../lib/notification.svelte';
   import FailedNotif from '../lib/notification.svelte';
+  import {savedChanges} from '../lib/builderstore';
+  import { backend_url } from "../lib/urls";
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
@@ -37,9 +38,6 @@
   function showFailedNotification() {
     ShowFailedBar = true;
   }
-
-  // Svelte sucks balls at exporting because it turns everything into a god damn store with objects instead of what you variable you actually assigned to them
-  import { backend_url, frontend_url } from "../lib/urls";
 
   let claimLink = "";
 
@@ -53,13 +51,14 @@
 
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
-    // DispatchEvent changes color upon load
+    // We dont have a way of assuming the user didn't wanna save changes if he does leave unsaved, so we set it true upon load instead
+    savedChanges.set(true);
 
+    // DispatchEvent changes color upon load
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
 
     // In case the user has multiple google accounts, we need to give it a unique name
-
     if (code) {
       fetch(backend_url + "/api/googleauth/", {
         method: "POST",
@@ -119,7 +118,6 @@
     />
 
   </section>
-
   <div>
     <form on:submit={handleSubmit} class="formBtnClaim">
       <input
@@ -127,7 +125,7 @@
         class="claimInput"
         bind:value={claimLink}
         required
-        placeholder="faveit/clusteredTomatoes"
+        placeholder="favedis/clusteredTomatoes"
       />
       <button class="claimButton" type="submit">Claim</button>
     </form>
@@ -150,7 +148,7 @@
         </h2>
         <br />
 
-        <p style="font-size: calc(1.4em + 0.5vw);">
+        <p style="font-size: calc(1.4em + 0.5vw); color: white;">
           Faveit is a hub of hubs where you explore new food and drink with
           others that have similar preferences to you in order to more
           effectively find what you like: You can follow creators and be
@@ -166,7 +164,7 @@
     <br />
 
     <div
-      style=" background-color: #3c9961; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
+      style=" background-color: #405683; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
         style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
@@ -177,9 +175,7 @@
     <br />
     <br />
     <br />
-
     <Carusel />
-
   </section>
 
   <section class="section4">
@@ -190,46 +186,88 @@
     class="section-4-container"
   >
     <h3
-      style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem;"
+      style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem; color: white;"
     >
       Q&A
     </h3>
-  
     <Accordion
       title="What is the core concept behind Faveit?"
       content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
     />
-  
     <Accordion
       title="Is there an opportunity for creators to monetize their content?"
       content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
     />
-  
     <Accordion
       title="How can I begin my journey on Faveit?"
       content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
     />
-  
     <Accordion
       title="What benefits does Faveit offer to users who are not aspiring food influencers?"
       content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
     />
   </div>
-  
-  </section>
+</section>
 
   <section class="footer">
     <br />
-    <h3 style="font-size: 2em;">Terms of service</h3>
+    <h3 style="font-size: 2em; color: white;">        Terms of Service for Favedis</h3>
 
     <div style="max-width: 70%; margin: 0 auto;">
       <p style="font-size: 1em;">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus
-        aliquam recusandae reiciendis ea, voluptates id, molestiae sequi
-        repellendus voluptatem corrupti modi expedita rerum perferendis pariatur
-        quisquam, totam magni quis facilis nulla nesciunt vitae quod atque quam
-        vero. Praesentium quaerat veniam rem sed aperiam eius accusamus quas,
-        facere exercitationem perspiciatis minima!
+        1. Acceptance of Terms
+        
+        By accessing and using this website, users agree to comply with and be bound by these terms and conditions.
+        <br />
+        <br />
+        2. Changes to Terms
+        
+        We reserve the right to modify or replace these terms at any time. Users will be notified of significant changes.
+        <br />
+        <br />
+        3. Use of the Website & User-Generated Content
+        
+        Users can create, edit, and share recipes.
+        Users grant Favedis a non-exclusive, royalty-free, worldwide license to use, display, and distribute content they submit.
+        Prohibited behaviors: posting copyrighted content without permission, offensive or harmful content, etc.
+        We reserve the right to remove or edit any content at our own discretion.
+        <br />
+        <br />
+        4. Intellectual Property
+        
+        All website content, excluding user-generated content, is owned by Favedis and protected by copyright laws.
+        Users retain rights to the content they create but grant the website the rights mentioned above.
+        <br />
+        <br />
+        5. No Warranty & Limitation of Liability
+        
+        The website and its services are provided "as is." We do not guarantee the accuracy, completeness, or timeliness of any content.
+        We are not responsible for any data loss or corruption, and users are advised to back up their recipes/content.
+        To the fullest extent permissible by law, Favedis disclaims all warranties and will not be liable for any damages of any kind arising from the use of this site.
+        <br />
+        <br />
+        6. Termination
+        
+        Conditions under which you can terminate a user's access.
+        Users can terminate their account at any time.
+        <br />
+        <br />
+        7. No Refund Policy
+        
+        If users choose to purchase any services or features, they acknowledge and agree that all sales are final and no refunds will be granted.
+        <br />
+        <br />
+        8. Governing Law
+        
+        This ToS and any disputes arising out of it will be governed by the laws of the European Union, without regard to its conflict of laws rules.
+        <br />
+        <br />
+        9. Indemnification
+        
+        Users agree to defend, indemnify, and hold harmless Favedis and its employees from any claims or damages, including legal fees, resulting from their use of the website or breach of these terms.
+        <br />
+        <br />
+        10. Contact Information
       </p>
       <br />
       <br />
@@ -279,7 +317,7 @@
   }
 
   .claimInput {
-    width: calc(5rem + 10vw);
+    width: calc(3rem + 20vw);
     padding: 1rem 2rem;
     font-size: calc(1.2em + 0.5vw);
     border: 1px solid #ccc;
@@ -290,7 +328,7 @@
     margin-left: 0.2rem;
     padding: 1rem 2rem;
     font-size: calc(1.2em + 0.5vw);
-    background-color: #6ab187;
+    background-color: #3c9961;
     color: white;
     border: none;
     border-radius: 1rem;
@@ -298,8 +336,8 @@
   }
 
   .claimButton:hover {
-    background-color: #6fd499;
-    transition: 0.15s ease-in-out;
+    background-color: #2fb966;
+    transition: 0.1s ease-in-out;
   }
 
   /* Section 1 END */
@@ -308,9 +346,23 @@
 
   .section2 {
     height: calc(65rem + 10vw);
-    background-color: #8ea8c3;
-    background: #8ea8c3;
+    background-color: #FF8C00;
   }
+
+  /* Curvy boii */
+  .section3::after {
+    content: "";
+    position: absolute;
+    width: 150%;
+    top: 0;
+    border-radius: 150% 150%;
+    left: 0;
+    overflow-x: hidden;
+    border-top: 20rem solid transparent;
+    background: #FF8C00;
+    transform: translate(-15%, -10rem);
+  }
+
   
   .section2 p {
     margin: 0 auto;
@@ -325,11 +377,12 @@
     margin-top: 5rem;
     display: flex;
     text-align: center;
+    
   }
 
   /* Only image contents within the main container */
   .section2-illustration {
-    margin-top: 8rem;
+    margin-top: 15rem;
     margin-left: 17vw;
     width: calc(20vw + 20rem);
     height: calc(20vw + 20rem);
@@ -337,8 +390,9 @@
 
   /* Only text contents within the main container */
   .text-chunk-section2 {
+    
     max-width: 30%;
-    margin-top: 20rem;
+    margin-top: 21rem;
   }
 
   /* Section 2 END */
@@ -347,21 +401,8 @@
   /* Section 2: */
   .section3 {
     min-height: calc(30vw + 70rem);
-    background: linear-gradient(180deg, #8acca6, #30925b);
+    background: linear-gradient(180deg, #758ab6, #394867);
     position: relative;
-  }
-
-  .section3::after {
-    content: "";
-    position: absolute;
-    width: 150%;
-    top: 0;
-    border-radius: 150% 150%;
-    left: 0;
-    overflow-x: hidden;
-    border-top: 20rem solid transparent;
-    background: #8ea8c3;
-    transform: translate(-15%, -10rem);
   }
 
   /* Section 3 END */
@@ -378,6 +419,7 @@
 
   /* FOOTER START */
   .footer {
+    color: white;
     background-color: #666666;
     font-size: 1em;
     min-height: 15rem;
@@ -390,7 +432,7 @@
 
   @media screen and (max-width: 1200px) {
     .section2{
-      height: 65rem;
+      height: 75rem;
     }
     .text-chunk-section2 {
       margin: 0 auto;

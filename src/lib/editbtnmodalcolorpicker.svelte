@@ -1,4 +1,5 @@
 <script lang="ts">
+  // bad practice to directly import and hard code because it makes this component not reusable but its too annoying to do properly with 2way bindings
   import { buttonColors } from "../lib/builderstore";
 
   export let nameType: string = "Type";

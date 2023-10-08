@@ -1,12 +1,12 @@
 <script>
   import { onMount } from "svelte";
+  import { time_ranges_to_array } from "svelte/internal";
+
   import Spinner from "../lib/loadspinner.svelte";
-
-  import { backend_url, frontend_url } from "../lib/urls";
-
   import SuccessNotif from '../lib/notification.svelte';
   import FailedNotif from '../lib/notification.svelte';
-  import { time_ranges_to_array } from "svelte/internal";
+  import { backend_url, frontend_url } from "../lib/urls";
+  import GLogo from "../assets/glogo.png";
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
@@ -91,12 +91,13 @@
 <div class="all-login-form">
   <div class="login-form">
     <div style="display: flex;" class="login-title">
-      <h2>Login Form</h2>
+      <h2 style="color: white;">Login Form</h2>
       {#if isLoading}
         <Spinner />
       {/if}
+      <br />
     </div>
-    <form on:submit={loginBtn}>
+    <form style=" margin-top: 0.3rem;" on:submit={loginBtn}>
       <input
         type="text"
         id="username"
@@ -114,9 +115,11 @@
       <button type="submit">Login</button>
     </form>
   </div>
-  <button class="google-login-btn" on:click={loginWithGoogle}
-    >Login with Google</button
-  >
+  <button class="google-login-btn" on:click={loginWithGoogle}>
+    <img src={GLogo} alt="Google Icon" class="google-icon" />
+    Login with Google
+  </button>
+  
 </div>
 
 <style>
@@ -151,35 +154,46 @@
   }
 
   .login-form button {
+    border: none;
     display: block; /* Display block to take full width */
     width: 100%;
-    padding: 0.5rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     font-size: 1.1em;
     background-color: #bf15e9;
     color: #fff;
-    border: none;
+    border-bottom: 2px solid #ac1ecf;
     border-radius: 2rem;
     cursor: pointer;
   }
   .login-form button:hover {
-    background-color: #8b0aac;
+    background-color: #ad11d4;
   }
 
   .google-login-btn {
+    border: none;
+    display: flex;
+    align-items: center; /* Vertically center align items */
+    justify-content: center;
     width: 100%;
     margin-top: 0.3rem;
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem;
     font-size: 1.1em;
-    background-color: aqua;
+    background-color: #4285F4;
     color: #fff;
-    border: none;
     border-radius: 2rem;
     cursor: pointer;
+    border-bottom: 2px solid #3670ce; /* This adds a white border */
   }
 
   .google-login-btn:hover {
-    background-color: rgb(0, 172, 172);
+    background-color: #3c78d8;
   }
+
+  .google-icon {
+    background-color: #ffffff;
+    border-radius: 2rem;
+    margin-right: 0.5rem; /* Space between the icon and the text */
+}
 
   @media screen and (max-width: 568px) {
     .all-login-form {

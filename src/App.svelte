@@ -1,46 +1,42 @@
 <script>
-  import MyPage from "./routes/mypage.svelte";
-
+  import GenPage from "./routes/genpage.svelte";
   import Navbar from "./lib/navbar.svelte";
-  import { onMount } from "svelte";
 
-  import { currentSetting } from './lib/navbarStore.js';
+  let current;
 
-  let current; 
-  currentSetting.subscribe(value => {
-    current = value;
-  });
+  $: {
+    let currentUrl = window.location.pathname;
 
-  onMount(() => {
-    let currentUrl = window.location.href;
-
-    if (currentUrl.endsWith('/mypage')) {
-      currentSetting.set('mypage');
-    } else if (currentUrl.endsWith('/oauth')) {
-      currentSetting.set('oauth');
-    } else {
-      // Set to navbar or any other default behavior
-      currentSetting.set('navbar');
+    if (currentUrl.endsWith("/oauth")) {
+      current = "oauth";
+    } 
+    else if (currentUrl.endsWith("/navbar")) {
+      current = "navbar";
+    } 
+    else if (currentUrl.endsWith("/personal")) {
+      current = "personal";
     }
-  });
-
+    else if (currentUrl.endsWith("/editor")) {
+      current = "editor";
+    }
+    else if (currentUrl.endsWith("/")) {
+      current = "home";
+    } else {
+      current = "genpage";
+    }
+}
 </script>
 
 <div class="app-container">
-  
-
-{#if current === 'mypage'}
-  <MyPage />
-{:else if current === 'navbar'}
-  <Navbar />
-{/if}
-
+  {#if current === "genpage"}
+    <GenPage />
+  {:else if current === "navbar" || current === "home" || current === "personal" || current === "editor"}
+    <Navbar />
+  {/if}
 </div>
 
 <style>
-
-.app-container {
-  width: 100%;
-}
-
+  .app-container {
+    width: 100%;
+  }
 </style>

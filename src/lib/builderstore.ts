@@ -19,17 +19,35 @@ interface ColorSet {
   };
 }
 
-  
 export const buttonColors = writable<ColorSet[][]>([]);
+
+interface ColorMiscSet {
+  bodybackground: {
+    color: string;
+    alpha: number;  // Adding alpha to store
+  };
+}
+
 export const buttonNames = writable([]);
 export const showModal = writable([false]);
+export const showPreviewModal = writable([false]);
 export const showEditBtnModal = writable([false]);
-export const editedText = writable("Ellie's Recipes!");
+export const showEditBgColorModal = writable(false);
+export const editedText = writable('My recipes');
 export const inputTextList = writable([""]); // should have the same initial length as buttonNames
 export const btnCount = writable(0); // Initialize as an integer
 export const containerCount = writable(0); // Initialize as an integer
 
-const stores = { buttonColors, buttonNames, showModal, showEditBtnModal, editedText, inputTextList};
+export const bodyBackgroundColor = writable<ColorMiscSet>({
+  bodybackground: {
+    color: '#FFFFFF',  // initialize with a valid color value
+    alpha: 1,  // initialize alpha to 1
+  }
+});
+
+export const stores = { buttonColors, buttonNames, showModal, 
+                      showPreviewModal, showEditBtnModal, editedText, 
+                      inputTextList, showEditBgColorModal, bodyBackgroundColor};
 
 export function initializeStoresWithLocalStorage() {
   Object.keys(stores).forEach(key => {
@@ -48,5 +66,5 @@ export function initializeStoresWithLocalStorage() {
   });
 }
 
-
-initializeStoresWithLocalStorage();
+export const savedChanges = writable(true);
+export const currentRoute = writable(null);

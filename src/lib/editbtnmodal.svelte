@@ -1,20 +1,19 @@
 <script>
   export let showModal = false;
   export let index = 0;
-  import Colorpicker from "./colorpicker.svelte";
+  import Colorpicker from "./editbtnmodalcolorpicker.svelte";
   import {buttonNames, buttonColors} from "../lib/builderstore";
-
-
+  import {savedChanges} from "../lib/builderstore";
 
   let dialog;
   let dragging = false;
   let isEditing = false;
 
-  // Manually implement hover button instead of :hover pseudo element since
-  // Svelte can't reactively do that.
+  // Manually implement hover button instead of css :hover pseudo element since
+  // Svelte can't reactively do that here.
   let isHovering = false;
   
-  // Disabled until we add fonts again
+  // Disabled until we add fonts options again
   // let boxes = ["F", "O", "N", "T", "S"];
 
   function startEditing() {
@@ -24,26 +23,12 @@
   function saveEdit() {
     isEditing = false;
   }
-  
 
   function toggleHover(isHovered) {
     isHovering = isHovered;
   }
 
   $: if (dialog && showModal) dialog.showModal(index);
-
-  // console.log($buttonColors[index][0].button.color);
-  // console.log($buttonColors[index][0].button.alpha);
-
-  // console.log($buttonColors[index][0].hover.color);
-  // console.log($buttonColors[index][0].hover.alpha);
-
-  // console.log($buttonColors[index][0].border.color);
-  // console.log($buttonColors[index][0].border.alpha);
-
-  // console.log($buttonColors[index][0].shadow.color);
-  // console.log($buttonColors[index][0].shadow.alpha);
-
 
   function hexToRgba(hex, alpha) {
     // Ensure the alpha is between 0 and 1
@@ -85,6 +70,11 @@ $: {
     btnShadow = hexToRgba($buttonColors[index][0].shadow.color, $buttonColors[index][0].shadow.alpha);
   }
 
+
+  function updateStore() {
+      savedChanges.set(false);
+    }
+
 </script>
 
 <dialog
@@ -93,12 +83,14 @@ $: {
   on:mousedown={() => (dragging = true)}
   on:mouseup={() => {
     if (dragging) {
+      updateStore();
       dialog.close();
     }
     dragging = false;
   }}
   on:keydown={(e) => {
     if (e.key === "Escape") {
+      updateStore();
       dialog.close();
     }
   }}
@@ -111,8 +103,8 @@ $: {
   >
     <div on:click|stopPropagation on:keydown|stopPropagation>
       <button
-        style="margin: 0;"
         class="close-modal-btn"
+        on:click={() => updateStore()}
         on:click={() => dialog.close()}
       >
         X
@@ -179,7 +171,7 @@ $: {
       </div>
       <br />
 
-      <!-- Future font layout until we actually add them, not really needed for MVP. Needs: 
+      <!-- Future font layout disabled (DON'T REMOVE) until we actually add them, its just not really needed for MVP. Needs: 
       let boxes = ["F", "O", "N", "T", "S"];
       in <script> order to work, also has css ready -->
       <!-- <div class="font-boxes">
@@ -192,10 +184,6 @@ $: {
       </div> -->
       
       <hr>
-
-      <button class="save-edits-btn" on:click={() => saveEdit()} on:click={() => dialog.close()}
-        >Save ✉</button
-      >
     </div>
   </div>
 </dialog>
@@ -238,6 +226,8 @@ $: {
   }
 
   .close-modal-btn {
+    color: black;
+    font-size: 1em;
     border-radius: 50%;
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
     padding: 0.8rem;
@@ -361,27 +351,7 @@ $: {
     border-style: solid;
     border-color: gray transparent transparent transparent;
   }
-
-  .save-edits-btn {
-    width: 20%;
-    padding: 0.5rem;
-    font-size: 1.3em;
-    border: none;
-    border-radius: 1rem;
-    background-color: #d69d32;
-    border-bottom: 1px solid rgb(148, 92, 7); /* 2px width, solid style, red color */
-    border-right: 1px solid rgb(148, 92, 7);
-    margin-bottom: 0.5rem;
-    float: right;
-  }
-
-  .save-edits-btn:hover {
-    transition: 0.05s ease-in-out;
-    background-color: #f1aa25;
-  }
-
   /* Media queries: */
-
   @media only screen and (max-width: 1000px) {
     .color-pickers {
       display: block;

@@ -3,6 +3,8 @@
   import Layout from "./mypage.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
+  import GLogo from "../assets/glogo.png";
+
 
   import { backend_url, frontend_url } from "../lib/urls";
 
@@ -10,6 +12,8 @@
   let email = "";
   let password = "";
   let confirmPassword = "";
+
+  let isLoading = false;
 
   // function handleSubmit(event) {
   //     event.preventDefault();
@@ -68,11 +72,21 @@
       console.error("Error during registration:", error);
     }
   }
+
+  function loginWithGoogle() {
+    isLoading = true;
+    // Redirect to Google's OAuth 2.0 login
+    const googleClientId =
+      "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
+    const redirectUri = frontend_url;
+    const scope = "email profile openid";
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+  }
 </script>
 
 <div class="register-form">
-  <h2>Register Form</h2>
-  <form on:submit={handleSubmit}>
+  <h2 style="color: white;">Register Form</h2>
+  <form style=" margin-top: 0.5rem;" on:submit={handleSubmit}>
     <input
       type="text"
       id="username"
@@ -101,15 +115,24 @@
       required
       placeholder="Confirm Password"
     />
-    <button type="submit">Register</button>
+    <div class="btn-container">
+      <button class="register-btn" type="submit">Register</button>
+      <button class="google-login-btn" on:click={loginWithGoogle}>
+        <img src={GLogo} alt="Google Icon" class="google-icon" />
+        Google Register
+      </button>
+    </div>
   </form>
+
+
+  
 </div>
 
 <style>
   .register-form {
     /* Poorly hardcoded height cause i couldn't find a better way */
     height: 61rem;
-    max-width: 400px;
+    max-width: 500px;
     margin-left: 25%;
     border: none;
     border-radius: 5px;
@@ -123,19 +146,54 @@
     background-color: rgb(236, 236, 236);
     border-radius: 0.5rem;
   }
-  .register-form button {
-    padding: 0.5rem 2rem;
-    font-size: 1.1em;
+  .register-btn {
+    border: none;
+    font-size: 1.7em;
     background-color: #bf15e9;
+    color: #fff;
+    border-radius: 2rem;
+    cursor: pointer;
+    border-bottom: 2px solid #ac1ecf;
+  }
+
+  .register-btn:hover {
+    background-color: #ad11d4;
+    cursor: pointer;
+  }
+
+  .google-login-btn {
+    font-size: 1.3em;
     color: #fff;
     border: none;
     border-radius: 2rem;
     cursor: pointer;
-  }
-  .register-form button:hover {
-    background-color: #8b0aac;
-    cursor: pointer;
-  }
+    background-color: #4285F4;
+    border-bottom: 2px solid #3670ce;
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;  /* Vertically aligns items to the center */
+    justify-content: center;  /* Horizontally aligns items to the center */
+    /* ... your other styles ... */
+}
+
+.google-login-btn:hover {
+    background-color: #3c78d8;
+}
+
+  .btn-container {
+  display: flex;
+}
+
+.google-icon {
+  background-color: #ffffff;
+  border-radius: 2rem;
+    margin-right: 0.5rem;  /* Adjust as needed */
+}
+
+/* If you want the buttons to have the same width, you can add this: */
+.register-form button {
+  flex: 1; /* This makes each button take up equal space */
+}
 
   @media screen and (max-width: 768px) {
     .register-form {

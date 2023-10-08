@@ -1,38 +1,21 @@
-<!-- Temp color theme:
-    #37C84C light green
-    #376AC8 light blue
-    #C837B3 magenta
-    #C89537 gold orange
-    #964B00 brown
-    #FFFFFF white
-
-
-    Existing color 1: #212a3e
-    Existing color 2: #394867
-
-    Lighter blue: #567aa5
-    Even Lighter blue: #7a9dcb
-    Complementary warm color: #A57F60
-    Soft gray: #A9A9A9
-    Off-white: #F2F2F2
-    Darker gray: #666666
-    Contrast color (green): #6AB187
-    Accent color (coral): #FF6B6B
-
--->
-
-<!-- A RANDOM GETQUEST FOR QUERY SERVER DIRECTLY = ACCOUNTABILITY FOR IF BACKEND IS OPERATIONAL YES YES -->
 <script>
-  // For some dumb reason Vscode says Editmodal and BtnEditModal cannot be found but they work fine
+  // For some reason Vscode says Editmodal and BtnEditModal cannot be found but they work fine and are used
   // @ts-ignore
   import Editmodal from "../lib/editmodal.svelte";
   // @ts-ignore
   import BtnEditModal from "../lib/editbtnmodal.svelte";
   import { onMount } from "svelte";
+  import { get } from "svelte/store";
   import CopyToClipboard from "../lib/clipboardcopy.svelte";
+  import { backend_url } from "../lib/urls";
+  import SuccessNotif from "../lib/notification.svelte";
+  import FailedNotif from "../lib/notification.svelte";
+  import Previewbuilder from "../lib/previewbuilder.svelte";
+  import ColorSchemeModal from "../lib/colorschememodal.svelte";
 
   import {
     showModal,
+    showPreviewModal,
     showEditBtnModal,
     editedText,
     inputTextList,
@@ -40,13 +23,23 @@
     containerCount,
     buttonNames,
     buttonColors,
+    initializeStoresWithLocalStorage,
+    savedChanges,
+    bodyBackgroundColor,
+    showEditBgColorModal,
   } from "../lib/builderstore";
 
+
+  let hoveredIndex = null;
+
+
   function addBtn() {
+    savedChanges.set(false);
     const newNames = [...$buttonNames, `New recipe`];
     buttonNames.set(newNames);
 
     showModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'
+    showPreviewModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'
     showEditBtnModal.update((arr) => [...arr, false]); // Same for edit button modal state
 
     buttonColors.update((arr) => {
@@ -70,6 +63,7 @@
   }
 
   function removeLastBtn() {
+    savedChanges.set(false);
     // Remove from buttonNames
     const names = [...$buttonNames];
     if (names.length > 0) {
@@ -79,6 +73,13 @@
 
     // Remove from showModal
     showModal.update((arr) => {
+      if (arr.length > 0) {
+        arr.pop();
+      }
+      return [...arr];
+    });
+
+    showPreviewModal.update((arr) => {
       if (arr.length > 0) {
         arr.pop();
       }
@@ -118,93 +119,74 @@
   // Vital function for making sure the store variables are all reset upon refreshing site
   // Without this, buttons cannot be opened because browser gets confused if a modal is open or not for instance
   function updateAllStores() {
-  // Ensure showModal and showEditBtnModal have the correct number of elements
-  const length = $buttonNames.length;
-  showModal.update((arr) => arr.length === length ? arr : new Array(length).fill(false));
-  showEditBtnModal.update((arr) => arr.length === length ? arr : new Array(length).fill(false));
+    // Ensure showModal and showEditBtnModal have the correct number of elements
+    const length = $buttonNames.length;
 
-  // Ensure buttonColors has the correct number of elements
-  buttonColors.update((arr) => {
-    while (arr.length < length) {
-      arr.push([
-        {
-          button: { color: "#ff0000", alpha: 1.0 },
-          hover: { color: "#ff0000", alpha: 1.0 },
-          border: { color: "#0000ff", alpha: 1.0 },
-          shadow: { color: "#ff00ff", alpha: 1.0 },
-        },
-      ]);
+    // Ensure buttonColors has the correct number of elements
+    buttonColors.update((arr) => {
+      while (arr.length < length) {
+        arr.push([
+          {
+            button: { color: "#ff0000", alpha: 1.0 },
+            hover: { color: "#ff0000", alpha: 1.0 },
+            border: { color: "#0000ff", alpha: 1.0 },
+            shadow: { color: "#ff00ff", alpha: 1.0 },
+          },
+        ]);
+      }
+      return arr;
+    });
+
+    // Ensure inputTextList has the correct number of elements
+    inputTextList.update((arr) =>
+      arr.length === length ? arr : new Array(length).fill("")
+    );
+    btnCount.set(length);
+    containerCount.set(length);
+  }
+
+  let draggedIndex = null; // New variable
+
+  function onDragStart(event, index) {
+  event.dataTransfer.setData("text/plain", index.toString());
+  draggedIndex = index; // Set the dragged index
+  }
+
+  function onDrop(event, dropIndex) {
+    const dragIndex = Number(event.dataTransfer.getData("text/plain"));
+    if (dragIndex !== dropIndex) {
+        swapButtons(dragIndex, dropIndex);
     }
-    return arr;
-  });
-
-  // Ensure inputTextList has the correct number of elements
-  inputTextList.update((arr) => arr.length === length ? arr : new Array(length).fill(""));
-  btnCount.set(length);
-  containerCount.set(length);
+    hoveredIndex = null;  // Reset the hovered index after the drop
 }
 
-  function swapButtons(index, direction) {
-    console.log("Before swap", $buttonColors);
+function allowDrop(event, index) {
+    event.preventDefault();
+    hoveredIndex = index;  // Set the hovered index
+}
 
+  function swapButtons(dragIndex, dropIndex) {
+    savedChanges.set(false);
+
+    // Make shallow copies
     $buttonNames = [...$buttonNames];
     $inputTextList = [...$inputTextList];
     $buttonColors = [...$buttonColors];
 
-    if (direction === "up" && index > 0) {
-      [$buttonNames[index], $buttonNames[index - 1]] = [
-        $buttonNames[index - 1],
-        $buttonNames[index],
-      ];
-      [$inputTextList[index], $inputTextList[index - 1]] = [
-        $inputTextList[index - 1],
-        $inputTextList[index],
-      ];
-      [$buttonColors[index], $buttonColors[index - 1]] = [
-        $buttonColors[index - 1],
-        $buttonColors[index],
-      ];
-    } else if (direction === "down" && index < $buttonNames.length - 1) {
-      [$buttonNames[index], $buttonNames[index + 1]] = [
-        $buttonNames[index + 1],
-        $buttonNames[index],
-      ];
-      [$inputTextList[index], $inputTextList[index + 1]] = [
-        $inputTextList[index + 1],
-        $inputTextList[index],
-      ];
-      [$buttonColors[index], $buttonColors[index + 1]] = [
-        $buttonColors[index + 1],
-        $buttonColors[index],
-      ];
+    // Swap function for readability and reusability
+    function swapArrayElements(array, i, j) {
+        [array[i], array[j]] = [array[j], array[i]];
     }
 
+    swapArrayElements($buttonNames, dragIndex, dropIndex);
+    swapArrayElements($inputTextList, dragIndex, dropIndex);
+    swapArrayElements($buttonColors, dragIndex, dropIndex);
+
+    // Update the stores
     buttonNames.set($buttonNames);
     inputTextList.set($inputTextList);
     buttonColors.set($buttonColors);
-
-    console.log("After swap", $buttonColors);
-  }
-
-  // Hovering over arrow buttons will also arrow-highlighter the entire component
-  // There is a slight timer of 25 milliseconds added to ensure people don't accidentally hover right above the button
-  // And creating a flickering effect since hovering moves down the component and thus pointer is outside of border
-  // Which means it's now false, and thus the border is deleted and the components come back up again 100000x's a second
-  let hoveredIndex = null;
-  let canSetToNull = true; // Flag to control cooldown
-
-  function onHover(index) {
-    if (canSetToNull) {
-      hoveredIndex = index;
-    }
-  }
-
-  function onLeave() {
-    if (canSetToNull) {
-      hoveredIndex = null;
-      canSetToNull = false; 
-    }
-  }
+}
 
   // Generic modal stuff below
   function openModal(index) {
@@ -236,74 +218,210 @@
     });
   }
 
-  // Updates all the contents for public and saves it on aws server
-  function publishChanges() {
-    console.log("Send data to server function (to be added later)");
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
   }
+
   // Sets the bg color behind the navbar (funky solution)
-  onMount(() => {
-    // DispatchEvent changes color upon load
-    dispatchEvent(new CustomEvent("set-color", { detail: "#8EA8C3" }));
-    updateAllStores();
+  onMount(async () => {
+    try {
+      const csrfToken = getCookie("csrftoken");
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(backend_url + "/api/getdata/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+
+      const responseData = await response.json();
+      let jsonString = responseData.data;
+      if (jsonString.startsWith("b'")) {
+        jsonString = jsonString.substring(2, jsonString.length - 1);
+      }
+
+      const jsonObject = JSON.parse(jsonString);
+
+      Object.entries(jsonObject).forEach(([storeName, storeItem]) => {
+        localStorage.setItem(storeName, JSON.stringify(storeItem));
+      });
+
+      // If the fetch operation is successful, initialize stores with local storage or with fetched data
+      initializeStoresWithLocalStorage();
+
+      // ... other Miscellaneous things like dispatching events
+      dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
+      updateAllStores();
+      savedChanges.set(true);
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    }
   });
+
+  $: {
+    $buttonColors,
+    $buttonNames,
+    $showModal,
+    $showPreviewModal,
+    $showEditBtnModal,
+    $editedText,
+    $inputTextList,
+    $btnCount,
+    $containerCount,
+    $bodyBackgroundColor,
+    $showEditBgColorModal;
+  }
+
+  async function sendStoreDataToServer() {
+    savedChanges.set(true);
+    console.log("Saved changes state: ", $savedChanges);
+
+    // Get the current values from the stores
+    const buttonColorsValue = get(buttonColors);
+    const buttonNamesValue = get(buttonNames);
+    const showModalValue = get(showModal);
+    const showPreviewModalValue = get(showPreviewModal);
+    const showEditBtnModalValue = get(showEditBtnModal);
+    const editedTextValue = get(editedText);
+    const inputTextListValue = get(inputTextList);
+    const btnCountValue = get(btnCount);
+    const containerCountValue = get(containerCount);
+    const bodyBackgroundColorValue = get(bodyBackgroundColor);
+    const showPreviewBtnModalValue = get(showEditBgColorModal);
+
+    // Create an object containing all the relevant data
+    const dataToSend = {
+      buttonColors: buttonColorsValue,
+      buttonNames: buttonNamesValue,
+      showModal: showModalValue,
+      showPreviewModal: showPreviewModalValue,
+      showEditBtnModal: showEditBtnModalValue,
+      editedText: editedTextValue,
+      inputTextList: inputTextListValue,
+      btnCount: btnCountValue,
+      containerCount: containerCountValue,
+      bodyBackgroundColor: bodyBackgroundColorValue,
+      showEditBgColorModal: showPreviewBtnModalValue,
+    };
+
+    console.log("Data being sent: ", JSON.stringify(dataToSend));
+    const csrfToken = getCookie("csrftoken");
+
+    const token = localStorage.getItem("token");
+
+    try {
+      // Make a POST request to send the data to the backend
+      const response = await fetch(backend_url + "/api/postdata/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+          Authorization: `Token ${token}`,
+          // Include any other headers your backend requires, e.g., for authentication
+        },
+        body: JSON.stringify(dataToSend), // Convert the data to a JSON string
+      });
+
+      // Check if the request was successful
+      if (!response.ok) {
+        showFailedNotification();
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // If needed, handle the response from the server
+      const responseData = await response.json();
+      console.log("Data sent successfully!", responseData);
+      showSuccessNotification();
+    } catch (error) {
+      console.error("Failed to send data:", error);
+      showFailedNotification();
+    }
+  }
+
+  // Mischelaneous stuff here
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
+
+  function openColorEditModal() {
+    showEditBgColorModal.set(true);
+  }
 </script>
 
-<div class="body">
-  <div class="outer-container">
-    <div class="body-container">
-      <div class="page-editor-text">
-        <p style="">Page editor</p>
-        <CopyToClipboard />
-        <!-- <p style="">Followers: 1276</p> -->
-      </div>
-      <br />
-      <br />
-      <br />
+<svelte:head>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+</svelte:head>
 
-      <div class="button-component">
-        <div>
-          <!-- Add margin-left because buttons are not truly centered because of its layout forcing the buttons to the right -->
-          <h1 style="width: 90%; margin-left: calc(3vw + 1rem);">
-            <input
-              bind:value={$editedText}
-              class="editing-text"
-              style="width: 80%; margin: 0 auto;"
-            />
-          </h1>
-        </div>
+<SuccessNotif
+  bind:showBar={showSuccessBar}
+  message="Content saved!"
+  color="#2dc23c"
+  textShadow="#00ff48"
+/>
+<FailedNotif
+  bind:showBar={ShowFailedBar}
+  message="Error"
+  color="#c22d2d"
+  textShadow="#ff0037"
+/>
 
-        {#each $buttonNames as name, index (index)}
-          <div
-            class="btn-container {hoveredIndex === index}"
-          >
-            <button
-              class="arrow-btn"
-              style="border-radius: 0.5rem 0 0 0.5rem;"
-              on:mouseover={() => onHover(index)}
-              on:mouseleave={onLeave}
-              on:focus={() => onHover(index)}
-              on:blur={onLeave}
-              on:click={() => swapButtons(index, "up")}
-            >
-              ↑
-            </button>
+<div class="header-body">
+  <br />
+  <br />
 
-            <button
-              class="arrow-btn"
-              style="margin-right: 0.5rem; border-radius: 0 0.5rem 0.5rem 0;"
-              on:mouseover={() => onHover(index)}
-              on:mouseleave={onLeave}
-              on:focus={() => onHover(index)}
-              on:blur={onLeave}
-              on:click={() => swapButtons(index, "down")}
-            >
-              ↓
-            </button>
+  <div class="page-editor-text">
+    <p style="">Page editor</p>
+    <CopyToClipboard />
+    <!-- <p style="">Followers: 1276</p> -->
+  </div>
+  <div class="parrent-body">
+    <br />
 
+    <div class="body">
+      <div class="body-container">
+        <br />
+        <br />
+
+        <div class="title-component">
+          <div>
+            <!-- Add margin-left because buttons are not truly centered because of its layout forcing the buttons to the right -->
+            <h1 style="width: 90%; margin-left: calc(3vw + 1rem);">
+              <input bind:value={$editedText} class="editing-text" />
+            </h1>
+          </div>
+
+          {#each $buttonNames as name, index (index)}
+          <div 
+          class="btn-container {hoveredIndex === index ? 'hovered' : ''} {draggedIndex === index ? 'dragged' : ''}"
+          draggable="true"
+          on:dragstart={e => onDragStart(e, index)}
+          on:drop={e => onDrop(e, index)}
+          on:dragover={e => allowDrop(e, index)}
+        >
             <button class="recipe-link" on:click={() => openModal(index)}>
               <h2 class="modal-btn-text">{name}</h2>
             </button>
-
+        
             <button
               class="edit-button-btn"
               on:click={() => openEditBtnModal(index)}
@@ -313,87 +431,76 @@
           </div>
         {/each}
 
-        <div class="edit-and-remove-btn-container">
-          <div class="add-and-remove-buttons-container">
-            <button class="add-btn-class" on:click={() => addBtn()}>
-              <h2 class="modal-btn-text">Add Button</h2>
-            </button>
-            <button class="edit-button-btn" on:click={() => removeLastBtn()}>
-              Remove
-            </button>
+          <div class="edit-and-remove-btn-container">
+            <div class="add-and-remove-buttons-container">
+              <button class="add-btn-class" on:click={() => addBtn()}>
+              <h2 style="padding: 1.5rem 0;" class="modal-btn-text">Add</h2>
+              </button>
+              <button class="add-btn-class" on:click={() => removeLastBtn()}>
+                <h2 style="padding: 1.5rem 0;" class="modal-btn-text">Remove</h2>
+              </button>
+            </div>
           </div>
         </div>
+        <!-- The right amount of linebreaks is needed in order to make the button stay inside the container at the bottom
+            (secret trick), that makes us of the foundational pushing that is html (margin-bottom doesn't work obviously) -->
+        <br />
+        <br />
+        <br />
+        <br />
+        <button class="colorPickerBtn" on:click={() => openColorEditModal()}>
+          🎨
+          <span class="tooltip">Background</span>
+        </button>
+
+        <button class="save-edits-btn" on:click={() => sendStoreDataToServer()}
+          >Publish</button
+        >
+        <br />
+        <br />
       </div>
       <br />
-      <br />
-      <br />
-      <br />
-      <button class="save-edits-btn" on:click={() => publishChanges()}
-        >Publish</button
-      >
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
 
+      <div>
+        <ColorSchemeModal />
+      </div>
+
+      {#each Array($containerCount) as _, index (index)}
+        <div class="template-container">
+          <Editmodal
+            bind:showModal={$showModal[index]}
+            on:closeModal={() => closeModal(index)}
+            {index}
+          />
+        </div>
+
+        <div class="template-container">
+          <BtnEditModal
+            bind:showModal={$showEditBtnModal[index]}
+            on:closeEditBtnModal={() => closeEditBtnModal(index)}
+            {index}
+          />
+        </div>
+      {/each}
     </div>
-    <br />
 
+    <div class="horizontal-bar" />
+    <!-- Add this -->
+    <div class="output-container">
+      <Previewbuilder />
+    </div>
   </div>
+  <br />
+  <br />
+  <br />
 
-  {#each Array($containerCount) as _, index (index)}
-    <div class="template-container">
-      <Editmodal
-        bind:showModal={$showModal[index]}
-        on:closeModal={() => closeModal(index)}
-        inputText={$inputTextList[index]}
-        {index}
-      />
-    </div>
-
-    <div class="template-container">
-      <BtnEditModal
-        bind:showModal={$showEditBtnModal[index]}
-        on:closeEditBtnModal={() => closeEditBtnModal(index)}
-        inputText={$inputTextList[index]}
-        {index}
-      >
-        <h1>Content for Container {index}</h1>
-      </BtnEditModal>
-    </div>
-  {/each}
 </div>
 
-<!-- 
-Existing color 1: #212a3e
-Existing color 1 slight light: #27324b
-
-Existing color 2: #394867
-
-Lighter blue: #567aa5
-Even Lighter blue: #7a9dcb
-Complementary warm color: #A57F60
-Soft gray: #A9A9A9
-Off-white: #F2F2F2
-Darker gray: #666666
-Contrast color (green): #6AB187
-Accent color (coral): #FF6B6B 
-
-V2:
-
-#212A3E Blue 
-#F7C4A5 Apricot orange
-#9E7682 Pink
-#8EA8C3 Soft blue (rly nice)
--->
-
 <style>
-@font-face {
+  @font-face {
     font-family: "Monofonto";
     src: url("../assets/monofontorg.otf") format("opentype");
-}
+  }
 
   input,
   h1,
@@ -405,79 +512,59 @@ V2:
   }
 
   .body {
-    /* Remove vertical scrolling by Subtracting navbar margin found in navbar.svelte */
-    height: 100vh;
-    margin-top: 3rem;
-    background-color: #8ea8c3;
+    margin: 0 auto;
+    padding: 0;
+    height: 80vh;
   }
 
-  .outer-container {
-    background-color: #27324b;
-    width: calc(42rem + 15vw);
-    max-width: 95%;
-    min-height: 34rem;
-    margin: 0 auto;
-    border-radius: 0.5rem;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.15);
+  .parrent-body {
+    background-color: #3a4769d5;
+    display: flex;
+  }
+
+  .header-body {
+    background-color: #596b91;
+    width: 95%;
+    margin: auto;
   }
 
   .body-container {
-    background-color: #212a3eec;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #27324ba8;
     height: auto;
     border-radius: 0.5rem;
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
-    width: calc(40rem + 20vw);
-    max-width: 90%;
-    min-height: 32rem;
-    margin: 0 auto;
+    width: calc(15rem + 40vw);
+    margin-top: 2rem;
+  }
+
+  .page-editor-text {
+    padding: 1.5rem;
+    font-size: calc(1.3em + 0.5vw);
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+    display: flex;
+    background-color: #27324bce;
+    justify-content: space-between; /* Space items between the edges */
+    align-items: center;
+    box-shadow: 0px 3px 3px 2px rgba(0, 0, 0, 0.05);
   }
 
   .editing-text {
     text-align: center;
     color: #f2f2f2;
     font-size: calc(1.3em + 0.5vw);
-    margin-right: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #212a3ec9;
+    background-color: #212a3e3a;
     border: none;
     cursor: text;
-  }
-
-  .page-editor-text {
-    background-color: #2c3a53;
-    padding: 1.5rem;
-    font-size: calc(1.3em + 0.5vw);
-    border-radius: 0.5rem;
-    display: flex;
-    background-color: #27324b;
-    justify-content: space-between; /* Space items between the edges */
-    align-items: center;
-    box-shadow: 0px 3px 3px 2px rgba(0, 0, 0, 0.05);
-  }
-
-  .page-editor-text p {
-    margin-bottom: 0;
-  }
-
-  .arrow-btn {
-    height: 50%;
-    margin-top: 1.8rem;
-    border: none;
-    background: none;
-    padding: 0.8rem 1.3rem;
-    font-size: calc(1em + 1vw);
-    background-color: #27324b;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.15);
-    color: white;
-  }
-
-  .arrow-btn:hover {
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.35);
+    width: 80%;
+    margin: 0 auto;
   }
 
   /* Button styling starts */
-  .button-component {
+  .title-component {
     font-size: calc(0.6em + 0.2vw);
     font-family: "Comme", sans-serif;
     margin: 0;
@@ -493,7 +580,6 @@ V2:
 
   .add-and-remove-buttons-container {
     display: flex;
-    justify-content: flex-end;
   }
 
   .edit-button-btn {
@@ -509,6 +595,12 @@ V2:
   .edit-button-btn:hover {
     color: #ffffff;
     transition: 0.1s ease-in-out;
+  }
+
+  .btn-container.hovered {
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 3rem;
   }
 
   .recipe-link {
@@ -529,7 +621,7 @@ V2:
   }
 
   .recipe-link:hover {
-    background-color: #f7c4a5;
+    background-color: #445d8d;
     transition: 0.15s ease-in-out;
   }
 
@@ -543,7 +635,6 @@ V2:
     padding: 0 calc(2rem + 5vw);
     border-radius: 3rem;
     width: 100%;
-    margin-left: calc(5rem + 1vw);
     margin-top: 1rem;
     font-size: calc(0.8em + 0.4vw);
   }
@@ -565,6 +656,61 @@ V2:
     text-align: center;
   }
 
+  .colorPickerBtn {
+    position: relative;
+    padding: 0.3rem;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.2);
+    margin-right: 1.5rem;
+    margin-left: 1rem;
+    margin-top: 4rem;
+  }
+
+  .colorPickerBtn:hover {
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.35);
+  }
+
+  .colorPickerBtn:hover .tooltip {
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .tooltip {
+  font-size: 0.7em;
+  visibility: hidden;
+  position: absolute;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 0.6rem;
+  border-radius: 0.3rem;
+  z-index: 1;
+  bottom: 125%; /* Position the tooltip above the button */
+  left: 50%;
+  margin-left: -1.5rem; /* Centers the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Arrow will appear at the bottom of the tooltip */
+  left: 50%;
+  margin-left: -1.5rem;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.colorPickerBtn:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
   .save-edits-btn {
     padding: 0.5rem 1rem;
     font-size: 2em;
@@ -580,8 +726,34 @@ V2:
   }
 
   .save-edits-btn:hover {
-    transition: 0.05s ease-in-out;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
     background-color: #ce8c13;
-    border: 2px solid rgb(219, 134, 6); /* 2px width, solid style, red color */
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* The preview/output body that shows end result starts here */
+  .output-container {
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 1300px) {
+    .body-container {
+      width: 90%;
+    }
+
+    .body {
+      height: 50rem;
+      margin-bottom: 15px;
+    }
+
+
+    .parrent-body {
+      display: block;
+    }
+
+    .body-container {
+      margin: 0 auto;
+    }
   }
 </style>

@@ -62,9 +62,10 @@
   }
 
   onMount(() => {
-    calculatePostWidth();
-    window.addEventListener('resize', calculatePostWidth);
-    return () => { window.removeEventListener('resize', calculatePostWidth); }; // Cleanup
+    setTimeout(() => {
+      calculatePostWidth();
+      updateCarousel();
+   }, 500);  // 500ms delay needed to help the carusel load properly (otherwise it doesn't work)
   });
 </script>
 
@@ -108,7 +109,7 @@
 <style>
   .carousel {
     position: relative;
-    width: 60%;
+    width: 90%;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -119,6 +120,7 @@
   }
 
   .carousel-post {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -157,13 +159,13 @@
     border: none;
     cursor: pointer;
     color: white;
-    background-color: #31975a;
+    background-color: #3f537c;
     padding: 0.6rem 1.2rem;
     border-radius: 0.5rem;
   }
 
   .nextNPrevBtns:hover {
-    background-color: #2fb966;
+    background-color: #4c6597;
     transition: 0.1s ease;
   }
 

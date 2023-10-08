@@ -23,12 +23,11 @@ button,
 h1,
 h2,
 h3,
-p,
 a,
 input
 {
   font-family: "Monofonto", fallback, sans-serif;
-  color: #ffffff;
+  color: black;
   margin: 0;
   padding: 0;
 }
