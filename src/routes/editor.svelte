@@ -385,10 +385,8 @@ function allowDrop(event, index) {
   textShadow="#ff0037"
 />
 
+<br />
 <div class="header-body">
-  <br />
-  <br />
-
   <div class="page-editor-text">
     <p style="">Page editor</p>
     <CopyToClipboard />
@@ -518,14 +516,14 @@ function allowDrop(event, index) {
   }
 
   .parrent-body {
-    background-color: #3a4769d5;
     display: flex;
   }
 
   .header-body {
-    background-color: #596b91;
+    background-color: #3a4769d5;
     width: 95%;
     margin: auto;
+    margin-top: 2rem;
   }
 
   .body-container {
