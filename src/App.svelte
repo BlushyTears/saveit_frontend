@@ -17,7 +17,13 @@
       current = "personal";
     }
     else if (currentUrl.endsWith("/editor")) {
-      current = "editor";
+      current = "home";
+    }
+    else if (currentUrl.endsWith("/register")) {
+      current = "home";
+    }
+    else if (currentUrl.endsWith("/login")) {
+      current = "home";
     }
     else if (currentUrl.endsWith("/")) {
       current = "home";
@@ -30,7 +36,7 @@
 <div class="app-container">
   {#if current === "genpage"}
     <GenPage />
-  {:else if current === "navbar" || current === "home" || current === "personal" || current === "editor"}
+  {:else if current === "navbar" || current === "home"}
     <Navbar />
   {/if}
 </div>
