@@ -112,6 +112,7 @@
 
       const data = await response.json();
       let firstName = data.data;
+      console.log(firstName);
       // Process or return the data here as needed.
       return firstName;
     } catch (error) {
@@ -133,7 +134,6 @@
         console.error("Error fetching the path:", err);
     }
 }
-
 
   // Hamburger menu logic
   let showMenu = false;

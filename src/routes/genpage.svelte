@@ -96,7 +96,7 @@
   onMount(async () => {
     let currentUrl = window.location.pathname;
     let lastSegment = currentUrl.split("/").pop();
-    console.log("meme", lastSegment);
+    console.log("Test", lastSegment);
 
     try {
       const csrfToken = getCookie("csrftoken");
@@ -117,9 +117,12 @@
 
       const responseData = await response.json();
       let jsonString = responseData.data;
-      if (jsonString.startsWith("b'")) {
+
+    console.log("resopnse data here", responseData);
+
+    if (jsonString && jsonString.startsWith("b'")) {
         jsonString = jsonString.substring(2, jsonString.length - 1);
-      }
+    }
 
       const jsonObject = JSON.parse(jsonString);
       console.log(jsonObject);
@@ -203,8 +206,6 @@
 
 
 </div>
-
-
 
 <style>
 
