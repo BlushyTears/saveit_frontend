@@ -87,57 +87,59 @@
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
-  function getUserFirstName(callback) {
+  async function getUserFirstName(event) {
     const token = localStorage.getItem("token");
     const csrfToken = getCookie("csrftoken");
 
     if (!token || !csrfToken) {
-      callback("Token or CSRF token not available.", null);
+      console.error("Token or CSRF token not available.");
       return;
     }
 
-    fetch(backend_url + "/api/getname/", {
+    try {
+      const response = await fetch(backend_url + "/api/getname/", {
         method: "POST",
         headers: {
           "X-CSRFToken": csrfToken,
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
         },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        let firstName = data && data.data ? data.data : null;
-        callback(null, firstName);
-    })
-    .catch(error => {
-        callback(error.toString(), null);  // Provide the error message to the callback
-    });
-}
+      });
+      console.log("dadadadad");
 
-function handleMyPageNavigation(event) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log("dadadadad22");
+
+      const data = await response.json();
+      let firstName = data && data.data ? data.data : null;
+
+      console.log("First name", firstName);
+      // Process or return the data here as needed.
+      return firstName;
+    } catch (error) {
+      console.error(
+        "There was a problem fetching the user's first name:",
+        error
+      );
+    }
+  }
+
+  async function handleMyPageNavigation(event) {
     event.preventDefault();
-
-    console.log("Before fetching user first name");
-
-    getUserFirstName((error, firstName) => {
-        if (error) {
-            console.error("Failed to get user first name:", error);
-            return; // Exit the function early due to the error
-        }
-
+    try {
+        console.log("Before fetching user first name");
+        const path = await getUserFirstName();
         console.log("After fetching user first name");
-        console.log('Fetched Path:', firstName);
-        
-        handleNavigation(firstName || '/genpage');
+        console.log('Fetched Path:', path); // Debugging
+        handleNavigation(path || '/genpage');
         window.location.reload();
-    });
+    } catch (err) {
+        console.error("Error fetching the path:", err);
+    }
 }
-
 
   // Hamburger menu logic
   let showMenu = false;
@@ -194,6 +196,7 @@ function handleMyPageNavigation(event) {
   document.addEventListener("set-color", setColor);
   window.addEventListener("set-color", setColor);
 </script>
+
 
 {#if current === "navbar"}
   <nav style="background-color: {navbarBgColor};" class="navbar-container">
