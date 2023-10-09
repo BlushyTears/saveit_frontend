@@ -87,55 +87,63 @@
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
-  async function getUserFirstName(event) {
+  function getUserFirstName(callback) {
     const token = localStorage.getItem("token");
     const csrfToken = getCookie("csrftoken");
 
     if (!token || !csrfToken) {
-      console.error("Token or CSRF token not available.");
-      return;
+        console.error("Token or CSRF token not available.");
+        if (callback) callback(new Error("Tokens missing"));
+        return;
     }
 
-    try {
-      const response = await fetch(backend_url + "/api/getname/", {
+    fetch(backend_url + "/api/getname/", {
         method: "POST",
         headers: {
-          "X-CSRFToken": csrfToken,
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
+            "X-CSRFToken": csrfToken,
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
         },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      let firstName = data.data;
-      console.log(firstName);
-      // Process or return the data here as needed.
-      return firstName;
-    } catch (error) {
-      console.error(
-        "There was a problem fetching the user's first name:",
-        error
-      );
-    }
-  }
-
-  async function handleMyPageNavigation(event) {
-    event.preventDefault();
-    try {
-        console.log("Before fetching user first name");
-        const path = await getUserFirstName();
-        console.log("After fetching user first name");
-        console.log('Fetched Path:', path); // Debugging
-        handleNavigation(path || '/genpage');
-        window.location.reload();
-    } catch (err) {
-        console.error("Error fetching the path:", err);
-    }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Failed to get name');
+            });
+        }
+    })
+    .then(data => {
+        const firstName = data && data.data ? data.data : null;
+        console.log("First name", firstName);
+        if (callback) callback(null, firstName);
+    })
+    .catch(error => {
+        console.error("Error fetching the user's first name:", error);
+        if (callback) callback(error);
+    });
 }
+
+function handleMyPageNavigation(event) {
+    event.preventDefault();
+
+    console.log("Before fetching user first name");
+
+    getUserFirstName((error, firstName) => {
+        if (error) {
+            console.error("Failed to get user first name:", error);
+            return; // Exit the function early due to the error
+        }
+
+        console.log("After fetching user first name");
+        console.log('Fetched Path:', firstName);
+        
+        handleNavigation(firstName || '/genpage');
+        window.location.reload();
+    });
+}
+
 
   // Hamburger menu logic
   let showMenu = false;
