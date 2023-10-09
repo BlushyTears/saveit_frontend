@@ -93,7 +93,7 @@
     event.preventDefault();
     try {
         console.log('Fetched Path:', $first_name); // Debugging
-        handleNavigation($first_name || '/genpage');
+        handleNavigation($first_name);
         window.location.reload();
     } catch (err) {
         console.error("Error fetching the path:", err);
