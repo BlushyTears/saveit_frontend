@@ -126,7 +126,9 @@
   async function handleMyPageNavigation(event) {
     event.preventDefault();
     try {
+        console.log("Before fetching user first name");
         const path = await getUserFirstName();
+        console.log("After fetching user first name");
         console.log('Fetched Path:', path); // Debugging
         handleNavigation(path || '/genpage');
         window.location.reload();
