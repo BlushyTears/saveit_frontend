@@ -92,7 +92,7 @@
   async function handleMyPageNavigation(event) {
     event.preventDefault();
     try {
-        console.log('Fetched Path:', $first_name); // Debugging
+        console.log('Fetched Pathh:', $first_name); // Debugging
         handleNavigation($first_name);
         window.location.reload();
     } catch (err) {
