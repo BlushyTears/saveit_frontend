@@ -39,22 +39,22 @@
 
   // Listen for text changes and look for URLs matching image formats
   quill_instance.on('text-change', function(delta) {
-    delta.ops.forEach(op => {
-      if (op.insert) {
-        const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
-        if (match) {
-          setTimeout(() => {  // We use a timeout to avoid changing the content while in the middle of processing a change.
-            const imageUrl = match[1];
-            const position = quill_instance.getText().indexOf(imageUrl);
-            if (position !== -1) {
-              quill_instance.deleteText(position, imageUrl.length);
-              quill_instance.insertEmbed(position, 'image', imageUrl);
-            }
-          }, 0);
-        }
+  delta.ops.forEach(op => {
+    if (typeof op.insert === 'string') {
+      const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
+      if (match) {
+        setTimeout(() => {
+          const imageUrl = match[1];
+          const position = quill_instance.getText().indexOf(imageUrl);
+          if (position !== -1) {
+            quill_instance.deleteText(position, imageUrl.length);
+            quill_instance.insertEmbed(position, 'image', imageUrl);
+          }
+        }, 0);
       }
-    });
+    }
   });
+});
 
   // Update the inputTextList when there are changes to the editor content
   quill_instance.on("text-change", () => {

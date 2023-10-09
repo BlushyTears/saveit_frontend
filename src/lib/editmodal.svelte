@@ -17,6 +17,7 @@
   $: if (dialog && showModal) dialog.showModal();
 
   function updateStoresAndClose() {
+    console.log(tempText);
     // Update the store with the tempText value and then reset tempText
     $inputTextList[index] = tempText;
     savedChanges.set(false);
@@ -41,12 +42,12 @@ onMount(() => {
       }
     });
 
-quill.on('text-change', function(delta) {
+  quill.on('text-change', function(delta) {
   delta.ops.forEach(op => {
-    if (op.insert) {
+    if (typeof op.insert === 'string') {
       const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
       if (match) {
-        setTimeout(() => {  // We use a timeout to avoid changing the content while in the middle of processing a change.
+        setTimeout(() => {
           const imageUrl = match[1];
           const position = quill.getText().indexOf(imageUrl);
           if (position !== -1) {
@@ -58,6 +59,7 @@ quill.on('text-change', function(delta) {
     }
   });
 });
+
 
     quill.root.innerHTML = tempText;
 
