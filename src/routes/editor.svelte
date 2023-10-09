@@ -29,9 +29,7 @@
     showEditBgColorModal,
   } from "../lib/builderstore";
 
-
   let hoveredIndex = null;
-
 
   function addBtn() {
     savedChanges.set(false);

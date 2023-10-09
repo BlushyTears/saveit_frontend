@@ -58,7 +58,6 @@
   function navigateToEditor() {
     window.location.href = '/editor';
   }
-  
 
   function updateAllStores() {
     // Ensure showModal and showEditBtnModal have the correct number of elements
@@ -112,7 +111,7 @@
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
+        throw new Error("Network response was not ok" + response.statusText);
       }
 
       const responseData = await response.json();
@@ -120,6 +119,7 @@
 
     console.log("resopnse data here", responseData);
 
+    // Checks if its not null/has a "truthy" value
     if (jsonString && jsonString.startsWith("b'")) {
         jsonString = jsonString.substring(2, jsonString.length - 1);
     }
