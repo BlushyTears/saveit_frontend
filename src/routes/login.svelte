@@ -8,8 +8,6 @@
   import { backend_url, frontend_url } from "../lib/urls";
   import GLogo from "../assets/glogo.png";
 
-  import {first_name} from '../lib/builderstore';
-
   let showSuccessBar = false;
   let ShowFailedBar = false;
   
@@ -25,42 +23,6 @@
 
   let username = "";
   let password = "";
-
-  async function getUserFirstName(event) {
-    const token = localStorage.getItem("token");
-    const csrfToken = getCookie("csrftoken");
-
-    if (!token || !csrfToken) {
-      console.error("Token or CSRF token not available.");
-      return;
-    }
-
-    try {
-      const response = await fetch(backend_url + "/api/getname/", {
-        method: "POST",
-        headers: {
-          "X-CSRFToken": csrfToken,
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      let firstName = data.data;
-      console.log(firstName);
-      // Process or return the data here as needed.
-      return firstName;
-    } catch (error) {
-      console.error(
-        "There was a problem fetching the user's first name:",
-        error
-      );
-    }
-  }
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -95,7 +57,6 @@
         const token = data.token; // Assuming the response returns the token
         localStorage.setItem("token", token);
         console.log("Login successful:", data);
-        let $first_name = await getUserFirstName();
         showSuccessNotification(); // If you're showing a notification
         setTimeout(() => {
           window.location.reload();

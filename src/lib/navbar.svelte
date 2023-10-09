@@ -16,8 +16,6 @@
 
   import { savedChanges } from "../lib/builderstore";
 
-  import {first_name} from '../lib/builderstore';
-
   let showSuccessBar = false;
   let ShowFailedBar = false;
 
@@ -89,11 +87,48 @@
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
+  async function getUserFirstName(event) {
+    const token = localStorage.getItem("token");
+    const csrfToken = getCookie("csrftoken");
+
+    if (!token || !csrfToken) {
+      console.error("Token or CSRF token not available.");
+      return;
+    }
+
+    try {
+      const response = await fetch(backend_url + "/api/getname/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      let firstName = data.data;
+      console.log(firstName);
+      // Process or return the data here as needed.
+      return firstName;
+    } catch (error) {
+      console.error(
+        "There was a problem fetching the user's first name:",
+        error
+      );
+    }
+  }
+
   async function handleMyPageNavigation(event) {
     event.preventDefault();
     try {
-        console.log('Fetched Pathh:', $first_name); // Debugging
-        handleNavigation($first_name);
+        const path = await getUserFirstName();
+        console.log('Fetched Path:', path); // Debugging
+        handleNavigation(path || '/genpage');
         window.location.reload();
     } catch (err) {
         console.error("Error fetching the path:", err);

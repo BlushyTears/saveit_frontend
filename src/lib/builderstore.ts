@@ -68,4 +68,3 @@ export function initializeStoresWithLocalStorage() {
 
 export const savedChanges = writable(true);
 export const currentRoute = writable(null);
-export const first_name = writable('');
