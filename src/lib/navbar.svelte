@@ -92,36 +92,30 @@
     const csrfToken = getCookie("csrftoken");
 
     if (!token || !csrfToken) {
-        console.error("Token or CSRF token not available.");
-        if (callback) callback(new Error("Tokens missing"));
-        return;
+      callback("Token or CSRF token not available.", null);
+      return;
     }
 
     fetch(backend_url + "/api/getname/", {
         method: "POST",
         headers: {
-            "X-CSRFToken": csrfToken,
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
         },
     })
     .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            return response.json().then(data => {
-                throw new Error(data.error || 'Failed to get name');
-            });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        return response.json();
     })
     .then(data => {
-        const firstName = data && data.data ? data.data : null;
-        console.log("First name", firstName);
-        if (callback) callback(null, firstName);
+        let firstName = data && data.data ? data.data : null;
+        callback(null, firstName);
     })
     .catch(error => {
-        console.error("Error fetching the user's first name:", error);
-        if (callback) callback(error);
+        callback(error.toString(), null);  // Provide the error message to the callback
     });
 }
 
