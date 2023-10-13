@@ -16,6 +16,7 @@
   import { hexToRgba, getCookie } from "../lib/helpers.js";
   import GenModal from "../lib/genmodalview.svelte";
 
+  import { linkname } from '../lib/builderstore';
   import {
     showPreviewModal,
     editedText,

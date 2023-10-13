@@ -66,5 +66,6 @@ export function initializeStoresWithLocalStorage() {
   });
 }
 
+export const linkname = writable('');
 export const savedChanges = writable(true);
 export const currentRoute = writable(null);

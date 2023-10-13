@@ -1,10 +1,10 @@
 <script>
   import { onMount } from "svelte";
   import {savedChanges} from '../lib/builderstore';
+  import { linkname } from '../lib/builderstore';
 
   let name = "";
   let link = "";
-  let linkname = '';
 
   function submitInfo() {
     console.log("Submit info");
@@ -13,7 +13,6 @@
   onMount(() => {
     // We dont have a way of assuming the user didn't wanna save changes if he does leave unsaved, so we set it true upon load instead
     savedChanges.set(true);
-    linkname = localStorage.getItem('linkname');
   });
 </script>
 
@@ -30,7 +29,7 @@
     <div class="login-form">
       <div style="display: flex;" class="login-title">
         <h3 style="color: white;">
-          Update your link. Example: favedis.com/{linkname}
+          Update your link. Example: favedis.com/{$linkname}
         </h3>
 
         <br />
