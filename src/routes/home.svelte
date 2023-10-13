@@ -43,7 +43,6 @@
     const code = urlParams.get("code");
 
     // Try to run fetchData and get username if user is logged in
-    fetchData();
 
     // In case the user has multiple google accounts, we need to give it a unique name
     // Note: if(code) means user has a google auth code in url for logging in
@@ -96,6 +95,7 @@
       }
 
       const data = await response.json();
+      console.log('jkikes '); // Handle or use the data as required
       console.log('data from first_name: ', data.data); // Handle or use the data as required
       localStorage.setItem('first_name', data.data);
       console.log('first_name added here: ', localStorage.getItem('first_name')); // Handle or use the data as required
