@@ -89,12 +89,11 @@
       const csrfToken = getCookie("csrftoken");
       const token = localStorage.getItem("token");
 
-      const response = await fetch(backend_url + "/api/getdata/", {
+      const response = await fetch(backend_url + "/api/getdatapublic/", {
         method: "POST",
         headers: {
           "X-CSRFToken": csrfToken,
           "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
         },
       });
 
