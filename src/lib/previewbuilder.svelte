@@ -14,7 +14,6 @@
 
   let hoveredIndex = null;
   let isHovering = false;
-  let backgroundColor = "#ffffff";
 
   function openModal(index) {
     showPreviewModal.update((arr) => {

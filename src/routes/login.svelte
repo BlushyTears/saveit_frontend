@@ -7,6 +7,7 @@
   import FailedNotif from '../lib/notification.svelte';
   import { backend_url, frontend_url } from "../lib/urls";
   import GLogo from "../assets/glogo.png";
+  import CoffeeWoman from "../assets/coffeewoman.jpg";
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
@@ -87,17 +88,15 @@
 <SuccessNotif bind:showBar={showSuccessBar} message="Login success!" color="#2dc23c" textShadow="#00ff48"/>
 <FailedNotif bind:showBar={ShowFailedBar} message="Login fail." color="#c22d2d" textShadow="#ff0037"/>
 
-
 <div class="all-login-form">
   <div class="login-form">
-    <div style="display: flex;" class="login-title">
-      <h2 style="color: white;">Login Form</h2>
+    <div class="login-title">
+      <h2 style="color: white; font-size: 2.2em; margin-bottom: 1rem;">Login Form</h2>
       {#if isLoading}
         <Spinner />
       {/if}
-      <br />
     </div>
-    <form style=" margin-top: 0.3rem;" on:submit={loginBtn}>
+    <form on:submit={loginBtn}>
       <input
         type="text"
         id="username"
@@ -112,94 +111,206 @@
         required
         placeholder="Password"
       />
-      <button type="submit">Login</button>
+
+      <div class="centered-content">
+        <button type="submit" style="font-size: 2em;">Login</button>
+        <h2 style="color: white;">Or</h2>
+        <br>
+        <button class="google-login-btn" on:click={loginWithGoogle}>
+            <img src={GLogo} alt="Google Icon" class="google-icon"/>
+        </button>
+    </div>
+
     </form>
   </div>
-  <button class="google-login-btn" on:click={loginWithGoogle}>
-    <img src={GLogo} alt="Google Icon" class="google-icon" />
-    Login with Google
-  </button>
-  
+  <div class="coffee-woman-div">
+    <img src={CoffeeWoman} alt="Coffee Woman" class="coffee-woman"/>
+  </div>
 </div>
 
+
 <style>
+.all-login-form {
+  margin-top: -9rem;
+  margin-left: 12vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh + 5.6rem);
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form {
+  flex: 0 0 450px;
+  padding: 2rem;
+  background: #212a3e3a;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-right: 2rem;
+}
+
+.login-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+}
+
+.login-form input,
+.login-form button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.5em;
+}
+
+.login-form input {
+  width: 93%;
+  background-color: rgb(236, 236, 236);
+}
+
+.login-form button {
+  background-color: #212a3e3a;
+  color: #fff;
+  cursor: pointer;
+
+}
+
+.login-form button:hover {
+  background-color: #151f355b;
+  transition: 0.1s ease-in-out;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4285F4;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+.coffee-woman-div {
+  flex-basis: 50%;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  height: 60%;
+}
+
+.coffee-woman {
+  border-radius: 5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 99%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Media Queries */
+@media screen and (max-width: 1484px) {
   .all-login-form {
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center;
-    height: 61rem;
-    max-width: 400px;
-    margin-left: 25%;
-    margin-top: 5rem;
-    border-radius: 5px;
+    margin-left: 0;
+  }
+}
+
+/* Media Queries */
+@media screen and (max-width: 1384px) {
+  .all-login-form {
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+  .coffee-woman-div {
+    flex: 0 0 80%;
+    max-width: 90%;
+  }
+  .login-form {
+    margin-right: 1rem;
+  }
+  .coffee-woman-div {
+    height: 70vh; /* Adjusted height for smaller screens */
+  }
+
+  .coffee-woman {
+    box-shadow: none;
+    /* Scaling the image to make it bigger */
+    transform: scale(1.5) translate(-35%, -35%); /* Zooming in and shifting the image higher up */
+  }
+}
+
+@media screen and (max-width: 1384px) {
+
+.coffee-woman-div {
+  height: 60vh; /* Adjusted height for smaller screens */
+}
+
+.coffee-woman {
+  /* Scaling the image to make it bigger */
+  transform: scale(1.4) translate(-50%, -45%); /* Zooming in and shifting the image higher up */
+}
+}
+
+@media screen and (max-width: 868px) {
+  .login-form,
+  .coffee-woman-div {
+    flex: 0 0 90%;
+    max-width: 100%;
   }
 
   .login-form {
-    width: 100%;
+    margin-right: 0;
+    margin-bottom: 2rem;
   }
 
-  .login-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .coffee-woman-div {
+    height: 70vh; /* Adjusted height for smaller screens */
   }
 
-  .login-form input {
-    width: 93%;
-    padding: 0.8rem;
-    margin-bottom: 0.3rem;
-    border: none;
-    background-color: rgb(236, 236, 236);
-    border-radius: 0.5rem;
+  .coffee-woman {
+    /* Scaling the image to make it bigger */
+    transform: scale(2) translate(-35%, -30%); /* Zooming in and shifting the image higher up */
   }
-
-  .login-form button {
-    border: none;
-    display: block; /* Display block to take full width */
-    width: 100%;
-    padding: 0.8rem 1.2rem;
-    font-size: 1.1em;
-    background-color: #bf15e9;
-    color: #fff;
-    border-bottom: 2px solid #ac1ecf;
-    border-radius: 2rem;
-    cursor: pointer;
-  }
-  .login-form button:hover {
-    background-color: #ad11d4;
-  }
-
-  .google-login-btn {
-    border: none;
-    display: flex;
-    align-items: center; /* Vertically center align items */
-    justify-content: center;
-    width: 100%;
-    margin-top: 0.3rem;
-    padding: 0.5rem;
-    font-size: 1.1em;
-    background-color: #4285F4;
-    color: #fff;
-    border-radius: 2rem;
-    cursor: pointer;
-    border-bottom: 2px solid #3670ce; /* This adds a white border */
-  }
-
-  .google-login-btn:hover {
-    background-color: #3c78d8;
-  }
-
-  .google-icon {
-    background-color: #ffffff;
-    border-radius: 2rem;
-    margin-right: 0.5rem; /* Space between the icon and the text */
 }
 
-  @media screen and (max-width: 568px) {
-    .all-login-form {
-      max-width: 65vw;
-      margin: 0 auto;
-      margin-top: 5rem;
-    }
+@media screen and (max-width: 668px) {
+  .login-form {
+    padding: 1rem;
   }
+
+  .login-form input,
+  .login-form button {
+    padding: 0.6rem;
+    font-size: 1em;
+  }
+
+  .coffee-woman-div {
+    flex: 0 0 90%;
+  }
+
+  .login-form {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .coffee-woman {
+    /* Scaling the image to make it bigger */
+    transform: scale(2) translate(-45%, -45%); /* Zooming in and shifting the image higher up */
+  }
+}
+
 </style>

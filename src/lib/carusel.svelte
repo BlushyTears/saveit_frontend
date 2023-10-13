@@ -165,7 +165,7 @@
   }
 
   .nextNPrevBtns:hover {
-    background-color: #4c6597;
+    background-color: #4c689e;
     transition: 0.1s ease;
   }
 

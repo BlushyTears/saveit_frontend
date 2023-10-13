@@ -14,7 +14,7 @@
   import { onMount } from "svelte";
   import { backend_url } from "../lib/urls";
 
-  import { savedChanges } from "../lib/builderstore";
+  import { linkname, savedChanges } from "../lib/builderstore";
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
@@ -87,54 +87,13 @@
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
-  async function getUserFirstName(event) {
-    const token = localStorage.getItem("token");
-    const csrfToken = getCookie("csrftoken");
-
-    if (!token || !csrfToken) {
-      console.error("Token or CSRF token not available.");
-      return;
-    }
-
-    try {
-      const response = await fetch(backend_url + "/api/getname/", {
-        method: "POST",
-        headers: {
-          "X-CSRFToken": csrfToken,
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      });
-      console.log("dadadadad");
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      console.log("dadadadad22");
-
-      const data = await response.json();
-      let firstName = data && data.data ? data.data : null;
-
-      console.log("First name", firstName);
-      // Process or return the data here as needed.
-      return firstName;
-    } catch (error) {
-      console.error(
-        "There was a problem fetching the user's first name:",
-        error
-      );
-    }
-  }
-
   async function handleMyPageNavigation(event) {
     event.preventDefault();
     try {
         console.log("Before fetching user first name");
-        const path = await getUserFirstName();
         console.log("After fetching user first name");
-        console.log('Fetched Path:', path); // Debugging
-        handleNavigation(path || '/genpage');
+        console.log('Fetched Path:', $linkname); // Debugging
+        handleNavigation($linkname || '/genpage');
         window.location.reload();
     } catch (err) {
         console.error("Error fetching the path:", err);
@@ -197,6 +156,18 @@
   window.addEventListener("set-color", setColor);
 </script>
 
+<SuccessNotif
+  bind:showBar={showSuccessBar}
+  message="Success!"
+  color="#2dc23c"
+  textShadow="#00ff48"
+/>
+<FailedNotif
+  bind:showBar={ShowFailedBar}
+  message="Error"
+  color="#c22d2d"
+  textShadow="#ff0037"
+/>
 
 {#if current === "navbar"}
   <nav style="background-color: {navbarBgColor};" class="navbar-container">
@@ -272,6 +243,18 @@
               >
                 Log out
               </a>
+
+              <a 
+              href="javascript:void(0);" 
+              on:click|preventDefault={handleMyPageNavigation}
+              on:keydown={(e) => {
+                  if (e.key === "Enter") handleMyPageNavigation(e);
+              }}
+              tabindex="0" 
+              role="button" 
+              class="nav-link">
+              My page
+            </a>
             {/if}
 
             {#if !isLoggedIn}
@@ -300,19 +283,9 @@
               >
                 Login
               </a>
+
             {/if}
 
-            <a 
-              href="javascript:void(0);" 
-              on:click|preventDefault={handleMyPageNavigation}
-              on:keydown={(e) => {
-                  if (e.key === "Enter") handleMyPageNavigation(e);
-              }}
-              tabindex="0" 
-              role="button" 
-              class="nav-link">
-              My page
-            </a>
           </div>
         </nav>
         {#if isLoading}
@@ -337,19 +310,6 @@
     </Router>
   </nav>
 {/if}
-
-<SuccessNotif
-  bind:showBar={showSuccessBar}
-  message="Success!"
-  color="#2dc23c"
-  textShadow="#00ff48"
-/>
-<FailedNotif
-  bind:showBar={ShowFailedBar}
-  message="Error"
-  color="#c22d2d"
-  textShadow="#ff0037"
-/>
 
 <style>
 .navbar-container {

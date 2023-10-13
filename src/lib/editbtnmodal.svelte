@@ -4,6 +4,7 @@
   import Colorpicker from "./editbtnmodalcolorpicker.svelte";
   import {buttonNames, buttonColors} from "../lib/builderstore";
   import {savedChanges} from "../lib/builderstore";
+  import { hexToRgba } from "./helpers";
 
   let dialog;
   let dragging = false;
@@ -29,34 +30,6 @@
   }
 
   $: if (dialog && showModal) dialog.showModal(index);
-
-  function hexToRgba(hex, alpha) {
-    // Ensure the alpha is between 0 and 1
-    alpha = Math.min(1, Math.max(0, alpha));
-    
-    // Ensure the hex string has the right format
-    if (hex.charAt(0) === '#') {
-        hex = hex.substr(1);
-    }
-    
-    // Check the length of the hex string
-    if (hex.length !== 6 && hex.length !== 8) {
-        console.error('Invalid hex color string');
-        return null;
-    }
-    
-    // Extract the red, green, blue components from the hex string
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    
-    // If the hex string contains alpha, extract it, else default alpha to 1
-    const a = hex.length === 8 ? parseInt(hex.substring(6, 8), 16) / 255 : 1;
-    
-    // Combine the components and the input alpha into an rgba string
-    return `rgba(${r}, ${g}, ${b}, ${alpha * a})`;
-}
-
 
 let btnColor = "";
 let btnHover = "";
@@ -111,6 +84,7 @@ $: {
       </button>
       <div class="button-component">
         <div style="display: flex;">
+          <h1 style="background-color: #3a47698c; color: white; font-size: calc(0.5vw + 1rem); width: calc(4vw + 5rem); padding: 0.5rem; margin-right: 1rem; border-radius: 1rem; text-align: center;">Button Design</h1>
           <h1>
             {#if isEditing}
             <input
@@ -159,16 +133,47 @@ $: {
           </button>
         </div>
       <br />
+      <br>
 
       <div class="color-pickers">
-        <Colorpicker nameType={"Button"} index={index} subIndex={0}/>
-      <br />
-        <Colorpicker nameType={"Hover"} index={index} subIndex={0}/>
-      <br />
-        <Colorpicker nameType={"Border"} index={index} subIndex={0}/>
-      <br />
-        <Colorpicker nameType={"Shadow"} index={index} subIndex={0}/>
+        <div class="flex-div">
+          <div class="colorpicker">
+            <Colorpicker nameType={"Button"} index={index} subIndex={0}/>
+          </div>
+          <div class="description-div button-color-indication" style="background-color: {btnColor};"> 
+            <h1>Button Color</h1>
+          </div>
+        </div>
+        <br>
+        <div class="flex-div">
+          <div class="colorpicker">
+            <Colorpicker nameType={"Hover"} index={index} subIndex={0}/>
+          </div>
+          <div class="description-div button-hover-indication" style="background-color: {btnHover};"> 
+            <h1>Hover Color</h1>
+          </div>
+        </div>
+        <br>
+        <div class="flex-div">
+          <div class="colorpicker">
+            <Colorpicker nameType={"Border"} index={index} subIndex={0}/>
+          </div>
+          <div class="description-div button-border-indication transparent-div" style="border-color: {btnBorder};"> 
+            <h1>Border Color</h1>
+          </div>
+        </div>
+        <br>
+        <div class="flex-div">
+          <div class="colorpicker">
+            <Colorpicker nameType={"Shadow"} index={index} subIndex={0}/>
+          </div>
+          <div class="description-div button-shadow-indication" style="box-shadow: 1px 1px 5px 1px {btnShadow};"> 
+            <h1>Shadow Color</h1>
+          </div>
+        </div>
+        <br>
       </div>
+        <br>
       <br />
 
       <!-- Future font layout disabled (DON'T REMOVE) until we actually add them, its just not really needed for MVP. Needs: 
@@ -251,19 +256,21 @@ $: {
   }
 
   .editing-text {
+    text-align: center;
     color: #F2F2F2;
     font-size: calc(1.15em + 0.5vw);
     padding: 1rem;
     border-radius: 1rem;
     border: none;
     cursor: text;
-    max-width: clamp(15vw + 5rem, calc(25vw + 1rem), 30vw + 15rem);
+    max-width: clamp(10vw + 5rem, calc(15vw + 1rem), 15vw + 15rem);
   }
 
   .edited-text {
+    text-align: center;
     color: #F2F2F2;
     font-size: calc(1.15em + 0.5vw);
-    width: calc(5rem + 15vw);
+    max-width: clamp(10vw + 5rem, calc(15vw + 1rem), 15vw + 15rem);
     padding: 1rem;
     border-radius: 1rem;
     border: none;
@@ -273,6 +280,35 @@ $: {
 
   .edited-text:hover {
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .flex-div {
+    display: flex;
+    justify-content: space-between; /* This pushes the child elements to the extremes */
+    align-items: center;
+    width: 100%; /* Ensure it spans the full width of its container */
+  }
+
+  .colorpicker {
+    flex: 0 0 auto; /* Ensures that the Colorpicker doesn't shrink or grow */
+    margin-right: 1rem;
+  }
+
+  .color-pickers {
+    display: block; 
+  }
+
+  .description-div {
+    width: 15rem;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .transparent-div {
+    background-color: rgba(0,0,0,0);
+    border-width: 2px;
+    border-style: solid;
+    border-color: gray;
   }
 
   .ok-btn {
@@ -287,10 +323,6 @@ $: {
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
     transform: scale(1.05); /* Scale the image slightly on hover */
-  }
-
-  .color-pickers {
-    display: flex; 
   }
 
   /* Unused but shouldn't be removed because it's just disabled */
@@ -351,10 +383,5 @@ $: {
     border-style: solid;
     border-color: gray transparent transparent transparent;
   }
-  /* Media queries: */
-  @media only screen and (max-width: 1000px) {
-    .color-pickers {
-      display: block;
-    }
-  }
+
 </style>

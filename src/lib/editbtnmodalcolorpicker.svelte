@@ -61,9 +61,9 @@
     tabindex="0"
     role="button"
     aria-label="Open color picker">
-    <label for="color">{nameType}</label>
     <div bind:this={colorDisplay} class="colorDisplay"></div>
   </div>
+
 
   <input type="range" min="0" max="1" step="0.01" value={safeAlphaValue} class="alpha-slider" on:input={handleAlphaChange} />
   <input bind:this={hiddenInput} type="color" class="colorPicker hidden" on:input={handleChange} />
@@ -116,8 +116,7 @@
   border-radius: 1rem;
   -webkit-appearance: none;
   width: 30px;
-  margin-top: -1rem;
-  height: 2rem;
+  height: 1.5rem;
   background: #F2F2F2;
   cursor: pointer;
 }
@@ -125,27 +124,20 @@
 .alpha-slider::-moz-range-thumb {
   border-radius: 1rem;
   width: 30px;
-  margin-top: -1rem;
-  height: 2rem;
+  height: 1.5rem;
   background: #F2F2F2;
   cursor: pointer;
 }
 
 .alpha-slider::-webkit-slider-runnable-track {
-  padding: 1rem 0;
   border-radius: 1rem;
-  height: 2rem;
-  margin-top: -1rem;
-  height: 2rem;
   cursor: pointer;
   background: #394867;
 }
 
 .alpha-slider::-moz-range-track {
   border-radius: 1rem;
-  height: 2rem;
-  margin-top: -1rem;
-  height: 2rem;
+  height: 1rem;
   cursor: pointer;
   background: #394867;
 }

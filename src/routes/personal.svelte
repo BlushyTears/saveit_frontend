@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import {savedChanges} from '../lib/builderstore';
+  import { linkname } from '../lib/builderstore';
+
   let name = "";
   let link = "";
 
@@ -27,7 +29,7 @@
     <div class="login-form">
       <div style="display: flex;" class="login-title">
         <h3 style="color: white;">
-          Update your link. Example: favedis.com/pizzajoe
+          Update your link. Example: favedis.com/{$linkname}
         </h3>
 
         <br />
@@ -53,16 +55,16 @@
   .form-body {
     display: flex;
     justify-content: center;
-
     width: 75%;
     margin: 0 auto;
     background-color: #27324bce;
   }
   .all-login-form {
+    
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 61rem;
+    height: 100vh;
     margin-top: 5rem;
     border-radius: 5px;
   }

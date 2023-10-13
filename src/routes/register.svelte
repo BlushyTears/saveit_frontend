@@ -4,7 +4,7 @@
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
   import GLogo from "../assets/glogo.png";
-
+  import WelcomeParty from "../assets/welcomeparty.jpg";
 
   import { backend_url, frontend_url } from "../lib/urls";
 
@@ -84,122 +84,241 @@
   }
 </script>
 
-<div class="register-form">
-  <h2 style="color: white;">Register Form</h2>
-  <form style=" margin-top: 0.5rem;" on:submit={handleSubmit}>
-    <input
-      type="text"
-      id="username"
-      bind:value={username}
-      required
-      placeholder="Username"
-    />
-    <input
-      type="text"
-      id="email"
-      bind:value={email}
-      required
-      placeholder="Email"
-    />
-    <input
-      type="password"
-      id="password"
-      bind:value={password}
-      required
-      placeholder="Password"
-    />
-    <input
-      type="password"
-      id="confirm_password"
-      bind:value={confirmPassword}
-      required
-      placeholder="Confirm Password"
-    />
-    <div class="btn-container">
-      <button class="register-btn" type="submit">Register</button>
-      <button class="google-login-btn" on:click={loginWithGoogle}>
-        <img src={GLogo} alt="Google Icon" class="google-icon" />
-        Google Register
-      </button>
+<div class="all-register-form">
+  <div class="register-box">
+    <div class="register-title">
+      <h2 style="color: white; font-size: 2.2em; margin-bottom: 1rem;">Register Form</h2>
+      {#if isLoading}
+        <Spinner />
+      {/if}
     </div>
-  </form>
+    <form on:submit={handleSubmit}>
+      <input
+        type="text"
+        id="username"
+        bind:value={username}
+        required
+        placeholder="Username"
+      />
+      <input
+        type="text"
+        id="email"
+        bind:value={email}
+        required
+        placeholder="Email"
+      />
+      <input
+        type="password"
+        id="password"
+        bind:value={password}
+        required
+        placeholder="Password"
+      />
+      <input
+        type="password"
+        id="confirm_password"
+        bind:value={confirmPassword}
+        required
+        placeholder="Confirm Password"
+      />
 
-
-  
+      <div class="centered-content">
+        <button type="submit" style="font-size: 2em;">Register</button>
+        <h2 style="color: white;">Or</h2>
+        <br>
+        <button class="google-login-btn" on:click={loginWithGoogle}>
+            <img src={GLogo} alt="Google Icon" class="google-icon"/>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="welcome-party-div">
+    <img src={WelcomeParty} alt="Coffee Woman" class="welcome-party"/>
+  </div>
 </div>
 
 <style>
-  .register-form {
-    /* Poorly hardcoded height cause i couldn't find a better way */
-    height: 61rem;
-    max-width: 500px;
-    margin-left: 25%;
-    border: none;
-    border-radius: 5px;
-    margin-top: 5rem;
-  }
-  .register-form input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 10px;
-    border: none;
-    background-color: rgb(236, 236, 236);
-    border-radius: 0.5rem;
-  }
-  .register-btn {
-    border: none;
-    font-size: 1.7em;
-    background-color: #bf15e9;
-    color: #fff;
-    border-radius: 2rem;
-    cursor: pointer;
-    border-bottom: 2px solid #ac1ecf;
-  }
-
-  .register-btn:hover {
-    background-color: #ad11d4;
-    cursor: pointer;
-  }
-
-  .google-login-btn {
-    font-size: 1.3em;
-    color: #fff;
-    border: none;
-    border-radius: 2rem;
-    cursor: pointer;
-    background-color: #4285F4;
-    border-bottom: 2px solid #3670ce;
-    display: flex;
-    padding: 0.5rem;
-    align-items: center;  /* Vertically aligns items to the center */
-    justify-content: center;  /* Horizontally aligns items to the center */
-    /* ... your other styles ... */
-}
-
-.google-login-btn:hover {
-    background-color: #3c78d8;
-}
-
-  .btn-container {
+.all-register-form {
+  margin-top: -15rem;
+  margin-left: 12vw;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(110vh + 15.6rem);
+  flex-wrap: wrap;
 }
 
-.google-icon {
-  background-color: #ffffff;
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register-box {
+  flex: 0 0 450px;
+  padding: 2rem;
+  background: #212a3e3a;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-right: 10rem;
+}
+
+.register-box input,
+.register-box button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.5em;
+}
+
+.register-box input {
+  width: 93%;
+  background-color: rgb(236, 236, 236);
+}
+
+.register-box button {
+  background-color: #212a3e3a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.register-box button:hover {
+  background-color: #151f355b;
+  transition: 0.1s ease-in-out;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4285F4;
   border-radius: 2rem;
-    margin-right: 0.5rem;  /* Adjust as needed */
+  cursor: pointer;
 }
 
-/* If you want the buttons to have the same width, you can add this: */
-.register-form button {
-  flex: 1; /* This makes each button take up equal space */
+.welcome-party-div {
+  flex-basis: 50%;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  height: 60%;
 }
 
-  @media screen and (max-width: 768px) {
-    .register-form {
-      max-width: 65vw;
-      margin: 0 auto;
-      margin-top: 5rem;
-    }
+.welcome-party {
+  border-radius: 5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 99%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media screen and (min-width: 2000px) {
+
+  .register-box {
+    flex: 0 0 600px; /* Increasing width */
   }
+
+  .welcome-party-div {
+    flex-basis: 40%; /* Taking less space */
+    max-width: 40%;
+  }
+}
+
+
+/* Tablets Landscape */
+@media screen and (max-width: 1384px) {
+  .all-register-form {
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+  
+  .welcome-party-div {
+    flex: 0 0 80%;
+    max-width: 90%;
+    height: 70vh;
+  }
+
+  .welcome-party {
+    transform: scale(1.2) translate(-35%, -35%);
+  }
+}
+
+/* Tablets Portrait */
+@media screen and (max-width: 1024px) {
+  .welcome-party-div {
+    height: 60vh;
+  }
+
+  .welcome-party {
+    transform: scale(1.4) translate(-50%, -35%);
+  }
+}
+
+/* Mobile Landscape */
+@media screen and (max-width: 868px) {
+  .register-box,
+  .welcome-party-div {
+    flex: 0 0 90%;
+    max-width: 100%;
+  }
+
+  .register-box {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .welcome-party-div {
+    height: 70vh;
+  }
+
+  .welcome-party {
+    transform: scale(2) translate(-35%, -40%);
+  }
+}
+
+/* Mobile Portrait */
+@media screen and (max-width: 668px) {
+  .register-box {
+    padding: 1rem;
+  }
+
+  .register-box input,
+  .register-box button {
+    padding: 0.6rem;
+    font-size: 1em;
+  }
+
+  .welcome-party-div {
+    flex: 0 0 90%;
+  }
+  .welcome-party-div {
+    height: 80vh;
+  }
+
+  .register-box {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .welcome-party {
+    transform: scale(2) translate(-35%, -60%);
+    border-radius: 0;
+  }
+}
+
+@media screen and (max-width: 468px) {
+
+  .welcome-party {
+    transform: scale(2) translate(-35%, -90%);
+  }
+}
 </style>

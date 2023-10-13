@@ -13,6 +13,8 @@
   import Previewbuilder from "../lib/previewbuilder.svelte";
   import ColorSchemeModal from "../lib/colorschememodal.svelte";
 
+  import { getCookie } from "../lib/helpers";
+
   import {
     showModal,
     showPreviewModal,
@@ -24,6 +26,7 @@
     buttonNames,
     buttonColors,
     initializeStoresWithLocalStorage,
+    stores,
     savedChanges,
     bodyBackgroundColor,
     showEditBgColorModal,
@@ -45,16 +48,22 @@
       newArr.push([
         {
           // These are intentionally hardcoded values whenever a new button is made
-          button: { color: "#fac3f5", alpha: 1.0 },
-          hover: { color: "#f0adea", alpha: 1.0 },
-          border: { color: "#a17a9d", alpha: 0.5 },
-          shadow: { color: "#d426c2", alpha: 0.1 },
+          button: { color: "#373a70", alpha: 1.0 },
+          hover: { color: "#4c5091", alpha: 1.0 },
+          border: { color: "#000330", alpha: 0.5 },
+          shadow: { color: "#000000", alpha: 0.1 },
         },
       ]); // Add a new color set in a nested array
       return newArr;
     });
 
-    inputTextList.update((arr) => [...arr, ""]); // Add a new empty text field
+    // We hardcode a bunch of empty newlines in the quilljs text editor so you're not limited to interacting with text input at
+    // the very top only and can now press anywhere in the modal, rather than having to manually create new lines from the top.
+    // Won't need to be removed unless height of modal is changed and we dont want a scrollbar on the y-axis (unlikely)
+    inputTextList.update((arr) => [
+      ...arr,
+      "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+    ]); // Add a new empty text field
 
     btnCount.update((n) => newNames.length);
     containerCount.update((n) => newNames.length);
@@ -62,14 +71,12 @@
 
   function removeLastBtn() {
     savedChanges.set(false);
-    // Remove from buttonNames
     const names = [...$buttonNames];
     if (names.length > 0) {
       names.pop();
       buttonNames.set(names);
     }
 
-    // Remove from showModal
     showModal.update((arr) => {
       if (arr.length > 0) {
         arr.pop();
@@ -84,7 +91,6 @@
       return [...arr];
     });
 
-    // Remove from showEditBtnModal
     showEditBtnModal.update((arr) => {
       if (arr.length > 0) {
         arr.pop();
@@ -92,7 +98,6 @@
       return [...arr];
     });
 
-    // Remove from buttonColors
     buttonColors.update((arr) => {
       if (arr.length > 0) {
         arr.pop();
@@ -100,7 +105,6 @@
       return [...arr];
     });
 
-    // Remove from inputTextList
     inputTextList.update((arr) => {
       if (arr.length > 0) {
         arr.pop();
@@ -108,7 +112,7 @@
       return [...arr];
     });
 
-    // Decrease btnCount
+    // Decrease btnCount here
     btnCount.update((n) => (n > 0 ? n - 1 : 0));
     // Update to make sure consistency between stores (important for removal)
     updateAllStores();
@@ -146,22 +150,22 @@
   let draggedIndex = null; // New variable
 
   function onDragStart(event, index) {
-  event.dataTransfer.setData("text/plain", index.toString());
-  draggedIndex = index; // Set the dragged index
+    event.dataTransfer.setData("text/plain", index.toString());
+    draggedIndex = index; // Set the dragged index
   }
 
   function onDrop(event, dropIndex) {
     const dragIndex = Number(event.dataTransfer.getData("text/plain"));
     if (dragIndex !== dropIndex) {
-        swapButtons(dragIndex, dropIndex);
+      swapButtons(dragIndex, dropIndex);
     }
-    hoveredIndex = null;  // Reset the hovered index after the drop
-}
+    hoveredIndex = null; // Reset the hovered index after the drop
+  }
 
-function allowDrop(event, index) {
+  function allowDrop(event, index) {
     event.preventDefault();
-    hoveredIndex = index;  // Set the hovered index
-}
+    hoveredIndex = index; // Set the hovered index
+  }
 
   function swapButtons(dragIndex, dropIndex) {
     savedChanges.set(false);
@@ -173,7 +177,7 @@ function allowDrop(event, index) {
 
     // Swap function for readability and reusability
     function swapArrayElements(array, i, j) {
-        [array[i], array[j]] = [array[j], array[i]];
+      [array[i], array[j]] = [array[j], array[i]];
     }
 
     swapArrayElements($buttonNames, dragIndex, dropIndex);
@@ -184,7 +188,7 @@ function allowDrop(event, index) {
     buttonNames.set($buttonNames);
     inputTextList.set($inputTextList);
     buttonColors.set($buttonColors);
-}
+  }
 
   // Generic modal stuff below
   function openModal(index) {
@@ -216,12 +220,6 @@ function allowDrop(event, index) {
     });
   }
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  }
-
   // Sets the bg color behind the navbar (funky solution)
   onMount(async () => {
     try {
@@ -238,25 +236,42 @@ function allowDrop(event, index) {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
+        throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
       const responseData = await response.json();
-      let jsonString = responseData.data;
-      if (jsonString.startsWith("b'")) {
-        jsonString = jsonString.substring(2, jsonString.length - 1);
+      console.log("Response data from serverrr:", responseData);
+
+      // Ensure responseData.data is a string and valid JSON before processing
+      if (typeof responseData.data !== "string") {
+        throw new Error(
+          "Expected responseData.data to be a string representing a Python dictionary."
+        );
       }
+      let jsonString = responseData.data;
+
+      if (jsonString.startsWith("b'")) {
+          jsonString = jsonString.substring(2, jsonString.length - 1);
+      }
+
+      jsonString = jsonString
+          .replace(/\\\\\\"/g, '\\"')
+          .replace(/\\\\/g, '\\'); 
 
       const jsonObject = JSON.parse(jsonString);
 
-      Object.entries(jsonObject).forEach(([storeName, storeItem]) => {
-        localStorage.setItem(storeName, JSON.stringify(storeItem));
-      });
+      // Parse the cleaned JSON string into a JavaScript object
+      Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
+    if (stores[storeName]) {
+        stores[storeName].set(storeValue);
+        localStorage.setItem(storeName, JSON.stringify(storeValue));
+      }
+    });
 
       // If the fetch operation is successful, initialize stores with local storage or with fetched data
       initializeStoresWithLocalStorage();
 
-      // ... other Miscellaneous things like dispatching events
+      // Miscellaneous tasks, like dispatching events
       dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
       updateAllStores();
       savedChanges.set(true);
@@ -268,18 +283,63 @@ function allowDrop(event, index) {
     }
   });
 
+  // onMount(async () => {
+  //     try {
+  //       const csrfToken = getCookie("csrftoken");
+  //       const token = localStorage.getItem("token");
+
+  //       const response = await fetch(backend_url + "/api/getdata/", {
+  //         method: "POST",
+  //         headers: {
+  //           "X-CSRFToken": csrfToken,
+  //           "Content-Type": "application/json",
+  //           Authorization: `Token ${token}`,
+  //         },
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok " + response.statusText);
+  //       }
+
+  //       const responseData = await response.json();
+  //       let jsonString = responseData.data;
+  //       if (jsonString.startsWith("b'")) {
+  //         jsonString = jsonString.substring(2, jsonString.length - 1);
+  //       }
+
+  //       const jsonObject = JSON.parse(jsonString);
+
+  //       Object.entries(jsonObject).forEach(([storeName, storeItem]) => {
+  //         localStorage.setItem(storeName, JSON.stringify(storeItem));
+  //       });
+
+  //       // If the fetch operation is successful, initialize stores with local storage or with fetched data
+  //       initializeStoresWithLocalStorage();
+
+  //       // ... other Miscellaneous things like dispatching events
+  //       dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
+  //       updateAllStores();
+  //       savedChanges.set(true);
+  //     } catch (error) {
+  //       console.error(
+  //         "There has been a problem with your fetch operation:",
+  //         error
+  //       );
+  //     }
+  //   });
+
   $: {
     $buttonColors,
-    $buttonNames,
-    $showModal,
-    $showPreviewModal,
-    $showEditBtnModal,
-    $editedText,
-    $inputTextList,
-    $btnCount,
-    $containerCount,
-    $bodyBackgroundColor,
-    $showEditBgColorModal;
+      $buttonNames,
+      $showModal,
+      $showPreviewModal,
+      $showEditBtnModal,
+      $editedText,
+      $inputTextList,
+      $btnCount,
+      $containerCount,
+      $bodyBackgroundColor,
+      $showEditBgColorModal;
   }
 
   async function sendStoreDataToServer() {
@@ -407,33 +467,37 @@ function allowDrop(event, index) {
           </div>
 
           {#each $buttonNames as name, index (index)}
-          <div 
-          class="btn-container {hoveredIndex === index ? 'hovered' : ''} {draggedIndex === index ? 'dragged' : ''}"
-          draggable="true"
-          on:dragstart={e => onDragStart(e, index)}
-          on:drop={e => onDrop(e, index)}
-          on:dragover={e => allowDrop(e, index)}
-        >
-            <button class="recipe-link" on:click={() => openModal(index)}>
-              <h2 class="modal-btn-text">{name}</h2>
-            </button>
-        
-            <button
-              class="edit-button-btn"
-              on:click={() => openEditBtnModal(index)}
+            <div
+              class="btn-container {hoveredIndex === index
+                ? 'hovered'
+                : ''} {draggedIndex === index ? 'dragged' : ''}"
+              draggable="true"
+              on:dragstart={(e) => onDragStart(e, index)}
+              on:drop={(e) => onDrop(e, index)}
+              on:dragover={(e) => allowDrop(e, index)}
             >
-              Edit
-            </button>
-          </div>
-        {/each}
+              <button class="recipe-link" on:click={() => openModal(index)}>
+                <h2 class="modal-btn-text">{name}</h2>
+              </button>
+
+              <button
+                class="edit-button-btn"
+                on:click={() => openEditBtnModal(index)}
+              >
+                Edit
+              </button>
+            </div>
+          {/each}
 
           <div class="edit-and-remove-btn-container">
             <div class="add-and-remove-buttons-container">
               <button class="add-btn-class" on:click={() => addBtn()}>
-              <h2 style="padding: 1.5rem 0;" class="modal-btn-text">Add</h2>
+                <h2 style="padding: 1.5rem 0;" class="modal-btn-text">Add</h2>
               </button>
               <button class="add-btn-class" on:click={() => removeLastBtn()}>
-                <h2 style="padding: 1.5rem 0;" class="modal-btn-text">Remove</h2>
+                <h2 style="padding: 1.5rem 0;" class="modal-btn-text">
+                  Remove
+                </h2>
               </button>
             </div>
           </div>
@@ -489,7 +553,6 @@ function allowDrop(event, index) {
   <br />
   <br />
   <br />
-
 </div>
 
 <style>
@@ -508,9 +571,10 @@ function allowDrop(event, index) {
   }
 
   .body {
+    overflow-y: hidden;
     margin: 0 auto;
     padding: 0;
-    height: 80vh;
+    height: 100vh;
   }
 
   .parrent-body {
@@ -675,37 +739,37 @@ function allowDrop(event, index) {
   }
 
   .tooltip {
-  font-size: 0.7em;
-  visibility: hidden;
-  position: absolute;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 0.6rem;
-  border-radius: 0.3rem;
-  z-index: 1;
-  bottom: 125%; /* Position the tooltip above the button */
-  left: 50%;
-  margin-left: -1.5rem; /* Centers the tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+    font-size: 0.7em;
+    visibility: hidden;
+    position: absolute;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the button */
+    left: 50%;
+    margin-left: -1.5rem; /* Centers the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
 
-.tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%; /* Arrow will appear at the bottom of the tooltip */
-  left: 50%;
-  margin-left: -1.5rem;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* Arrow will appear at the bottom of the tooltip */
+    left: 50%;
+    margin-left: -1.5rem;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
 
-.colorPickerBtn:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-}
+  .colorPickerBtn:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
 
   .save-edits-btn {
     padding: 0.5rem 1rem;
@@ -742,7 +806,6 @@ function allowDrop(event, index) {
       height: 50rem;
       margin-bottom: 15px;
     }
-
 
     .parrent-body {
       display: block;

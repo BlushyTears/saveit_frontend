@@ -13,14 +13,12 @@
   import Logo from "../assets/backlogo.png";
   import { onDestroy, onMount } from "svelte";
   import { backend_url } from "../lib/urls";
-  import { hexToRgba } from "../lib/helpers.js";
+  import { hexToRgba, getCookie } from "../lib/helpers.js";
+  import GenModal from "../lib/genmodalview.svelte";
 
-  import Previewmodal from "../lib/previewmodal.svelte";
-
+  import { linkname } from '../lib/builderstore';
   import {
-    showModal,
     showPreviewModal,
-    showEditBtnModal,
     editedText,
     inputTextList,
     btnCount,
@@ -28,9 +26,9 @@
     buttonNames,
     buttonColors,
     initializeStoresWithLocalStorage,
+    stores,
     savedChanges,
     bodyBackgroundColor,
-    showEditBgColorModal,
   } from "../lib/builderstore";
 
 
@@ -59,7 +57,6 @@
     window.location.href = '/editor';
   }
   
-
   function updateAllStores() {
     // Ensure showModal and showEditBtnModal have the correct number of elements
     const length = $buttonNames.length;
@@ -87,54 +84,57 @@
     containerCount.set(length);
   }
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  }
-  
   onMount(async () => {
-    let currentUrl = window.location.pathname;
-    let lastSegment = currentUrl.split("/").pop();
-    console.log("Test", lastSegment);
-
     try {
       const csrfToken = getCookie("csrftoken");
       const token = localStorage.getItem("token");
 
-      const response = await fetch(backend_url + "/api/getdatapublic/", {
+      const response = await fetch(backend_url + "/api/getdata/", {
         method: "POST",
         headers: {
           "X-CSRFToken": csrfToken,
           "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
         },
-        body: JSON.stringify(lastSegment),
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
+        throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
       const responseData = await response.json();
+      console.log("Response data from serverrr:", responseData);
+
+      // Ensure responseData.data is a string and valid JSON before processing
+      if (typeof responseData.data !== "string") {
+        throw new Error(
+          "Expected responseData.data to be a string representing a Python dictionary."
+        );
+      }
       let jsonString = responseData.data;
 
-    console.log("resopnse data here", responseData);
+      if (jsonString.startsWith("b'")) {
+          jsonString = jsonString.substring(2, jsonString.length - 1);
+      }
 
-    if (jsonString && jsonString.startsWith("b'")) {
-        jsonString = jsonString.substring(2, jsonString.length - 1);
-    }
+      jsonString = jsonString
+          .replace(/\\\\\\"/g, '\\"')
+          .replace(/\\\\/g, '\\'); 
 
       const jsonObject = JSON.parse(jsonString);
-      console.log(jsonObject);
 
-      Object.entries(jsonObject).forEach(([storeName, storeItem]) => {
-        localStorage.setItem(storeName, JSON.stringify(storeItem));
-      });
+      // Parse the cleaned JSON string into a JavaScript object
+      Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
+    if (stores[storeName]) {
+        stores[storeName].set(storeValue);
+        localStorage.setItem(storeName, JSON.stringify(storeValue));
+      }
+    });
 
       // If the fetch operation is successful, initialize stores with local storage or with fetched data
       initializeStoresWithLocalStorage();
 
-      // ... other Miscellaneous things like dispatching events
+      // Miscellaneous tasks, like dispatching events
       dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
       updateAllStores();
       savedChanges.set(true);
@@ -146,15 +146,6 @@
     }
   });
 
-    onMount(() => {
-      // We dont have a way of assuming the user didn't wanna save changes if he does leave unsaved, so we set it true upon load instead
-      savedChanges.set(true);
-      dispatchEvent(new CustomEvent("set-color", { detail: { bgcolor } }));
-    }) 
-    let bgcolor = hexToRgba(
-      $bodyBackgroundColor.bodybackground.color,
-      $bodyBackgroundColor.bodybackground.alpha
-    );
 </script>
 
 <div
@@ -182,7 +173,7 @@
     style="background-color: {hoveredIndex === index ? 
     hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha) : 
     hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha)};">
-    <h2 class="modal-btn-text">{name}</h2>
+    <h2 class="modal-btn-text">{$buttonNames[index]}</h2>
   </button>
 
   </div>
@@ -190,7 +181,7 @@
 
   {#each Array($containerCount) as _, index (index)}
     <div class="template-container">
-      <Previewmodal
+      <GenModal
         on:mouseover={() => toggleHover(true)}
         on:mouseout={() => toggleHover(false)}
         on:focus={() => toggleHover(true)}
@@ -200,10 +191,8 @@
         {index}
       />
     </div>
-    
   {/each}
   <br />
-
 
 </div>
 
@@ -254,7 +243,7 @@
     align-items: center;
     padding: 1.5rem;
     border-radius: 3rem;
-    width: 50%;
+    width: calc(50% + 10rem);
     font-size: calc(0.8em + 0.4vw);
     margin-top: 1rem;
   }
@@ -269,7 +258,4 @@
     flex: 1;
     text-align: center;
   }
-  
-
 </style>
-

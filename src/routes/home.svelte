@@ -1,21 +1,7 @@
-<!-- Temp color theme:
-    #37C84C light green
-    #376AC8 light blue
-    #C837B3 magenta
-    #C89537 gold orange
-    #964B00 brown
-    #FFFFFF white
 
-
-    Temp color theme 2:
-    #272829 black
-    #61677A gray
-    #D8D9DA light gray
-    #FFF6E0 white
--->
 
 <script>
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Link, Route, navigate } from "svelte-routing";
   import { onMount } from "svelte";
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
@@ -25,8 +11,11 @@
   import Cooking from "../assets/cooking.jpg";
   import SuccessNotif from '../lib/notification.svelte';
   import FailedNotif from '../lib/notification.svelte';
-  import {savedChanges} from '../lib/builderstore';
+  import { savedChanges } from '../lib/builderstore';
   import { backend_url } from "../lib/urls";
+
+  import { linkname } from '../lib/builderstore';
+  import { getCookie } from "../lib/helpers";
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
@@ -45,6 +34,7 @@
     event.preventDefault();
   }
 
+
   onMount(() => {
     dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
   });
@@ -58,7 +48,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
 
+    // Try to run fetchData and get username if user is logged in
+    fetchData();
+
     // In case the user has multiple google accounts, we need to give it a unique name
+    // Note: if(code) means user has a google auth code for logging in
     if (code) {
       fetch(backend_url + "/api/googleauth/", {
         method: "POST",
@@ -87,6 +81,34 @@
         });
     }
   });
+
+  async function fetchData() {
+  const token = localStorage.getItem("token");
+  const csrfToken = getCookie();
+  if (token) {
+    try {
+      const response = await fetch(backend_url + "/api/getname/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('data from username: ', data.data); // Handle or use the data as required
+      $linkname = data.data;
+
+    } catch (error) {
+      console.error("An error occurred while fetching data:", error);
+    }
+  }
+}
 </script>
 
 <SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
@@ -164,7 +186,7 @@
     <br />
 
     <div
-      style=" background-color: #405683; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
+      style=" background-color: #4c689e; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
         style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"

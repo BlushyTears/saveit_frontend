@@ -42,14 +42,14 @@
   color: white;
   text-align: center;
   border-radius: 0 0 0.5rem 0.5rem;
-  padding: 1rem;
-  font-size: 1.5em;
+  padding: 2rem;
+  font-size: 2em;
   z-index: 1000;
   transition: top 0.1s ease-in-out; /* 1-second animation */
 }
 
 .sinking {
-    top: 0.05rem;  /* Move to the bottom of the viewport */
+    top: 10rem;  /* Move to the bottom of the viewport */
     transition: top 0.1s ease-in;  /* 1-second sinking animation */
   }
 </style>

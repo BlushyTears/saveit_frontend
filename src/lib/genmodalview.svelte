@@ -16,29 +16,19 @@
 
   $: if (dialog && showModal) dialog.showModal();
 
-  function updateStoresAndClose() {
+  function closeModal() {
     // Update the store with the tempText value and then reset tempText
-    $inputTextList[index] = tempText;
     savedChanges.set(false);
     dialog.close();
   }
   
-  const toolbarOptions = [
-    ['bold', 'italic', 'underline'], // toggled buttons
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'align': [] }],
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'size': ['small', true, 'large', 'huge'] }],  // custom dropdown
-];
-
 onMount(() => {
     quill = new Quill(`.editor-${index}`, {
       theme: 'snow',
+      readOnly: true,
       modules: {
-          toolbar: toolbarOptions
-      }
+      toolbar: false
+    }
     });
 
   quill.on('text-change', function(delta) {
@@ -80,14 +70,14 @@ onMount(() => {
   on:mouseup={() => {
     if (dragging) {
       dialog.close();
-      updateStoresAndClose();
+      closeModal();
     }
     dragging = false;
   }}
   on:keydown={(e) => {
     if (e.key === "Escape") {
       dialog.close();
-      updateStoresAndClose();
+      closeModal();
     }
   }}
 >
@@ -101,7 +91,7 @@ onMount(() => {
       <button
         class="close-modal-btn"
         on:click={() => {
-          updateStoresAndClose();
+          closeModal();
           dialog.close();
         }}
       >
@@ -110,7 +100,7 @@ onMount(() => {
       <div style="font-size: 2em; width: calc(10vw + 10rem);">
         <h3
           style="margin: 0; color: black;"
-          contenteditable="true"
+          contenteditable="false"
           bind:innerText={$buttonNames[index]}
         >
           Title
@@ -122,7 +112,7 @@ onMount(() => {
         But this is on purpose as otherwise it screws the forum editor up when you try to 
         make a text bold, it puts the editor-mouse at the start without bolding the text for instance -->
         <div class="slot-wrapper" contenteditable="false" style="width: 100%;">
-          <div class={`editor editor-${index}`} style="width: 100%; font-size: 18px;"></div>
+          <div class={`genpage editor-${index}`} style="width: 100%; font-size: 18px;"></div>
         </div>
         <br />
       </div>
@@ -131,7 +121,7 @@ onMount(() => {
 </dialog>
 
 <style>
-.editor {
+.genpage {
     min-height: 600px;
     max-height: 800px;
     overflow-y: auto;

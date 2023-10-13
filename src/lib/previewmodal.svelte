@@ -22,7 +22,7 @@
   }
 
   let rawContent = "";
-
+  
   onMount(() => {
   // Initialize Quill editor without a toolbar and in read-only mode
   quill_instance = new Quillstance(`.preview-editor-${index}`, {
@@ -40,7 +40,7 @@
   // Listen for text changes and look for URLs matching image formats
   quill_instance.on('text-change', function(delta) {
   delta.ops.forEach(op => {
-    if (typeof op.insert === 'string') {
+    if (op.insert && typeof op.insert === 'string') {
       const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
       if (match) {
         setTimeout(() => {
@@ -104,7 +104,7 @@ $: if (quill_instance && $inputTextList[index] !== quill_instance.root.innerHTML
       <div style="font-size: 2em; width: calc(10vw + 10rem);">
         <h3
           style="margin: 0; color: black;"
-          contenteditable="true"
+          contenteditable="false"
           bind:innerText={$buttonNames[index]}
         >
           Title
