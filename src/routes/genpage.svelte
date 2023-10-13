@@ -86,8 +86,8 @@
 
   onMount(async () => {
     try {
-      // console.log('asdasd ', $linkname);
-      let linkname = localStorage.getItem("linkname");
+      let first_name = localStorage.getItem("first_name");
+      console.log('asdasd ', first_name);
       const csrfToken = getCookie("csrftoken");
       const token = localStorage.getItem("token");
 
@@ -97,7 +97,7 @@
           "X-CSRFToken": csrfToken,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ linkname: linkname })
+        body: JSON.stringify({ first_name: first_name })
       });
 
       if (!response.ok) {

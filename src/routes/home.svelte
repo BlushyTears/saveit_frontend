@@ -101,7 +101,7 @@
 
       const data = await response.json();
       console.log('data from username: ', data.data); // Handle or use the data as required
-      localStorage.setItem("linkname", data.data);
+      localStorage.setItem("first_name", data.data);
 
     } catch (error) {
       console.error("An error occurred while fetching data:", error);
