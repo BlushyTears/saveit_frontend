@@ -33,11 +33,6 @@
     event.preventDefault();
   }
 
-
-  onMount(() => {
-    dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
-  });
-
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
     // We dont have a way of assuming the user didn't wanna save changes if he does leave unsaved, so we set it true upon load instead
@@ -51,7 +46,7 @@
     fetchData();
 
     // In case the user has multiple google accounts, we need to give it a unique name
-    // Note: if(code) means user has a google auth code for logging in
+    // Note: if(code) means user has a google auth code in url for logging in
     if (code) {
       fetch(backend_url + "/api/googleauth/", {
         method: "POST",
@@ -75,16 +70,17 @@
           window.location.reload();
         })
         .catch((error) => {
-          showFailedNotification();
-          console.error("An error occurred:", error);
+          console.error("Google auth issue here:", error);
         });
     }
+    dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
+
   });
 
   async function fetchData() {
   const token = localStorage.getItem("token");
+  const first_name = localStorage.getItem("first_name");
   const csrfToken = getCookie();
-  if (token) {
     try {
       const response = await fetch(backend_url + "/api/getname/", {
         method: "POST",
@@ -96,18 +92,40 @@
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+        throw new Error(`Failed to fetch dataa: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('data from username: ', data.data); // Handle or use the data as required
-      localStorage.setItem("first_name", data.data);
+      console.log('data from first_name: ', data.data); // Handle or use the data as required
+      localStorage.setItem('first_name', data.data);
+      console.log('first_name added here: ', localStorage.getItem('first_name')); // Handle or use the data as required
 
     } catch (error) {
       console.error("An error occurred while fetching data:", error);
     }
-  }
 }
+
+function useLocalStorageWatch(key, callback) {
+    function storageChangeHandler(event) {
+        if (event.key === key && event.newValue) {
+            callback(event.newValue);
+        }
+    }
+
+    window.addEventListener('storage', storageChangeHandler);
+
+    // Clean up
+    return () => {
+        window.removeEventListener('storage', storageChangeHandler);
+    };
+}
+
+useLocalStorageWatch('first_name', async (newValue) => {
+    // Your fetchData function logic goes here
+    // 'newValue' will be the new value of the 'first_name' in localStorage
+    // Adjust fetchData to use 'newValue' if necessary
+    await fetchData();
+});
 </script>
 
 <SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>

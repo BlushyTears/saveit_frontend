@@ -88,7 +88,7 @@
       let first_name = localStorage.getItem("first_name");
       console.log('asdasdsss');
 
-      console.log('asdasd123 ', first_name);
+      console.log('asdasd ', first_name);
       const csrfToken = getCookie("csrftoken");
       const token = localStorage.getItem("token");
 
