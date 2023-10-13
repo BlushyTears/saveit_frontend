@@ -240,7 +240,7 @@
       }
 
       const responseData = await response.json();
-      console.log("Response data from serverrr:", responseData);
+      console.log("Response data from server:", responseData);
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {

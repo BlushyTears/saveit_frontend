@@ -16,7 +16,6 @@
   import { hexToRgba, getCookie } from "../lib/helpers.js";
   import GenModal from "../lib/genmodalview.svelte";
 
-  import { linkname } from '../lib/builderstore';
   import {
     showPreviewModal,
     editedText,
@@ -87,7 +86,9 @@
   onMount(async () => {
     try {
       let first_name = localStorage.getItem("first_name");
-      console.log('asdasd ', first_name);
+      console.log('asdasdsss');
+
+      console.log('asdasd123 ', first_name);
       const csrfToken = getCookie("csrftoken");
       const token = localStorage.getItem("token");
 
@@ -106,7 +107,7 @@
 
       const responseData = await response.json();
       console.log('wtf', first_name);
-      console.log("Response data from serverrr: ", responseData, 'local storage var: ');
+      console.log("Response data from server: ", responseData, 'local storage var: ');
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {
@@ -143,7 +144,7 @@
       savedChanges.set(true);
     } catch (error) {
       console.error(
-        "There has been a problem with your fetch operation:",
+        "There has been a problem with your fetch operation::",
         error
       );
     }
