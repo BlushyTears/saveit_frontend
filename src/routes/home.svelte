@@ -14,7 +14,6 @@
   import { savedChanges } from '../lib/builderstore';
   import { backend_url } from "../lib/urls";
 
-  import { linkname } from '../lib/builderstore';
   import { getCookie } from "../lib/helpers";
 
   let showSuccessBar = false;
@@ -102,7 +101,7 @@
 
       const data = await response.json();
       console.log('data from username: ', data.data); // Handle or use the data as required
-      $linkname = data.data;
+      localStorage.setItem("linkname", data.data);
 
     } catch (error) {
       console.error("An error occurred while fetching data:", error);

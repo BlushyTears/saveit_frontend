@@ -86,6 +86,8 @@
 
   onMount(async () => {
     try {
+      // console.log('asdasd ', $linkname);
+      let linkname = localStorage.getItem("linkname");
       const csrfToken = getCookie("csrftoken");
       const token = localStorage.getItem("token");
 
