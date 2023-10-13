@@ -105,7 +105,7 @@
       }
 
       const responseData = await response.json();
-      console.log("Response data from serverrr:", responseData);
+      console.log("Response data from serverrr: ", responseData, 'local storage var: ', first_name);
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {
