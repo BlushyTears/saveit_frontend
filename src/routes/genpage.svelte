@@ -84,71 +84,72 @@
   }
 
   onMount(async () => {
-    try {
-      let first_name = localStorage.getItem("first_name");
-      console.log('asdasdsss');
+  try {
+    // Extract the last part of the URL (after the last '/')
+    const pathParts = window.location.pathname.split('/');
+    const firstNameFromURL = pathParts[pathParts.length - 1];
 
-      console.log('asdasd ', first_name);
-      const csrfToken = getCookie("csrftoken");
-      const token = localStorage.getItem("token");
+    console.log('Name from URL:', firstNameFromURL);
+    const csrfToken = getCookie("csrftoken");
+    const token = localStorage.getItem("token");
 
-      const response = await fetch(backend_url + "/api/getdatapublic/", {
-        method: "POST",
-        headers: {
-          "X-CSRFToken": csrfToken,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ first_name: first_name })
-      });
+    const response = await fetch(backend_url + "/api/getdatapublic/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ first_name: firstNameFromURL })
+    });
 
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
 
-      const responseData = await response.json();
-      console.log('wtf', first_name);
-      console.log("Response data from server: ", responseData, 'local storage var: ');
+    const responseData = await response.json();
+    console.log("Response data from server: ", responseData);
 
-      // Ensure responseData.data is a string and valid JSON before processing
-      if (typeof responseData.data !== "string") {
-        throw new Error(
-          "Expected responseData.data to be a string representing a Python dictionary."
-        );
-      }
-      let jsonString = responseData.data;
+    // Ensure responseData.data is a string and valid JSON before processing
+    if (typeof responseData.data !== "string") {
+      throw new Error(
+        "Expected responseData.data to be a string representing a Python dictionary."
+      );
+    }
+    let jsonString = responseData.data;
 
-      if (jsonString.startsWith("b'")) {
-          jsonString = jsonString.substring(2, jsonString.length - 1);
-      }
+    if (jsonString.startsWith("b'")) {
+      jsonString = jsonString.substring(2, jsonString.length - 1);
+    }
 
-      jsonString = jsonString
-          .replace(/\\\\\\"/g, '\\"')
-          .replace(/\\\\/g, '\\'); 
+    jsonString = jsonString
+        .replace(/\\\\\\"/g, '\\"')
+        .replace(/\\\\/g, '\\'); 
 
-      const jsonObject = JSON.parse(jsonString);
+    const jsonObject = JSON.parse(jsonString);
 
-      // Parse the cleaned JSON string into a JavaScript object
-      Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
-    if (stores[storeName]) {
+    // Parse the cleaned JSON string into a JavaScript object
+    Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
+      if (stores[storeName]) {
         stores[storeName].set(storeValue);
         localStorage.setItem(storeName, JSON.stringify(storeValue));
       }
     });
 
-      // If the fetch operation is successful, initialize stores with local storage or with fetched data
-      initializeStoresWithLocalStorage();
+    // Initialize stores with local storage or fetched data
+    initializeStoresWithLocalStorage();
 
-      // Miscellaneous tasks, like dispatching events
-      dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
-      updateAllStores();
-      savedChanges.set(true);
-    } catch (error) {
-      console.error(
-        "There has been a problem with your fetch operation::",
-        error
-      );
-    }
-  });
+    // Miscellaneous tasks, like dispatching events
+    dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
+    updateAllStores();
+    savedChanges.set(true);
+  } catch (error) {
+    console.error(
+      "There has been a problem with your fetch operation::",
+      error
+    );
+  }
+});
+
 
 </script>
 
