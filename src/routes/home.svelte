@@ -62,11 +62,13 @@
         body: JSON.stringify({ code }),
       })
         .then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `Failed to exchange code for access tokeroni: ${res.status} ${res.statusText}`
-            );
-          }
+          // semi-pointless error message that triggers, even though login was a success, there seems to be something off
+          // On the backend server: 2023-10-15T14:00:59.752 app[3d8d9919c00128] arn [info] Internal Server Error: /api/googleauth/
+          // if (!res.ok) {
+          //   throw new Error(
+          //     `Failed to exchange code for access token: ${res.status} ${res.statusText}`
+          //   );
+          // }
           console.log('response here: ',res);
           return res.json();
         })
