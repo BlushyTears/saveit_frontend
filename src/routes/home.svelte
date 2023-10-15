@@ -67,6 +67,7 @@
               `Failed to exchange code for access tokeroni: ${res.status} ${res.statusText}`
             );
           }
+          console.log('response here: ',res);
           return res.json();
         })
         .then((data) => {

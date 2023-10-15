@@ -5,8 +5,10 @@
   import Register from "../routes/register.svelte";
   import GLogo from "../assets/glogo.png";
   import WelcomeParty from "../assets/welcomeparty.jpg";
-
+  import Spinner from "../lib/loadspinner.svelte";
   import { backend_url, frontend_url } from "../lib/urls";
+  import SuccessNotif from '../lib/notification.svelte';
+  import FailedNotif from '../lib/notification.svelte';
 
   let username = "";
   let email = "";
@@ -14,16 +16,17 @@
   let confirmPassword = "";
 
   let isLoading = false;
+  
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+  
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
 
-  // function handleSubmit(event) {
-  //     event.preventDefault();
-  //     if (password !== confirmPassword) {
-  //         alert("Passwords do not match.");
-  //         return;
-  //     }
-  //     // Here you can implement your registration logic
-  //     alert("Registration successful!");
-  // }
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -83,6 +86,9 @@
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   }
 </script>
+
+<SuccessNotif bind:showBar={showSuccessBar} message="Registered!" color="#2dc23c" textShadow="#00ff48"/>
+<FailedNotif bind:showBar={ShowFailedBar} message="Register fail." color="#c22d2d" textShadow="#ff0037"/>
 
 <div class="all-register-form">
   <div class="register-box">
