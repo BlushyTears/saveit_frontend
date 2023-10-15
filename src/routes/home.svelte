@@ -24,16 +24,16 @@
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
-    ShowFailedBar = true;
-  }
-
   let claimLink = "";
-
+  const token = localStorage.getItem("token");
   function handleSubmit(event) {
     event.preventDefault();
+    if (token !== null) {
+      navigate("/personal");
+    } else {
+      navigate("/login");
+    }
   }
-
 
   onMount(() => {
     dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
@@ -77,7 +77,7 @@
           window.location.reload();
         })
         .catch((error) => {
-          showFailedNotification();
+          // Show failed notif here, once the error that's always triggered upon google login (even if it works) is solved
           console.error("An error occurred:", error);
         });
     }
@@ -113,7 +113,6 @@
 </script>
 
 <SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
-<FailedNotif bind:showBar={ShowFailedBar} message="Login failed." color="#c22d2d" textShadow="#ff0037"/>
 
 <main>
   <section class="section1">

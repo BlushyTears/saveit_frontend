@@ -2,7 +2,8 @@
   export let showModal = false;
   export let index = 0;
   import Colorpicker from "./editbtnmodalcolorpicker.svelte";
-  import {buttonNames, buttonColors} from "../lib/builderstore";
+  import AlphaSlider from "./editbtnmodalslider.svelte";
+  import {buttonNames, buttonColors, borderRadius} from "../lib/builderstore";
   import {savedChanges} from "../lib/builderstore";
   import { hexToRgba } from "./helpers";
 
@@ -16,6 +17,11 @@
   
   // Disabled until we add fonts options again
   // let boxes = ["F", "O", "N", "T", "S"];
+
+  let showBtnDesigner = true;
+  function toggleAccordion() {
+    showBtnDesigner = !showBtnDesigner;
+  }
 
   function startEditing() {
     isEditing = true;
@@ -31,12 +37,16 @@
 
   $: if (dialog && showModal) dialog.showModal(index);
 
-let btnColor = "";
-let btnHover = "";
-let btnBorder = "";
-let btnShadow = "";
+  let txtColor = "";
+  let btnColor = "";
+  let btnBorderRadius = "";
+  let btnHover = "";
+  let btnBorder = "";
+  let btnShadow = "";
 
 $: {
+    btnBorderRadius = $borderRadius[index];
+    txtColor = hexToRgba($buttonColors[index][0].text.color, $buttonColors[index][0].text.alpha);
     btnColor = hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha);
     btnHover = hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha);
     btnBorder = hexToRgba($buttonColors[index][0].border.color, $buttonColors[index][0].border.alpha);
@@ -84,7 +94,6 @@ $: {
       </button>
       <div class="button-component">
         <div style="display: flex;">
-          <h1 style="background-color: #3a47698c; color: white; font-size: calc(0.5vw + 1rem); width: calc(4vw + 5rem); padding: 0.5rem; margin-right: 1rem; border-radius: 1rem; text-align: center;">Button Design</h1>
           <h1>
             {#if isEditing}
             <input
@@ -97,6 +106,8 @@ $: {
             style="
               background-color: {isHovering ? btnHover : btnColor};
               border: 2px solid {btnBorder};
+              color: {txtColor};
+              border-radius: {btnBorderRadius}px;
               {isHovering ? `box-shadow: 0px 0px 5px 2px ${btnShadow};` : ''}
             "
           />
@@ -112,6 +123,8 @@ $: {
             style="
               background-color: {isHovering ? btnHover : btnColor};
               border: 2px solid {btnBorder};
+              color: {txtColor};
+              border-radius: {btnBorderRadius}px;
               {isHovering ? `box-shadow: 0px 0px 5px 2px ${btnShadow};` : ''}
             "
           >
@@ -132,49 +145,97 @@ $: {
           >
           </button>
         </div>
-      <br />
+      <br>
       <br>
 
-      <div class="color-pickers">
-        <div class="flex-div">
-          <div class="colorpicker">
-            <Colorpicker nameType={"Button"} index={index} subIndex={0}/>
-          </div>
-          <div class="description-div button-color-indication" style="background-color: {btnColor};"> 
-            <h1>Button Color</h1>
-          </div>
-        </div>
-        <br>
-        <div class="flex-div">
-          <div class="colorpicker">
-            <Colorpicker nameType={"Hover"} index={index} subIndex={0}/>
-          </div>
-          <div class="description-div button-hover-indication" style="background-color: {btnHover};"> 
-            <h1>Hover Color</h1>
-          </div>
-        </div>
-        <br>
-        <div class="flex-div">
-          <div class="colorpicker">
-            <Colorpicker nameType={"Border"} index={index} subIndex={0}/>
-          </div>
-          <div class="description-div button-border-indication transparent-div" style="border-color: {btnBorder};"> 
-            <h1>Border Color</h1>
-          </div>
-        </div>
-        <br>
-        <div class="flex-div">
-          <div class="colorpicker">
-            <Colorpicker nameType={"Shadow"} index={index} subIndex={0}/>
-          </div>
-          <div class="description-div button-shadow-indication" style="box-shadow: 1px 1px 5px 1px {btnShadow};"> 
-            <h1>Shadow Color</h1>
-          </div>
-        </div>
-        <br>
+      <button class="accordation-btn" on:click={toggleAccordion}>
+        {#if !showBtnDesigner}
+        <p style="color: white;">Button designer</p>
+        {:else}
+        <p style="color: white;">Close</p>
+        {/if}
+      </button>
+      <br>
+      <br>
+
+      {#if showBtnDesigner}
+  <br>
+  <br>
+  <div class="color-pickers">
+    <div class="flex-div">
+
+      <div class="colorpicker">
+        <Colorpicker nameType={"Text"} index={index} subIndex={0}/>
       </div>
-        <br>
-      <br />
+      <div class="description-div button-color-indication" style="background-color: gray;" > 
+        <h1 style="color: {txtColor};">Text Color</h1>
+      </div>
+    </div>
+    <br>
+      <hr>
+    <br>
+
+    <div class="flex-div">
+      <div class="colorpicker">
+        <Colorpicker nameType={"Button"} index={index} subIndex={0}/>
+      </div>
+      <div class="description-div button-color-indication" style="background-color: {btnColor};"> 
+        <h1>Button Color</h1>
+      </div>
+    </div>
+    <br>
+      <hr>
+    <br>
+
+    <div class="flex-div">
+      <div class="colorpicker">
+        <Colorpicker nameType={"Hover"} index={index} subIndex={0}/>
+      </div>
+      <div class="description-div button-hover-indication" style="background-color: {btnHover};"> 
+        <h1>Hover Color</h1>
+      </div>
+    </div>
+    <br>
+      <hr>
+    <br>
+
+    <div class="flex-div">
+      <div class="colorpicker">
+        <Colorpicker nameType={"Border"} index={index} subIndex={0}/>
+      </div>
+      <div class="description-div button-border-indication transparent-div" style="border-color: {btnBorder};"> 
+        <h1>Border Color</h1>
+      </div>
+    </div>
+    <br>
+      <hr>
+    <br>
+
+    <div class="flex-div">
+      <div class="colorpicker">
+        <Colorpicker nameType={"Shadow"} index={index} subIndex={0}/>
+      </div>
+      <div class="description-div button-shadow-indication" style="box-shadow: 1px 1px 5px 1px {btnShadow};"> 
+        <h1>Shadow Color</h1>
+      </div>
+    </div>
+    <br>
+      <hr>
+    <br>
+
+    <div class="flex-div">
+      <div class="colorpicker">
+        <AlphaSlider nameType={"Radius"} index={index}/>
+      </div>
+      <div class="description-div button-border-indication transparent-div" style="border-color: black; border-radius: {btnBorderRadius}px;"> 
+        <h1>Corner Roundness</h1>
+      </div>
+    </div>
+    <br>
+    
+    <br>
+  </div>
+{/if}
 
       <!-- Future font layout disabled (DON'T REMOVE) until we actually add them, its just not really needed for MVP. Needs: 
       let boxes = ["F", "O", "N", "T", "S"];
@@ -248,6 +309,20 @@ $: {
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.18);
   }
 
+  .accordation-btn {
+    padding: 0 1rem;
+    font-size: calc(0.8em + 0.5vw);
+    border: 1px solid #211a7c; /* Add a white border with 2px width */
+    border-radius: 0.8rem;
+    background: none;
+    background-color: #3a4769d5;
+  }
+
+  .accordation-btn:hover {
+    background-color: #2a3653d5;
+    cursor: pointer;
+  }
+
   .button-component {
     font-size: calc(0.6em + 0.3vw);
     font-family: "Comme", sans-serif;
@@ -257,10 +332,8 @@ $: {
 
   .editing-text {
     text-align: center;
-    color: #F2F2F2;
     font-size: calc(1.15em + 0.5vw);
     padding: 1rem;
-    border-radius: 1rem;
     border: none;
     cursor: text;
     max-width: clamp(10vw + 5rem, calc(15vw + 1rem), 15vw + 15rem);
@@ -272,7 +345,6 @@ $: {
     font-size: calc(1.15em + 0.5vw);
     max-width: clamp(10vw + 5rem, calc(15vw + 1rem), 15vw + 15rem);
     padding: 1rem;
-    border-radius: 1rem;
     border: none;
     cursor: text;
     transition: 0.1s ease-out;
@@ -296,6 +368,10 @@ $: {
 
   .color-pickers {
     display: block; 
+  }
+
+  .text-div {
+    background-color: rgba(0,0,0,0);
   }
 
   .description-div {

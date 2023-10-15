@@ -1,6 +1,10 @@
 import { writable } from 'svelte/store';
 
 interface ColorSet {
+  text: {
+    color: string;
+    alpha: number;
+  };
   button: {
     color: string;
     alpha: number;
@@ -19,8 +23,6 @@ interface ColorSet {
   };
 }
 
-export const buttonColors = writable<ColorSet[][]>([]);
-
 interface ColorMiscSet {
   bodybackground: {
     color: string;
@@ -28,6 +30,8 @@ interface ColorMiscSet {
   };
 }
 
+export const buttonColors = writable<ColorSet[][]>([]);
+export const borderRadius = writable([]);
 export const buttonNames = writable([]);
 export const showModal = writable([false]);
 export const showPreviewModal = writable([false]);

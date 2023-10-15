@@ -18,13 +18,14 @@
 
   import { linkname } from '../lib/builderstore';
   import {
+    buttonColors,
+    borderRadius,
     showPreviewModal,
     editedText,
     inputTextList,
     btnCount,
     containerCount,
     buttonNames,
-    buttonColors,
     initializeStoresWithLocalStorage,
     stores,
     savedChanges,
@@ -66,6 +67,7 @@
       while (arr.length < length) {
         arr.push([
           {
+            text: { color: "#F2F2F2", alpha: 1.0 },
             button: { color: "#ff0000", alpha: 1.0 },
             hover: { color: "#ff0000", alpha: 1.0 },
             border: { color: "#0000ff", alpha: 1.0 },
@@ -74,6 +76,13 @@
         ]);
       }
       return arr;
+    });
+
+    borderRadius.update((arr) => {
+      const defaultRadius = 0; // Set your default border radius value here
+      const newArr = [...arr];
+      newArr.push(defaultRadius);
+      return newArr;
     });
 
     // Ensure inputTextList has the correct number of elements

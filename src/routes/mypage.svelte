@@ -6,6 +6,7 @@
 <!-- Below is an example of a layout.svelte file that was hardcoded -->
 
 <script>
+  import { Router, Link, Route, navigate } from "svelte-routing";
   import Modal from "../lib/modal.svelte";
   import ProfileImg from "../assets/profile.png";
   import cookieImage from "../assets/cookies.png";
@@ -16,6 +17,15 @@
 
   // create an array of boolean variables, one for each modal (button that opens)
   let showModal = [false, false];
+
+  const token = localStorage.getItem("token");
+  function handleClick() {
+    if (token !== null) {
+      navigate("/home");
+    } else {
+      navigate("/editor");
+    }
+  }
 
   // function to open a specific modal
   function openModal(index) {
@@ -208,7 +218,7 @@
     </Modal>
   </div>
   <div class="footer">
-    <a href="/home" class="nav-link">
+    <a href={token !== null ? '/home' : '/editor'} class="nav-link" on:click={handleClick}>
       <img class="logo" src={Logo} alt="Logo" />
     </a>
   </div>

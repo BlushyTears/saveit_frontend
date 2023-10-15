@@ -1,20 +1,48 @@
 <script>
   import { onMount } from "svelte";
-  import {savedChanges} from '../lib/builderstore';
-  import { linkname } from '../lib/builderstore';
+  import { savedChanges } from "../lib/builderstore";
+  import { linkname } from "../lib/builderstore";
+  import { getCookie } from "../lib/helpers";
+  import { backend_url } from "../lib/urls";
 
-  let name = "";
-  let link = "";
+  async function submitInfo(event) {
+  event.preventDefault();
+  const token = localStorage.getItem("token");
+  const csrfToken = getCookie("csrftoken");
 
-  function submitInfo() {
-    console.log("Submit info");
+  
+  // Add the first_name to the request body
+  const bodyData = {
+    first_name: $linkname,
+  };
+
+  try {
+    const response = await fetch(backend_url + "/api/updatename/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify(bodyData), // Send the first_name in the request body
+    });
+
+    if (response.ok) {
+      console.log("Data sent successfully.");
+    } else {
+      console.error("Error sending data:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error sending data:", error);
   }
+}
+
 
   onMount(() => {
-    // We dont have a way of assuming the user didn't wanna save changes if he does leave unsaved, so we set it true upon load instead
     savedChanges.set(true);
   });
 </script>
+
 
 <br />
 <br />
@@ -22,23 +50,26 @@
 <div class="form-body">
   <div class="all-login-form">
     <h1 style="width: 90%; color: white;">
-      Personal info, subscription, link etc etc
+      Personal info, subscription, link, etc.
     </h1>
     <br />
     <br />
     <div class="login-form">
       <div style="display: flex;" class="login-title">
         <h3 style="color: white;">
-          Update your link. Example: favedis.com/{$linkname}
+          Update your link. Example: favedis.com/clusteredtomatoes
         </h3>
 
         <br />
       </div>
-      <form style=" margin-top: 0.3rem; display: flex;" on:submit={submitInfo}>
+      <form
+        style="margin-top: 0.3rem; display: flex;"
+        on:submit={submitInfo}
+      >
         <input
-          type="link"
+          type="text"
           id="link"
-          bind:value={link}
+          bind:value={$linkname}
           required
           placeholder="pizzajoe"
         />
@@ -50,6 +81,7 @@
     <h1 style="width: 90%; color: white;">Update e-mail</h1>
   </div>
 </div>
+
 
 <style>
   .form-body {

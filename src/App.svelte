@@ -14,7 +14,7 @@
       current = "navbar";
     } 
     else if (currentUrl.endsWith("/personal")) {
-      current = "personal";
+      current = "home";
     }
     else if (currentUrl.endsWith("/editor")) {
       current = "home";
