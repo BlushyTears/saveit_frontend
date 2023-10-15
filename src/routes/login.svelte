@@ -61,7 +61,7 @@
         showSuccessNotification(); // If you're showing a notification
         setTimeout(() => {
           window.location.reload();
-        }, 1500); 
+        }, 1000); 
       } else {
         const errorData = await response.json();
         console.error("Login failed:", errorData);

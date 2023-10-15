@@ -73,8 +73,9 @@
         .then((data) => {
           // Login was successful here
           localStorage.setItem("token", data);
-          showSuccessNotification();
+          setTimeout(() => {
           window.location.reload();
+        }, 1000); 
         })
         .catch((error) => {
           // Show failed notif here, once the error that's always triggered upon google login (even if it works) is solved
