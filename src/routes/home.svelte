@@ -189,7 +189,7 @@
       style=" background-color: #4c689e; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
     >
       <h1
-        style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
+        style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #3f537c; padding: 0.4rem;"
       >
         Example Layouts
       </h1>
@@ -233,7 +233,7 @@
 
   <section class="footer">
     <br />
-    <h3 style="font-size: 2em; color: white;">        Terms of Service for Favedis</h3>
+    <h3 style="font-size: 2em; color: white;">Terms of Service for Favedis</h3>
 
     <div style="max-width: 70%; margin: 0 auto;">
       <p style="font-size: 1em;">
