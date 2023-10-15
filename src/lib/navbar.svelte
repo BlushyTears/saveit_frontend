@@ -63,6 +63,7 @@
         setTimeout(() => {
           window.location.reload();
         }, 1500);
+        localStorage.removeItem("token"); // Remove the token from local storage
       } else {
         const errorData = await response.json();
         showFailedNotification(); // If you're showing a notification
@@ -78,7 +79,6 @@
       }, 3500);
       console.error("Other error during logout:", error);
     }
-    localStorage.removeItem("token"); // Remove the token from local storage
   }
 
   function getCookie(name) {
