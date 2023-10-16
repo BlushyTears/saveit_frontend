@@ -30,27 +30,3 @@ export function getCookie(name) {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
-
-
- export function generateRandomState() {
-    const length = 32; // Adjust the desired length of the random state
-    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      result += charset.charAt(randomIndex);
-    }
-    return result;
-  }
-  
-  // Function to generate a random string for 'nonce'
- export function generateRandomNonce() {
-    const length = 32; // Adjust the desired length of the random nonce
-    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      result += charset.charAt(randomIndex);
-    }
-    return result;
-  }
