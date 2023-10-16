@@ -4,45 +4,73 @@
   import { linkname } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
   import { backend_url } from "../lib/urls";
+  import SuccessNotif from "../lib/notification.svelte";
+  import FailedNotif from "../lib/notification.svelte";
+  import LoadingSpinner from "../lib/loadspinner.svelte";
+
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
+
+  let isLoading = false;
 
   async function submitInfo(event) {
-  event.preventDefault();
-  const token = localStorage.getItem("token");
-  const csrfToken = getCookie("csrftoken");
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    const csrfToken = getCookie("csrftoken");
+    isLoading = true;
 
-  
-  // Add the first_name to the request body
-  const bodyData = {
-    first_name: $linkname,
-  };
+    // Add the first_name to the request body
+    const bodyData = {
+      first_name: $linkname,
+    };
 
-  try {
-    const response = await fetch(backend_url + "/api/updatename/", {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": csrfToken,
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify(bodyData), // Send the first_name in the request body
-    });
+    try {
+      const response = await fetch(backend_url + "/api/updatename/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+        body: JSON.stringify(bodyData), // Send the first_name in the request body
+      });
 
-    if (response.ok) {
-      console.log("Data sent successfully.");
-    } else {
-      console.error("Error sending data:", response.statusText);
+      if (response.ok) {
+        console.log("Data sent successfully.");
+      } else {
+        console.error("Error sending data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
     }
-  } catch (error) {
-    console.error("Error sending data:", error);
   }
-}
-
+  isLoading = false;
 
   onMount(() => {
     savedChanges.set(true);
   });
 </script>
 
+<SuccessNotif
+  bind:showBar={showSuccessBar}
+  message="Link changed!"
+  color="#2dc23c"
+  textShadow="#00ff48"
+/>
+<FailedNotif
+  bind:showBar={ShowFailedBar}
+  message="Link change fail."
+  color="#c22d2d"
+  textShadow="#ff0037"
+/>
 
 <br />
 <br />
@@ -62,10 +90,7 @@
 
         <br />
       </div>
-      <form
-        style="margin-top: 0.3rem; display: flex;"
-        on:submit={submitInfo}
-      >
+      <form style="margin-top: 0.3rem; display: flex;" on:submit={submitInfo}>
         <input
           type="text"
           id="link"
@@ -82,7 +107,6 @@
   </div>
 </div>
 
-
 <style>
   .form-body {
     display: flex;
@@ -92,7 +116,6 @@
     background-color: #27324bce;
   }
   .all-login-form {
-    
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -64,11 +64,9 @@
     <div bind:this={colorDisplay} class="colorDisplay"></div>
   </div>
 
-
   <input type="range" min="0" max="1" step="0.01" value={safeAlphaValue} class="alpha-slider" on:input={handleAlphaChange} />
   <input bind:this={hiddenInput} type="color" class="colorPicker hidden" on:input={handleChange} />
 </div>
-
 
 <style>
   .color-container {
@@ -94,12 +92,6 @@
     position: absolute;
     opacity: 0;
     z-index: -1;
-  }
-
-  label {
-    cursor: pointer;
-    margin-right: 0.2rem;
-    font-size: 1.3em;
   }
 
   /* Sliders needs a lot of extra specific css code because browser support for them suck */

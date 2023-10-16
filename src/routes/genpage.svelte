@@ -15,23 +15,20 @@
   import { backend_url } from "../lib/urls";
   import { hexToRgba, getCookie } from "../lib/helpers.js";
   import GenModal from "../lib/genmodalview.svelte";
-
-  import { linkname } from '../lib/builderstore';
   import {
-    buttonColors,
-    borderRadius,
     showPreviewModal,
     editedText,
     inputTextList,
     btnCount,
     containerCount,
     buttonNames,
+    buttonColors,
+    borderRadius,
     initializeStoresWithLocalStorage,
     stores,
     savedChanges,
     bodyBackgroundColor,
   } from "../lib/builderstore";
-
 
   let hoveredIndex = null;
   let isHovering = false;
@@ -79,7 +76,7 @@
     });
 
     borderRadius.update((arr) => {
-      const defaultRadius = 0; // Set your default border radius value here
+      const defaultRadius = 0.5; // Set your default border radius value here
       const newArr = [...arr];
       newArr.push(defaultRadius);
       return newArr;
@@ -160,9 +157,7 @@
   }
 });
 
-
 </script>
-
 <div
   class="output-body"
   style="height: 100vh; background-color: {hexToRgba($bodyBackgroundColor.bodybackground.color, $bodyBackgroundColor.bodybackground.alpha)};"
@@ -187,8 +182,12 @@
     on:blur={() => hoveredIndex = null}
     style="background-color: {hoveredIndex === index ? 
     hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha) : 
-    hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha)};">
-    <h2 class="modal-btn-text">{$buttonNames[index]}</h2>
+    hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha)};
+    border-radius: {$borderRadius[index]}px;
+    border-color: {hexToRgba($buttonColors[index][0].border.color, $buttonColors[index][0].border.alpha)};">
+    <h2 class="modal-btn-text" style="color: 
+      {hexToRgba($buttonColors[index][0].text.color, $buttonColors[index][0].text.alpha)};">{$buttonNames[index]} {$borderRadius[index]}
+    </h2>
   </button>
 
   </div>
@@ -235,7 +234,6 @@
     color: #f2f2f2;
     font-size: calc(1.3em + 0.5vw);
     padding: 1rem;
-    border-radius: 1rem;
     border: none;
     cursor: text;
   }
@@ -247,8 +245,8 @@
   }
 
   .recipe-link {
+    border-style: solid;
     margin: 0 auto;
-    border: none;
     background-color: rgba(0, 0, 0, 0);
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
     color: rgb(223, 223, 223);
@@ -257,7 +255,6 @@
     display: flex;
     align-items: center;
     padding: 1.5rem;
-    border-radius: 3rem;
     width: calc(50% + 10rem);
     font-size: calc(0.8em + 0.4vw);
     margin-top: 1rem;

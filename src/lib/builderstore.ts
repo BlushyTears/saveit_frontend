@@ -49,7 +49,7 @@ export const bodyBackgroundColor = writable<ColorMiscSet>({
   }
 });
 
-export const stores = { buttonColors, buttonNames, showModal, 
+export const stores = { buttonColors, borderRadius, buttonNames, showModal, 
                       showPreviewModal, showEditBtnModal, editedText, 
                       inputTextList, showEditBgColorModal, bodyBackgroundColor};
 

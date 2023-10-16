@@ -21,10 +21,10 @@
 </div>
 
 <style>
-    p {
-        margin: 0 auto;
-        padding: 1rem 0;
-    }
+  p {
+    margin: 0 auto;
+    padding: 1rem 0;
+  }
   .accordion-item {
     width: 70%;
     margin: 0 auto;

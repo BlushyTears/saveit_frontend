@@ -60,7 +60,7 @@
     });
 
     borderRadius.update((arr) => {
-      const defaultRadius = 0; // Set your default border radius value here
+      const defaultRadius = 0.5; // Set your default border radius value here
       const newArr = [...arr];
       newArr.push(defaultRadius);
       return newArr;
@@ -115,11 +115,11 @@
     });
 
     borderRadius.update((arr) => {
-    if (arr.length > 0) {
-      arr.pop();
-    }
-    return [...arr];
-  });
+      if (arr.length > 0) {
+        arr.pop();
+      }
+      return [...arr];
+    });
 
     inputTextList.update((arr) => {
       if (arr.length > 0) {
@@ -193,31 +193,31 @@
   }
 
   function swapButtons(dragIndex, dropIndex) {
-  savedChanges.set(false);
+    savedChanges.set(false);
 
-  // Make shallow copies
-  $buttonNames = [...$buttonNames];
-  $inputTextList = [...$inputTextList];
-  $buttonColors = [...$buttonColors];
-  $borderRadius = [...$borderRadius]; // Make a copy of borderRadius
+    // Make shallow copies
+    $buttonNames = [...$buttonNames];
+    $inputTextList = [...$inputTextList];
+    $buttonColors = [...$buttonColors];
+    $borderRadius = [...$borderRadius]; // Make a copy of borderRadius
 
-  // Swap function for readability and reusability
-  function swapArrayElements(array, i, j) {
-    [array[i], array[j]] = [array[j], array[i]];
+    // Swap function for readability and reusability
+    function swapArrayElements(array, i, j) {
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    // Swap elements in all arrays
+    swapArrayElements($buttonNames, dragIndex, dropIndex);
+    swapArrayElements($inputTextList, dragIndex, dropIndex);
+    swapArrayElements($buttonColors, dragIndex, dropIndex);
+    swapArrayElements($borderRadius, dragIndex, dropIndex); // Swap borderRadius as well
+
+    // Update the stores
+    buttonNames.set($buttonNames);
+    inputTextList.set($inputTextList);
+    buttonColors.set($buttonColors);
+    borderRadius.set($borderRadius); // Update the borderRadius store
   }
-
-  // Swap elements in all arrays
-  swapArrayElements($buttonNames, dragIndex, dropIndex);
-  swapArrayElements($inputTextList, dragIndex, dropIndex);
-  swapArrayElements($buttonColors, dragIndex, dropIndex);
-  swapArrayElements($borderRadius, dragIndex, dropIndex); // Swap borderRadius as well
-
-  // Update the stores
-  buttonNames.set($buttonNames);
-  inputTextList.set($inputTextList);
-  buttonColors.set($buttonColors);
-  borderRadius.set($borderRadius); // Update the borderRadius store
-}
 
   // Generic modal stuff below
   function openModal(index) {
@@ -280,22 +280,20 @@
       let jsonString = responseData.data;
 
       if (jsonString.startsWith("b'")) {
-          jsonString = jsonString.substring(2, jsonString.length - 1);
+        jsonString = jsonString.substring(2, jsonString.length - 1);
       }
 
-      jsonString = jsonString
-          .replace(/\\\\\\"/g, '\\"')
-          .replace(/\\\\/g, '\\'); 
+      jsonString = jsonString.replace(/\\\\\\"/g, '\\"').replace(/\\\\/g, "\\");
 
       const jsonObject = JSON.parse(jsonString);
 
       // Parse the cleaned JSON string into a JavaScript object
       Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
-    if (stores[storeName]) {
-        stores[storeName].set(storeValue);
-        localStorage.setItem(storeName, JSON.stringify(storeValue));
-      }
-    });
+        if (stores[storeName]) {
+          stores[storeName].set(storeValue);
+          localStorage.setItem(storeName, JSON.stringify(storeValue));
+        }
+      });
 
       // If the fetch operation is successful, initialize stores with local storage or with fetched data
       initializeStoresWithLocalStorage();
@@ -313,18 +311,18 @@
   });
 
   $: {
-      $buttonColors,
-      $borderRadius,
-      $buttonNames,
-      $showModal,
-      $showPreviewModal,
-      $showEditBtnModal,
-      $editedText,
-      $inputTextList,
-      $btnCount,
-      $containerCount,
-      $bodyBackgroundColor,
-      $showEditBgColorModal;
+    $buttonColors,
+    $borderRadius,
+    $buttonNames,
+    $showModal,
+    $showPreviewModal,
+    $showEditBtnModal,
+    $editedText,
+    $inputTextList,
+    $btnCount,
+    $containerCount,
+    $bodyBackgroundColor,
+    $showEditBgColorModal;
   }
 
   async function sendStoreDataToServer() {
@@ -348,7 +346,7 @@
     // Create an object containing all the relevant data
     const dataToSend = {
       buttonColors: buttonColorsValue,
-      borderRadius: buttonColorsValue,
+      borderRadius: borderRadiusValue,
       buttonNames: buttonNamesValue,
       showModal: showModalValue,
       showPreviewModal: showPreviewModalValue,

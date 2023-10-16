@@ -5,7 +5,7 @@
     containerCount,
     buttonNames,
     buttonColors,
-    showEditBgColorModal,
+    borderRadius,
     bodyBackgroundColor,
   } from "../lib/builderstore";
 
@@ -57,8 +57,10 @@
     on:blur={() => hoveredIndex = null}
     style="background-color: {hoveredIndex === index ? 
     hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha) : 
-    hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha)};">
-    <h2 class="modal-btn-text">{name}</h2>
+    hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha)};
+    border-radius: {$borderRadius[index]}px;
+    border-color: {hexToRgba($buttonColors[index][0].border.color, $buttonColors[index][0].border.alpha)};">
+    <h2 class="modal-btn-text" style="color: {hexToRgba($buttonColors[index][0].text.color, $buttonColors[index][0].text.alpha)};">{name}</h2>
   </button>
 
   </div>
@@ -134,10 +136,9 @@
   }
 
   .recipe-link {
-    border: none;
+    border-style: solid;
     font-family: "Roboto Condensed", sans-serif;
     background-color: rgba(0, 0, 0, 0);
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
     color: rgb(223, 223, 223);
     background-size: cover;
     cursor: pointer;

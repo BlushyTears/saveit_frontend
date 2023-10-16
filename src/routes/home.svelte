@@ -1,24 +1,18 @@
-
-
 <script>
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { onMount } from "svelte";
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
   import Accordion from "../lib/accordation.svelte";
-  import Example_Page from "../assets/examplepage.png";
   import Carusel from "../lib/carusel.svelte";
-  import Cooking from "../assets/cooking.jpg";
-  import SuccessNotif from '../lib/notification.svelte';
-  import FailedNotif from '../lib/notification.svelte';
-  import { savedChanges } from '../lib/builderstore';
+  import SuccessNotif from "../lib/notification.svelte";
+  import { savedChanges } from "../lib/builderstore";
   import { backend_url } from "../lib/urls";
 
-  import { linkname } from '../lib/builderstore';
+  import { linkname } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
 
   let showSuccessBar = false;
-  let ShowFailedBar = false;
 
   function showSuccessNotification() {
     showSuccessBar = true;
@@ -67,53 +61,60 @@
               `Failed to exchange code for access token: ${res.status} ${res.statusText}`
             );
           }
-          console.log('response here: ',res);
+          console.log("response here: ", res);
           return res.json();
         })
         .then((data) => {
-          // Login was successful here
           localStorage.setItem("token", data);
           setTimeout(() => {
-          window.location.reload();
-        }, 1000); 
+            window.location.reload();
+          }, 1000);
         })
         .catch((error) => {
-          // Show failed notif here, once the error that's always triggered upon google login (even if it works) is solved
+          // Show failed notif here, once the error that's always triggered upon succeeded google login is resolved
           console.error("An error occurred:", error);
         });
     }
   });
 
+  // Get the user's name upon login here, since we want to make sure the store $linkname has a value once they nav to /mypage
+  // (Normally kinda random to do something like this, hence the note)
   async function fetchData() {
-  const token = localStorage.getItem("token");
-  const csrfToken = getCookie();
-  if (token) {
-    try {
-      const response = await fetch(backend_url + "/api/getname/", {
-        method: "POST",
-        headers: {
-          "X-CSRFToken": csrfToken,
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
+    const token = localStorage.getItem("token");
+    const csrfToken = getCookie();
+    if (token) {
+      try {
+        const response = await fetch(backend_url + "/api/getname/", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken,
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch data: ${response.status} ${response.statusText}`
+          );
         }
-      });
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+        const data = await response.json();
+        console.log("data from username: ", data.data); // Handle or use the data as required
+        $linkname = data.data;
+      } catch (error) {
+        console.error("An error occurred while fetching data:", error);
       }
-
-      const data = await response.json();
-      console.log('data from username: ', data.data); // Handle or use the data as required
-      $linkname = data.data;
-
-    } catch (error) {
-      console.error("An error occurred while fetching data:", error);
     }
   }
-}
 </script>
 
-<SuccessNotif bind:showBar={showSuccessBar} message="Login succeeded!" color="#2dc23c" textShadow="#00ff48"/>
+<SuccessNotif
+  bind:showBar={showSuccessBar}
+  message="Login succeeded!"
+  color="#2dc23c"
+  textShadow="#00ff48"
+/>
 
 <main>
   <section class="section1">
@@ -139,7 +140,6 @@
       width="500"
       height="500"
     />
-
   </section>
   <div>
     <form on:submit={handleSubmit} class="formBtnClaim">
@@ -154,7 +154,7 @@
     </form>
   </div>
 
-    <section class="section2">
+  <section class="section2">
     <div class="section2-main">
       <br />
       <img
@@ -179,7 +179,6 @@
         </p>
       </div>
     </div>
-
   </section>
 
   <section class="section3">
@@ -205,32 +204,32 @@
     <br />
 
     <div
-    style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
-    class="section-4-container"
-  >
-    <h3
-      style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem; color: white;"
+      style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
+      class="section-4-container"
     >
-      Q&A
-    </h3>
-    <Accordion
-      title="What is the core concept behind Faveit?"
-      content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
-    />
-    <Accordion
-      title="Is there an opportunity for creators to monetize their content?"
-      content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
-    />
-    <Accordion
-      title="How can I begin my journey on Faveit?"
-      content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
-    />
-    <Accordion
-      title="What benefits does Faveit offer to users who are not aspiring food influencers?"
-      content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
-    />
-  </div>
-</section>
+      <h3
+        style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem; color: white;"
+      >
+        Q&A
+      </h3>
+      <Accordion
+        title="What is the core concept behind Faveit?"
+        content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
+      />
+      <Accordion
+        title="Is there an opportunity for creators to monetize their content?"
+        content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
+      />
+      <Accordion
+        title="How can I begin my journey on Faveit?"
+        content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
+      />
+      <Accordion
+        title="What benefits does Faveit offer to users who are not aspiring food influencers?"
+        content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
+      />
+    </div>
+  </section>
 
   <section class="footer">
     <br />
@@ -238,56 +237,51 @@
 
     <div style="max-width: 70%; margin: 0 auto;">
       <p style="font-size: 1em;">
-        1. Acceptance of Terms
-        
-        By accessing and using this website, users agree to comply with and be bound by these terms and conditions.
+        1. Acceptance of Terms By accessing and using this website, users agree
+        to comply with and be bound by these terms and conditions.
         <br />
         <br />
-        2. Changes to Terms
-        
-        We reserve the right to modify or replace these terms at any time. Users will be notified of significant changes.
+        2. Changes to Terms We reserve the right to modify or replace these terms
+        at any time. Users will be notified of significant changes.
         <br />
         <br />
-        3. Use of the Website & User-Generated Content
-        
-        Users can create, edit, and share recipes.
-        Users grant Favedis a non-exclusive, royalty-free, worldwide license to use, display, and distribute content they submit.
-        Prohibited behaviors: posting copyrighted content without permission, offensive or harmful content, etc.
-        We reserve the right to remove or edit any content at our own discretion.
+        3. Use of the Website & User-Generated Content Users can create, edit, and
+        share recipes. Users grant Favedis a non-exclusive, royalty-free, worldwide
+        license to use, display, and distribute content they submit. Prohibited behaviors:
+        posting copyrighted content without permission, offensive or harmful content,
+        etc. We reserve the right to remove or edit any content at our own discretion.
         <br />
         <br />
-        4. Intellectual Property
-        
-        All website content, excluding user-generated content, is owned by Favedis and protected by copyright laws.
-        Users retain rights to the content they create but grant the website the rights mentioned above.
+        4. Intellectual Property All website content, excluding user-generated content,
+        is owned by Favedis and protected by copyright laws. Users retain rights
+        to the content they create but grant the website the rights mentioned above.
         <br />
         <br />
-        5. No Warranty & Limitation of Liability
-        
-        The website and its services are provided "as is." We do not guarantee the accuracy, completeness, or timeliness of any content.
-        We are not responsible for any data loss or corruption, and users are advised to back up their recipes/content.
-        To the fullest extent permissible by law, Favedis disclaims all warranties and will not be liable for any damages of any kind arising from the use of this site.
+        5. No Warranty & Limitation of Liability The website and its services are
+        provided "as is." We do not guarantee the accuracy, completeness, or timeliness
+        of any content. We are not responsible for any data loss or corruption, and
+        users are advised to back up their recipes/content. To the fullest extent
+        permissible by law, Favedis disclaims all warranties and will not be liable
+        for any damages of any kind arising from the use of this site.
         <br />
         <br />
-        6. Termination
-        
-        Conditions under which you can terminate a user's access.
+        6. Termination Conditions under which you can terminate a user's access.
         Users can terminate their account at any time.
         <br />
         <br />
-        7. No Refund Policy
-        
-        If users choose to purchase any services or features, they acknowledge and agree that all sales are final and no refunds will be granted.
+        7. No Refund Policy If users choose to purchase any services or features,
+        they acknowledge and agree that all sales are final and no refunds will be
+        granted.
         <br />
         <br />
-        8. Governing Law
-        
-        This ToS and any disputes arising out of it will be governed by the laws of the European Union, without regard to its conflict of laws rules.
+        8. Governing Law This ToS and any disputes arising out of it will be governed
+        by the laws of the European Union, without regard to its conflict of laws
+        rules.
         <br />
         <br />
-        9. Indemnification
-        
-        Users agree to defend, indemnify, and hold harmless Favedis and its employees from any claims or damages, including legal fees, resulting from their use of the website or breach of these terms.
+        9. Indemnification Users agree to defend, indemnify, and hold harmless Favedis
+        and its employees from any claims or damages, including legal fees, resulting
+        from their use of the website or breach of these terms.
         <br />
         <br />
         10. Contact Information
@@ -298,11 +292,24 @@
   </section>
 </main>
 
+<!-- 
+Existing color 1: #212a3e
+Existing color 2: #394867
+
+Lighter blue: #567aa5
+Even Lighter blue: #7a9dcb
+Complementary warm color: #A57F60
+Soft gray: #A9A9A9
+Off-white: #F2F2F2
+Darker gray: #666666
+Contrast color (green): #6AB187
+Accent color (coral): #FF6B6B -->
+
 <style>
-@font-face {
+  @font-face {
     font-family: "Monofonto";
     src: url("../assets/monofontorg.otf") format("opentype");
-}
+  }
 
   main {
     overflow-x: hidden;
@@ -364,12 +371,12 @@
   }
 
   /* Section 1 END */
-  
+
   /* Section 2: */
 
   .section2 {
     height: calc(65rem + 10vw);
-    background-color: #FF8C00;
+    background-color: #ff8c00;
   }
 
   /* Curvy boii */
@@ -382,11 +389,10 @@
     left: 0;
     overflow-x: hidden;
     border-top: 20rem solid transparent;
-    background: #FF8C00;
+    background: #ff8c00;
     transform: translate(-15%, -10rem);
   }
 
-  
   .section2 p {
     margin: 0 auto;
     font-size: 1.5em;
@@ -400,7 +406,6 @@
     margin-top: 5rem;
     display: flex;
     text-align: center;
-    
   }
 
   /* Only image contents within the main container */
@@ -413,7 +418,6 @@
 
   /* Only text contents within the main container */
   .text-chunk-section2 {
-    
     max-width: 30%;
     margin-top: 21rem;
   }
@@ -454,7 +458,7 @@
   /* Media Queries: */
 
   @media screen and (max-width: 1200px) {
-    .section2{
+    .section2 {
       height: 75rem;
     }
     .text-chunk-section2 {
@@ -471,7 +475,7 @@
     .text-chunk-section2 {
       max-width: 80%;
     }
-    
+
     .section3 {
       min-height: 80rem;
     }
@@ -503,16 +507,3 @@
     }
   }
 </style>
-
-<!-- 
-Existing color 1: #212a3e
-Existing color 2: #394867
-
-Lighter blue: #567aa5
-Even Lighter blue: #7a9dcb
-Complementary warm color: #A57F60
-Soft gray: #A9A9A9
-Off-white: #F2F2F2
-Darker gray: #666666
-Contrast color (green): #6AB187
-Accent color (coral): #FF6B6B -->

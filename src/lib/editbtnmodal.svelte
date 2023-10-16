@@ -3,8 +3,8 @@
   export let index = 0;
   import Colorpicker from "./editbtnmodalcolorpicker.svelte";
   import AlphaSlider from "./editbtnmodalslider.svelte";
-  import {buttonNames, buttonColors, borderRadius} from "../lib/builderstore";
-  import {savedChanges} from "../lib/builderstore";
+  import { buttonNames, buttonColors, borderRadius } from "../lib/builderstore";
+  import { savedChanges } from "../lib/builderstore";
   import { hexToRgba } from "./helpers";
 
   let dialog;
@@ -14,7 +14,7 @@
   // Manually implement hover button instead of css :hover pseudo element since
   // Svelte can't reactively do that here.
   let isHovering = false;
-  
+
   // Disabled until we add fonts options again
   // let boxes = ["F", "O", "N", "T", "S"];
 
@@ -44,20 +44,33 @@
   let btnBorder = "";
   let btnShadow = "";
 
-$: {
+  $: {
     btnBorderRadius = $borderRadius[index];
-    txtColor = hexToRgba($buttonColors[index][0].text.color, $buttonColors[index][0].text.alpha);
-    btnColor = hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha);
-    btnHover = hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha);
-    btnBorder = hexToRgba($buttonColors[index][0].border.color, $buttonColors[index][0].border.alpha);
-    btnShadow = hexToRgba($buttonColors[index][0].shadow.color, $buttonColors[index][0].shadow.alpha);
+    txtColor = hexToRgba(
+      $buttonColors[index][0].text.color,
+      $buttonColors[index][0].text.alpha
+    );
+    btnColor = hexToRgba(
+      $buttonColors[index][0].button.color,
+      $buttonColors[index][0].button.alpha
+    );
+    btnHover = hexToRgba(
+      $buttonColors[index][0].hover.color,
+      $buttonColors[index][0].hover.alpha
+    );
+    btnBorder = hexToRgba(
+      $buttonColors[index][0].border.color,
+      $buttonColors[index][0].border.alpha
+    );
+    btnShadow = hexToRgba(
+      $buttonColors[index][0].shadow.color,
+      $buttonColors[index][0].shadow.alpha
+    );
   }
 
-
   function updateStore() {
-      savedChanges.set(false);
-    }
-
+    savedChanges.set(false);
+  }
 </script>
 
 <dialog
@@ -96,40 +109,40 @@ $: {
         <div style="display: flex;">
           <h1>
             {#if isEditing}
-            <input
-            bind:value={$buttonNames[index]}
-            class="editing-text"
-            on:mouseover={() => toggleHover(true)}
-            on:mouseout={() => toggleHover(false)}
-            on:focus={() => toggleHover(true)}
-            on:blur={() => toggleHover(false)}
-            style="
+              <input
+                bind:value={$buttonNames[index]}
+                class="editing-text"
+                on:mouseover={() => toggleHover(true)}
+                on:mouseout={() => toggleHover(false)}
+                on:focus={() => toggleHover(true)}
+                on:blur={() => toggleHover(false)}
+                style="
               background-color: {isHovering ? btnHover : btnColor};
               border: 2px solid {btnBorder};
               color: {txtColor};
               border-radius: {btnBorderRadius}px;
               {isHovering ? `box-shadow: 0px 0px 5px 2px ${btnShadow};` : ''}
             "
-          />
-          {:else}
-          <button
-            on:click={startEditing}
-            on:keydown={(e) => e.key === 'Enter' && startEditing()}
-            class="edited-text"
-            on:mouseover={() => toggleHover(true)}
-            on:mouseout={() => toggleHover(false)}
-            on:focus={() => toggleHover(true)}
-            on:blur={() => toggleHover(false)}
-            style="
+              />
+            {:else}
+              <button
+                on:click={startEditing}
+                on:keydown={(e) => e.key === "Enter" && startEditing()}
+                class="edited-text"
+                on:mouseover={() => toggleHover(true)}
+                on:mouseout={() => toggleHover(false)}
+                on:focus={() => toggleHover(true)}
+                on:blur={() => toggleHover(false)}
+                style="
               background-color: {isHovering ? btnHover : btnColor};
               border: 2px solid {btnBorder};
               color: {txtColor};
               border-radius: {btnBorderRadius}px;
               {isHovering ? `box-shadow: 0px 0px 5px 2px ${btnShadow};` : ''}
             "
-          >
-            {$buttonNames[index]}
-          </button>
+              >
+                {$buttonNames[index]}
+              </button>
             {/if}
           </h1>
           <button
@@ -142,114 +155,131 @@ $: {
             }}
             tabindex="0"
             style="background: none; border: none; padding: 0; cursor: pointer;"
-          >
-          </button>
+          />
         </div>
-      <br>
-      <br>
+        <br />
+        <br />
 
-      <button class="accordation-btn" on:click={toggleAccordion}>
-        {#if !showBtnDesigner}
-        <p style="color: white;">Button designer</p>
-        {:else}
-        <p style="color: white;">Close</p>
-        {/if}
-      </button>
-      <br>
-      <br>
+        <button class="accordation-btn" on:click={toggleAccordion}>
+          {#if !showBtnDesigner}
+            <p style="color: white;">Button designer</p>
+          {:else}
+            <p style="color: white;">Close</p>
+          {/if}
+        </button>
+        <br />
+        <br />
 
-      {#if showBtnDesigner}
-  <br>
-  <br>
-  <div class="color-pickers">
-    <div class="flex-div">
+        {#if showBtnDesigner}
+          <br />
+          <br />
+          <div class="color-pickers">
+            <div class="flex-div">
+              <div class="colorpicker">
+                <Colorpicker nameType={"Text"} {index} subIndex={0} />
+              </div>
+              <div
+                class="description-div button-color-indication"
+                style="background-color: gray;"
+              >
+                <h1 style="color: {txtColor};">Text Color</h1>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <br />
 
-      <div class="colorpicker">
-        <Colorpicker nameType={"Text"} index={index} subIndex={0}/>
-      </div>
-      <div class="description-div button-color-indication" style="background-color: gray;" > 
-        <h1 style="color: {txtColor};">Text Color</h1>
-      </div>
-    </div>
-    <br>
-      <hr>
-    <br>
+            <div class="flex-div">
+              <div class="colorpicker">
+                <Colorpicker nameType={"Button"} {index} subIndex={0} />
+              </div>
+              <div
+                class="description-div button-color-indication"
+                style="background-color: {btnColor};"
+              >
+                <h1>Button Color</h1>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <br />
 
-    <div class="flex-div">
-      <div class="colorpicker">
-        <Colorpicker nameType={"Button"} index={index} subIndex={0}/>
-      </div>
-      <div class="description-div button-color-indication" style="background-color: {btnColor};"> 
-        <h1>Button Color</h1>
-      </div>
-    </div>
-    <br>
-      <hr>
-    <br>
+            <div class="flex-div">
+              <div class="colorpicker">
+                <Colorpicker nameType={"Hover"} {index} subIndex={0} />
+              </div>
+              <div
+                class="description-div button-hover-indication"
+                style="background-color: {btnHover};"
+              >
+                <h1>Hover Color</h1>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <br />
 
-    <div class="flex-div">
-      <div class="colorpicker">
-        <Colorpicker nameType={"Hover"} index={index} subIndex={0}/>
-      </div>
-      <div class="description-div button-hover-indication" style="background-color: {btnHover};"> 
-        <h1>Hover Color</h1>
-      </div>
-    </div>
-    <br>
-      <hr>
-    <br>
+            <div class="flex-div">
+              <div class="colorpicker">
+                <Colorpicker nameType={"Border"} {index} subIndex={0} />
+              </div>
+              <div
+                class="description-div button-border-indication transparent-div"
+                style="border-color: {btnBorder};"
+              >
+                <h1>Border Color</h1>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <br />
 
-    <div class="flex-div">
-      <div class="colorpicker">
-        <Colorpicker nameType={"Border"} index={index} subIndex={0}/>
-      </div>
-      <div class="description-div button-border-indication transparent-div" style="border-color: {btnBorder};"> 
-        <h1>Border Color</h1>
-      </div>
-    </div>
-    <br>
-      <hr>
-    <br>
+            <div class="flex-div">
+              <div class="colorpicker">
+                <Colorpicker nameType={"Shadow"} {index} subIndex={0} />
+              </div>
+              <div
+                class="description-div button-shadow-indication"
+                style="box-shadow: 1px 1px 5px 1px {btnShadow};"
+              >
+                <h1>Shadow Color</h1>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <br />
 
-    <div class="flex-div">
-      <div class="colorpicker">
-        <Colorpicker nameType={"Shadow"} index={index} subIndex={0}/>
-      </div>
-      <div class="description-div button-shadow-indication" style="box-shadow: 1px 1px 5px 1px {btnShadow};"> 
-        <h1>Shadow Color</h1>
-      </div>
-    </div>
-    <br>
-      <hr>
-    <br>
+            <div class="flex-div">
+              <div class="colorpicker">
+                <AlphaSlider {index} />
+              </div>
+              <div
+                class="description-div button-border-indication transparent-div"
+                style="border-color: black; border-radius: {btnBorderRadius}px;"
+              >
+                <h1>Corner Roundness</h1>
+              </div>
+            </div>
+            <br />
 
-    <div class="flex-div">
-      <div class="colorpicker">
-        <AlphaSlider nameType={"Radius"} index={index}/>
-      </div>
-      <div class="description-div button-border-indication transparent-div" style="border-color: black; border-radius: {btnBorderRadius}px;"> 
-        <h1>Corner Roundness</h1>
-      </div>
-    </div>
-    <br>
-    
-    <br>
-  </div>
-{/if}
-
-      <!-- Future font layout disabled (DON'T REMOVE) until we actually add them, its just not really needed for MVP. Needs: 
-      let boxes = ["F", "O", "N", "T", "S"];
-      in <script> order to work, also has css ready -->
-      <!-- <div class="font-boxes">
-        {#each boxes as box}
-          <div class="box">
-            {box}
-            <div class="tooltip">Roboto</div>
+            <br />
           </div>
-        {/each}
-      </div> -->
-      
-      <hr>
+        {/if}
+
+        <!-- Future font layout disabled (DON'T REMOVE) until we actually add them, its just not really needed for MVP. Needs: 
+        let boxes = ["F", "O", "N", "T", "S"];
+        in <script> order to work, also has css ready -->
+          <!-- <div class="font-boxes">
+          {#each boxes as box}
+            <div class="box">
+              {box}
+              <div class="tooltip">Roboto</div>
+            </div>
+          {/each}
+        </div> -->
+
+        <hr />
+      </div>
     </div>
   </div>
 </dialog>
@@ -257,10 +287,11 @@ $: {
 <style>
   dialog {
     margin-top: 8%;
-    width: calc(20% + 20rem);
+    width: calc(25% + 20rem);
     border-radius: 1rem;
     border: none;
     padding: 0;
+    height: 50rem;
   }
   dialog::backdrop {
     background: rgba(0, 0, 0, 0.3);
@@ -341,7 +372,7 @@ $: {
 
   .edited-text {
     text-align: center;
-    color: #F2F2F2;
+    color: #f2f2f2;
     font-size: calc(1.15em + 0.5vw);
     max-width: clamp(10vw + 5rem, calc(15vw + 1rem), 15vw + 15rem);
     padding: 1rem;
@@ -358,20 +389,17 @@ $: {
     display: flex;
     justify-content: space-between; /* This pushes the child elements to the extremes */
     align-items: center;
-    width: 100%; /* Ensure it spans the full width of its container */
+    width: 97%; 
   }
 
   .colorpicker {
+    margin-left: 1rem;
     flex: 0 0 auto; /* Ensures that the Colorpicker doesn't shrink or grow */
-    margin-right: 1rem;
+    margin-right: 15rem;
   }
 
   .color-pickers {
-    display: block; 
-  }
-
-  .text-div {
-    background-color: rgba(0,0,0,0);
+    display: block;
   }
 
   .description-div {
@@ -381,24 +409,10 @@ $: {
   }
 
   .transparent-div {
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     border-width: 2px;
     border-style: solid;
     border-color: gray;
-  }
-
-  .ok-btn {
-    height: calc(3.2rem + 1vw); 
-    width: calc(3.2rem + 1vw);
-    box-sizing: border-box;
-    padding: 0.5rem;
-  }
-
-  .ok-btn:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 1rem;
-    transform: scale(1.05); /* Scale the image slightly on hover */
   }
 
   /* Unused but shouldn't be removed because it's just disabled */
@@ -407,7 +421,7 @@ $: {
     gap: 1rem;
     display: flex;
   }
-    /* Unused but shouldn't be removed because it's just disabled */
+  /* Unused but shouldn't be removed because it's just disabled */
   .box {
     position: relative; /* Make the box a relative container for the tooltip */
     border: 2px solid gray;
@@ -459,5 +473,4 @@ $: {
     border-style: solid;
     border-color: gray transparent transparent transparent;
   }
-
 </style>

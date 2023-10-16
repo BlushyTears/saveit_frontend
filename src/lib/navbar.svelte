@@ -90,15 +90,15 @@
   async function handleMyPageNavigation(event) {
     event.preventDefault();
     try {
-        console.log("Before fetching user first name");
-        console.log("After fetching user first name");
-        console.log('Fetched Path:', $linkname); // Debugging
-        handleNavigation($linkname || '/genpage');
-        window.location.reload();
+      console.log("Before fetching user first name");
+      console.log("After fetching user first name");
+      console.log("Fetched Path:", $linkname); // Debugging
+      handleNavigation($linkname || "/genpage");
+      window.location.reload();
     } catch (err) {
-        console.error("Error fetching the path:", err);
+      console.error("Error fetching the path:", err);
     }
-}
+  }
 
   // Hamburger menu logic
   let showMenu = false;
@@ -244,17 +244,18 @@
                 Log out
               </a>
 
-              <a 
-              href="javascript:void(0);" 
-              on:click|preventDefault={handleMyPageNavigation}
-              on:keydown={(e) => {
+              <a
+                href="javascript:void(0);"
+                on:click|preventDefault={handleMyPageNavigation}
+                on:keydown={(e) => {
                   if (e.key === "Enter") handleMyPageNavigation(e);
-              }}
-              tabindex="0" 
-              role="button" 
-              class="nav-link">
-              My page
-            </a>
+                }}
+                tabindex="0"
+                role="button"
+                class="nav-link"
+              >
+                My page
+              </a>
             {/if}
 
             {#if !isLoggedIn}
@@ -283,9 +284,7 @@
               >
                 Login
               </a>
-
             {/if}
-
           </div>
         </nav>
         {#if isLoading}
@@ -312,92 +311,90 @@
 {/if}
 
 <style>
-.navbar-container {
-  margin: 0;
-}
-
-.navbar-wrapper {
-  margin: 0 auto;
-  position: sticky;
-  top: 1rem;
-  z-index: 1000; /* Ensure the navbar is above other content */
-}
-
-.navbar {
-  box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
-  background-color: #2a3552;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  text-decoration: none;
-  width: calc(5rem + 40%);
-  height: 3rem;
-  padding: 1.3rem;
-  border-radius: 6rem;
-  margin: 0 auto;
-  position: relative; /* Added this line */
-}
-
-.nav-links-right {
-  margin-left: 2rem;
-  display: flex;
-  align-items: center;
-}
-
-a {
-  font-size: 1.3em;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  line-height: 2.5rem;
-  margin: 0;
-}
-
-a:hover {
-  color: #a9a9a9;
-}
-
-.hamburger-menu {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-}
-
-.hamburger-menu div {
-  width: 25px;
-  height: 2px;
-  background-color: black;
-  margin: 2px 0;
-}
-
-/* Media query for small screens */
-@media screen and (max-width: 1100px) {
-  .nav-links-right {
-    box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
-    display: none;
-    flex-direction: column;
-    min-width: 10%;
-    text-align: center;
-    position: absolute;
-    top: 100%;
-    right: 0;   /* Adjusted from 'left' to 'right' */
-    border-radius: 4rem;
-    padding: 1rem 0.5rem;
-    background-color: #2a3552;
+  .navbar-container {
+    margin: 0;
   }
 
-  .nav-links-right.show {
+  .navbar-wrapper {
+    margin: 0 auto;
+    position: sticky;
+    top: 1rem;
+    z-index: 1000; /* Ensure the navbar is above other content */
+  }
+
+  .navbar {
+    box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
+    background-color: #2a3552;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    width: calc(5rem + 40%);
+    height: 3rem;
+    padding: 1.3rem;
+    border-radius: 6rem;
+    margin: 0 auto;
+    position: relative; /* Added this line */
+  }
+
+  .nav-links-right {
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    font-size: 1.3em;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    line-height: 2.5rem;
+    margin: 0;
+  }
+
+  a:hover {
+    color: #a9a9a9;
   }
 
   .hamburger-menu {
-    display: flex;
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
   }
-}
 
+  .hamburger-menu div {
+    width: 25px;
+    height: 2px;
+    background-color: black;
+    margin: 2px 0;
+  }
 
+  /* Media query for small screens */
+  @media screen and (max-width: 1100px) {
+    .nav-links-right {
+      box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      min-width: 10%;
+      text-align: center;
+      position: absolute;
+      top: 100%;
+      right: 0; /* Adjusted from 'left' to 'right' */
+      border-radius: 4rem;
+      padding: 1rem 0.5rem;
+      background-color: #2a3552;
+    }
+
+    .nav-links-right.show {
+      display: flex;
+    }
+
+    .hamburger-menu {
+      display: flex;
+    }
+  }
 </style>

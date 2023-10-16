@@ -1,7 +1,6 @@
 <script lang="ts">
     import { borderRadius } from "../lib/builderstore";
   
-    export let nameType: string = "Radius";
     export let index: number;
   
     let borderRadiusValue = 0;
@@ -21,7 +20,7 @@
   
   <div class="radius-container">
     <!-- Weird range values since at least for border radius 30px or so is as rounded as it gets, and sliding beyond that just looks weird. -->
-    <input type="range" min="0" max="30" step="0.1" value={borderRadiusValue} class="radius-slider" on:input={handleRadiusChange} />
+    <input type="range" min="0" max="100" step="0.1" value={borderRadiusValue} class="radius-slider" on:input={handleRadiusChange} />
   </div>
   
   <style>
