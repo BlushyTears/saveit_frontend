@@ -35,47 +35,49 @@
 
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
-    // We dont have a way of assuming the user didn't wanna save changes if he does leave unsaved, so we set it true upon load instead
-    savedChanges.set(true);
+  savedChanges.set(true);
 
-    // DispatchEvent changes color upon load
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
 
-    // Try to run fetchData and get username if user is logged in
-    fetchData();
+  // Check if the user is already authenticated
+  const isAuthenticated = localStorage.getItem("token");
 
-    // In case the user has multiple google accounts, we need to give it a unique name
-    // Note: if(code) means user has a google auth code for logging in
-    if (code) {
-      fetch(backend_url + "/api/googleauth/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ code }),
+  if (isAuthenticated) {
+    // The user is already authenticated, no need to proceed with Google OAuth
+    console.log("User is already authenticated.");
+    fetchData(); // You can load user data here if needed
+  } else if (code) {
+    // User has a Google auth code, proceed with authentication
+    fetch(backend_url + "/api/googleauth/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `Failed to exchange code for access token: ${res.status} ${res.statusText}`
+          );
+        }
+        return res.json();
       })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `Failed to exchange code for access token: ${res.status} ${res.statusText}`
-            );
-          }
-          console.log("response here: ", res);
-          return res.json();
-        })
-        .then((data) => {
-          localStorage.setItem("token", data);
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        })
-        .catch((error) => {
-          // Show failed notif here, once the error that's always triggered upon succeeded google login is resolved
-          console.error("An error occurred:", error);
-        });
-    }
-  });
+      .then((data) => {
+        localStorage.setItem("token", data.token); // Make sure to store the token correctly
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  } else {
+    // Handle the case when neither code nor authentication token is available
+    console.log("No authentication code or token found.");
+  }
+});
 
   // Get the user's name upon login here, since we want to make sure the store $linkname has a value once they nav to /mypage
   // (Normally kinda random to do something like this, hence the note)
