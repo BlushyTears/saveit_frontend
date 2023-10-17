@@ -65,7 +65,7 @@
         return res.json();
       })
       .then((data) => {
-        localStorage.setItem("token", data.token); // Make sure to store the token correctly
+        localStorage.setItem("token", data); // Make sure to store the token correctly
         setTimeout(() => {
           window.location.reload();
         }, 1000);
