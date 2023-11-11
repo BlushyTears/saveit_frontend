@@ -71,7 +71,7 @@
           return res.json();
         })
         .then((data) => {
-          showLoggedOutNotification();
+          showSuccessNotification();
           localStorage.setItem("token", data); // Make sure to store the token correctly
           setTimeout(() => {
             window.location.reload();
