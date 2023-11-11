@@ -3,6 +3,7 @@ body {
   margin: 0;
 }
 
+
 /* For some reason svelte-routing gives a default text decoration to navbar links so this is a quickfix for now */
 a.nav-link {
   text-decoration: none;
@@ -23,8 +24,7 @@ button,
 h1,
 h2,
 h3,
-a,
-input
+a
 {
   font-family: "Monofonto", fallback, sans-serif;
   color: black;
@@ -32,15 +32,8 @@ input
   padding: 0;
 }
 
-/* a {
-  font-family: "Times Romance", serif; 
-  color: #ffffff;
+p {
+  font-family: "Monofonto", fallback, sans-serif;
   margin: 0;
   padding: 0;
-} */
-
-/* Fill in gap at top above navbar where there normally is margin & causes white color border (Might be bad) */
-/* #app {
-  background-color: #37C84C;
-} */
-
+}

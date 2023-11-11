@@ -1,9 +1,12 @@
 <script>
+  import { onMount } from "svelte";
   import GenPage from "./routes/genpage.svelte";
   import Navbar from "./lib/navbar.svelte";
 
   let current;
 
+  // This below is a workaround because svelte routing is pretty bad with anything non-spa routing related
+  // Sveltekit would've been nice here
   $: {
     let currentUrl = window.location.pathname;
 
@@ -31,6 +34,7 @@
       current = "genpage";
     }
 }
+
 </script>
 
 <div class="app-container">

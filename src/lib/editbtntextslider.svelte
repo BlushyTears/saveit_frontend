@@ -1,27 +1,33 @@
 <script lang="ts">
-    import { borderRadius } from "../lib/builderstore";
-  
-    export let index: number;
-  
-    let borderRadiusValue = 0;
-  
-    $: borderRadiusValue = $borderRadius[index] !== undefined ? $borderRadius[index] : 0;
-  
-    function handleRadiusChange(e: Event) {
-      const input = e.target as HTMLInputElement;
-      const radius = parseInt(input.value);
-      borderRadius.update((radii) => {
-        const newRadii = [...radii];
-        newRadii[index] = radius;
-        return newRadii;
-      });
-    }
-  </script>
-  
-  <div class="radius-container">
-    <!-- Weird range values since at least for border radius 30px or so is as rounded as it gets, and sliding beyond that just looks weird. -->
-    <input type="range" min="0" max="100" step="0.1" value={borderRadiusValue} class="radius-slider" on:input={handleRadiusChange} />
-  </div>
+  import { writable } from "svelte/store";
+  import { textThickness } from "./builderstore";
+
+  export let index: number;
+
+  let value = 0;
+  let selectedStore = writable([]);  // Default to an empty writable store
+
+  // Horrible solution, should automate these if statements to scale up the process
+  $: {
+      selectedStore = textThickness;
+      value = $selectedStore[index] !== undefined ? $selectedStore[index] : 0;
+  }
+
+  function handleChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const newValue = parseInt(input.value);
+    
+    selectedStore.update((values) => {
+      const newValues = [...values];
+      newValues[index] = newValue;
+      return newValues;
+    });
+  }
+</script>
+
+<div class="radius-container">
+  <input type="range" min="0" max="900" step="0.1" value={value} class="radius-slider" on:input={handleChange} />
+</div>
   
   <style>
     .radius-container {

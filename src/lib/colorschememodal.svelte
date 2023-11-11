@@ -1,15 +1,11 @@
 <script>
-    import { bodyBackgroundColor, showEditBgColorModal, savedChanges } from "../lib/builderstore";
+    import { showEditBgColorModal, savedChanges } from "../lib/builderstore";
     import ColorPickerGeneric from "./bodybgcolorpicker.svelte";
   
     let dialog;
     let dragging = false;
 
     $: if (dialog && $showEditBgColorModal) dialog.showModal();
-
-      function updateStore() {
-      savedChanges.set(false);
-    }
 
   </script>
   
@@ -19,12 +15,10 @@
   on:mousedown|stopPropagation
   on:keydown={(e) => {
       if (e.key === "Escape") {
-      updateStore();
       dialog.close();
       }
   }}
   on:click={() => {
-      updateStore();
       dialog.close();
   }}
 >
@@ -34,9 +28,9 @@
       on:mouseup|stopPropagation
       on:keydown|stopPropagation
   >
-      <div class="content-container" style="position: relative; padding: 3.5rem;">
-        <div style="margin-left: -5rem;">
-            <h3 >Background Color:</h3>
+      <div class="content-container" style="position: relative; padding: 4rem;">
+        <div>
+            <h3 >Global Colors:</h3>
             <br />
             <ColorPickerGeneric />
         </div>
@@ -89,12 +83,6 @@
       }
     }
 
-    .content-container {
-    display: flex;
-    justify-content: space-between; /* Space out the color picker and the close button */
-    align-items: center; /* Vertically center align the items */
-}
-  
     .close-modal-btn {
       color: black;
       font-size: 1em;

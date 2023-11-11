@@ -1,21 +1,30 @@
-<script>
+<script lang="ts">
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { onMount } from "svelte";
   import Coffee_Illustration from "../assets/coffee_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
   import Accordion from "../lib/accordation.svelte";
   import Carusel from "../lib/carusel.svelte";
+  import LoadingSpinner from "../lib/loadspinner.svelte";
   import SuccessNotif from "../lib/notification.svelte";
+  import LoggedOutNotif from "../lib/notification.svelte";
   import { savedChanges } from "../lib/builderstore";
   import { backend_url } from "../lib/urls";
 
-  import { linkname } from "../lib/builderstore";
+  import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
+  import { setImage } from "../lib/builderstore";
 
   let showSuccessBar = false;
 
   function showSuccessNotification() {
     showSuccessBar = true;
+  }
+
+  let showLoggedOutNotifBar = false;
+
+  function showLoggedOutNotification() {
+    showLoggedOutNotifBar = true;
   }
 
   let claimLink = "";
@@ -29,62 +38,108 @@
     }
   }
 
+  // This onMount checks if the user is logged in upon redirection
   onMount(() => {
+    savedChanges.set(true);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+
+    // Check if the user is already authenticated
+    const isAuthenticated = localStorage.getItem("token");
+
+    if (isAuthenticated) {
+      // The user is already authenticated, no need to proceed with Google OAuth
+      fetchData();
+    } else if (code) {
+      // User has a Google auth code, proceed with google login
+      fetch(backend_url + "/api/googleauth/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      })
+        .then((res) => {
+          // First check if the status code is 401 (Unauthorized)
+          // Then, check for other non-OK responses
+          if (!res.ok) {
+            throw new Error(
+              `Failed to exchange code for access token: ${res.status} ${res.statusText}`
+            );
+          }
+          return res.json();
+        })
+        .then((data) => {
+          showLoggedOutNotification();
+          localStorage.setItem("token", data); // Make sure to store the token correctly
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch((error) => {
+          localStorage.removeItem("token");
+          console.error("An error occurred:", error);
+        });
+    } else {
+      // Handle the case when neither code nor authentication token is available
+      console.log("No authentication code or token found.");
+    }
     dispatchEvent(new CustomEvent("set-color", { detail: "#394867" }));
   });
 
-  // This onMount checks if the user is logged in upon redirection
-  onMount(() => {
-  savedChanges.set(true);
+  onMount(async () => {
+    savedChanges.set(true);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get("code");
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const csrfToken = getCookie("csrftoken");
+    const verifyUrl =
+      backend_url +
+      "/api/verify-email-token/?token=" +
+      encodeURIComponent(token);
 
-  // Check if the user is already authenticated
-  const isAuthenticated = localStorage.getItem("token");
+    if (token) {
+      try {
+        const response = await fetch(verifyUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Include CSRF token if needed here, remove it if not necessary for GET
+            "X-CSRFToken": csrfToken,
+          },
+        });
 
-  if (isAuthenticated) {
-    // The user is already authenticated, no need to proceed with Google OAuth
-    console.log("User is already authenticated.");
-    fetchData(); // You can load user data here if needed
-  } else if (code) {
-    // User has a Google auth code, proceed with authentication
-    fetch(backend_url + "/api/googleauth/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(
-            `Failed to exchange code for access token: ${res.status} ${res.statusText}`
-          );
+        // Check if the response has content to parse
+        const result = response.headers
+          .get("content-type")
+          ?.includes("application/json")
+          ? await response.json()
+          : null;
+
+        if (response.ok) {
+          // Assuming the API returns a success message and email verification status
+          console.log(result.message); // Email verified successfully or some message
+          isEmailVerified.set(true); // Update the writable store value
+        } else {
+          // Handle errors, such as invalid or expired token
+          console.error(result.detail);
+          isEmailVerified.set(false); // Set to false or handle as appropriate
         }
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem("token", data); // Make sure to store the token correctly
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      })
-      .catch((error) => {
-        console.error("An error occurred:", error);
-      });
-  } else {
-    // Handle the case when neither code nor authentication token is available
-    console.log("No authentication code or token found.");
-  }
-});
+      } catch (error) {
+        console.error("Error verifying email:", error);
+      }
+    }
+  });
 
+  let loading = false;
   // Get the user's name upon login here, since we want to make sure the store $linkname has a value once they nav to /mypage
   // (Normally kinda random to do something like this, hence the note)
-  async function fetchData() {
+  export async function fetchData() {
     const token = localStorage.getItem("token");
-    const csrfToken = getCookie();
+    const csrfToken = getCookie(); // Ensure you have a function to get the CSRF token
     if (token) {
+      loading = true;
       try {
         const response = await fetch(backend_url + "/api/getname/", {
           method: "POST",
@@ -95,6 +150,15 @@
           },
         });
 
+        if (response.status === 401) {
+          showLoggedOutNotification();
+          localStorage.removeItem("token");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+          throw new Error("Invalid or expired token. Token has been removed.");
+        }
+
         if (!response.ok) {
           throw new Error(
             `Failed to fetch data: ${response.status} ${response.statusText}`
@@ -102,11 +166,25 @@
         }
 
         const data = await response.json();
-        console.log("data from username: ", data.data); // Handle or use the data as required
-        $linkname = data.data;
+
+        // Update the name store
+        linkname.set(data.first_name);
+
+        // Update the image store if image data is present
+        if (data.image_data && data.image_data.length > 0) {
+          userImage.set(`data:image/png;base64,${data.image_data}`);
+        }
+
+        // Update the email verified store
+        isEmailVerified.set(data.email_verified);
       } catch (error) {
         console.error("An error occurred while fetching data:", error);
+      } finally {
+        loading = false;
       }
+    } else {
+      // Handle scenario when there is no token
+      loading = false;
     }
   }
 </script>
@@ -118,181 +196,218 @@
   textShadow="#00ff48"
 />
 
-<main>
-  <section class="section1">
-    <div class="text-chunk-section1">
-      <h2
-        style="color: #FFD700; font-size: calc(2vw + 3em); margin-bottom: 1rem; line-height: calc(2.2vw + 2.6rem);"
-      >
-        Share All Your Delicious Dishes with a Single Link.
-      </h2>
-      <p
-        style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
-      >
-        Amplify your brand and expand your reach through the power of sharing
-        your cherished recipes. Cultivate your passion while simultaneously
-        building a thriving audience for the days ahead.
-      </p>
+<LoggedOutNotif
+  bind:showBar={showLoggedOutNotifBar}
+  message="Session expired, please log in again"
+  color="#9e9e9e"
+  textShadow="#828282"
+/>
+
+{#if loading}
+  <div class="loading-overlay">
+    <p style="margin-right: 0.8rem; margin-top: -5rem;">Fetching data</p>
+    <div class="load-spinner-div" style="margin-top: -3.5rem;">
+      <LoadingSpinner />
     </div>
-    <img
-      class="section1-illustration"
-      src={Coffee_Illustration}
-      alt="Coffee Illustration"
-      style="width: calc(15vw + 15rem); height: calc(15vw + 15rem);"
-      width="500"
-      height="500"
-    />
-  </section>
-  <div>
-    <form on:submit={handleSubmit} class="formBtnClaim">
-      <input
-        type="text"
-        class="claimInput"
-        bind:value={claimLink}
-        required
-        placeholder="favedis/clusteredTomatoes"
-      />
-      <button class="claimButton" type="submit">Claim</button>
-    </form>
   </div>
-
-  <section class="section2">
-    <div class="section2-main">
-      <br />
-      <img
-        class="section2-illustration"
-        src={Barista_illustration}
-        alt="Coffee Illustration"
-      />
-
-      <div class="text-chunk-section2">
+{:else}
+  <main>
+    <section class="section1">
+      <div class="text-chunk-section1">
         <h2
-          style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;"
+          style="color: #FFD700; font-size: calc(2vw + 3em); margin-bottom: 1rem; line-height: calc(2.2vw + 2.6rem);"
         >
-          Minutes Away from Getting Started.
+          Share All Your Delicious Dishes with a Single Link.
         </h2>
-        <br />
-
-        <p style="font-size: calc(1.4em + 0.5vw); color: white;">
-          Faveit is a hub of hubs where you explore new food and drink with
-          others that have similar preferences to you in order to more
-          effectively find what you like: You can follow creators and be
-          notified whenever they release a new recipe
+        <p
+          style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
+        >
+          Amplify your brand and expand your reach through the power of sharing
+          your cherished recipes. Cultivate your passion while simultaneously
+          building a thriving audience for the days ahead.
         </p>
       </div>
+      <img
+        class="section1-illustration"
+        src={Coffee_Illustration}
+        alt="Coffee Illustration"
+        style="width: calc(15vw + 15rem); height: calc(15vw + 15rem);"
+        width="500"
+        height="500"
+      />
+    </section>
+    <div>
+      <form on:submit={handleSubmit} class="formBtnClaim">
+        <input
+          type="text"
+          class="claimInput"
+          bind:value={claimLink}
+          required
+          placeholder="favedis.com/YourLinkHere"
+        />
+        <button class="claimButton" type="submit">Claim</button>
+      </form>
     </div>
-  </section>
 
-  <section class="section3">
-    <!-- Don't remove this "<br>" blindly lol -->
-    <br />
+    <section class="section2">
+      <div class="section2-main">
+        <br />
+        <img
+          class="section2-illustration"
+          src={Barista_illustration}
+          alt="Coffee Illustration"
+        />
 
-    <div
-      style=" background-color: #3f537c; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
-    >
-      <h1
-        style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
+        <div class="text-chunk-section2">
+          <h2
+            style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;"
+          >
+            Minutes Away from Getting Started.
+          </h2>
+          <br />
+
+          <p style="font-size: calc(1.4em + 0.5vw); color: white;">
+            Faveit is a hub of hubs where you explore new food and drink with
+            others that have similar preferences to you in order to more
+            effectively find what you like: You can follow creators and be
+            notified whenever they release a new recipe
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section3">
+      <!-- Don't remove this "<br>" blindly lol -->
+      <br />
+
+      <div
+        style=" background-color: #3f537c; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
       >
-        Example Layouts
-      </h1>
-    </div>
-    <br />
-    <br />
-    <br />
-    <Carusel />
-  </section>
+        <h1
+          style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
+        >
+          Example Layouts
+        </h1>
+      </div>
+      <br />
+      <br />
+      <br />
+      <Carusel />
+    </section>
 
-  <section class="section4">
-    <br />
+    <section class="section4">
+      <br />
 
-    <div
-      style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
-      class="section-4-container"
-    >
-      <h3
-        style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem; color: white;"
+      <div
+        style="text-align: center; min-height: 60rem; padding-bottom: 1rem;"
+        class="section-4-container"
       >
-        Q&A
+        <h3
+          style="letter-spacing: 0.3rem; font-size: 3em; background-color: #212a3e; width: calc(7rem + 4vw); margin: 0 auto; padding: 1rem; color: white;"
+        >
+          Q&A
+        </h3>
+        <Accordion
+          title="What is the core concept behind Faveit?"
+          content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
+        />
+        <Accordion
+          title="Is there an opportunity for creators to monetize their content?"
+          content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
+        />
+        <Accordion
+          title="How can I begin my journey on Faveit?"
+          content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
+        />
+        <Accordion
+          title="What benefits does Faveit offer to users who are not aspiring food influencers?"
+          content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
+        />
+      </div>
+    </section>
+
+    <section class="footer">
+      <br />
+      <h3 style="font-size: 2em; color: white;">
+        Terms of Service for Favedis
       </h3>
-      <Accordion
-        title="What is the core concept behind Faveit?"
-        content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
-      />
-      <Accordion
-        title="Is there an opportunity for creators to monetize their content?"
-        content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
-      />
-      <Accordion
-        title="How can I begin my journey on Faveit?"
-        content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
-      />
-      <Accordion
-        title="What benefits does Faveit offer to users who are not aspiring food influencers?"
-        content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
-      />
-    </div>
-  </section>
-
-  <section class="footer">
-    <br />
-    <h3 style="font-size: 2em; color: white;">Terms of Service for Favedis</h3>
-
-    <div style="max-width: 70%; margin: 0 auto;">
-      <p style="font-size: 1em;">
-        1. Acceptance of Terms By accessing and using this website, users agree
-        to comply with and be bound by these terms and conditions.
-        <br />
-        <br />
-        2. Changes to Terms We reserve the right to modify or replace these terms
-        at any time. Users will be notified of significant changes.
-        <br />
-        <br />
-        3. Use of the Website & User-Generated Content Users can create, edit, and
-        share recipes. Users grant Favedis a non-exclusive, royalty-free, worldwide
-        license to use, display, and distribute content they submit. Prohibited behaviors:
-        posting copyrighted content without permission, offensive or harmful content,
-        etc. We reserve the right to remove or edit any content at our own discretion.
-        <br />
-        <br />
-        4. Intellectual Property All website content, excluding user-generated content,
-        is owned by Favedis and protected by copyright laws. Users retain rights
-        to the content they create but grant the website the rights mentioned above.
-        <br />
-        <br />
-        5. No Warranty & Limitation of Liability The website and its services are
-        provided "as is." We do not guarantee the accuracy, completeness, or timeliness
-        of any content. We are not responsible for any data loss or corruption, and
-        users are advised to back up their recipes/content. To the fullest extent
-        permissible by law, Favedis disclaims all warranties and will not be liable
-        for any damages of any kind arising from the use of this site.
-        <br />
-        <br />
-        6. Termination Conditions under which you can terminate a user's access.
-        Users can terminate their account at any time.
-        <br />
-        <br />
-        7. No Refund Policy If users choose to purchase any services or features,
-        they acknowledge and agree that all sales are final and no refunds will be
-        granted.
-        <br />
-        <br />
-        8. Governing Law This ToS and any disputes arising out of it will be governed
-        by the laws of the European Union, without regard to its conflict of laws
-        rules.
-        <br />
-        <br />
-        9. Indemnification Users agree to defend, indemnify, and hold harmless Favedis
-        and its employees from any claims or damages, including legal fees, resulting
-        from their use of the website or breach of these terms.
-        <br />
-        <br />
-        10. Contact Information
-      </p>
       <br />
-      <br />
-    </div>
-  </section>
-</main>
+
+      <div style="max-width: 70%; margin: 0 auto;">
+        <p style="font-size: 1em;">
+          1. Acceptance of Terms<br />
+          By accessing and using this website, users agree to comply with and be
+          bound by these terms and conditions.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          2. Changes to Terms<br />
+          We reserve the right to modify or replace these terms at any time. Users
+          will be notified of significant changes.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          3. Use of the Website & User-Generated Content<br />
+          Users can create, edit, and share recipes. Users grant Favedis a non-exclusive,
+          royalty-free, worldwide license to use, display, and distribute content
+          they submit. Prohibited behaviors include posting copyrighted content without
+          permission, offensive or harmful content, etc. We reserve the right to
+          remove or edit any content at our own discretion.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          4. Intellectual Property<br />
+          All website content, excluding user-generated content, is owned by Favedis
+          and protected by copyright laws. Users retain rights to the content they
+          create but grant the website the rights mentioned above.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          5. No Warranty & Limitation of Liability<br />
+          The website and its services are provided "as is." We do not guarantee
+          the accuracy, completeness, or timeliness of any content. We are not responsible
+          for any data loss or corruption, and users are advised to back up their
+          recipes/content. To the fullest extent permissible by law, Favedis disclaims
+          all warranties and will not be liable for any damages of any kind arising
+          from the use of this site.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          6. Termination<br />
+          Conditions under which you can terminate a user's access. Users can terminate
+          their account at any time.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          7. No Refund Policy<br />
+          If users choose to purchase any services or features, they acknowledge
+          and agree that all sales are final and no refunds will be granted.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          8. Governing Law<br />
+          This ToS and any disputes arising out of it will be governed by the laws
+          of the European Union, without regard to its conflict of laws rules.
+        </p>
+        <br />
+        <p style="font-size: 1em;">
+          9. Indemnification<br />
+          Users agree to defend, indemnify, and hold harmless Favedis and its employees
+          from any claims or damages, including legal fees, resulting from their
+          use of the website or breach of these terms.
+        </p>
+        <br />
+        <hr />
+        <br />
+
+        <p style="font-size: 1em;">Contact: favedis1@gmail.com</p>
+        <br />
+        <br />
+        <br />
+      </div>
+    </section>
+  </main>
+{/if}
 
 <!-- 
 Existing color 1: #212a3e
@@ -319,6 +434,21 @@ Accent color (coral): #FF6B6B -->
 
   p {
     font-size: 1.5em;
+  }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #394867;
+    z-index: 1000;
+    font-size: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
   }
 
   /* Section 1: */

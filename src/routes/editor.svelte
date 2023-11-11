@@ -10,28 +10,36 @@
   import { backend_url } from "../lib/urls";
   import SuccessNotif from "../lib/notification.svelte";
   import FailedNotif from "../lib/notification.svelte";
+  import LoggedOutNotif from "../lib/notification.svelte";
   import Previewbuilder from "../lib/previewbuilder.svelte";
   import ColorSchemeModal from "../lib/colorschememodal.svelte";
+  import LinksPickerModal from "../lib/editlinkspickermodal.svelte";
 
   import { getCookie } from "../lib/helpers";
 
   import {
+    titleColor,
     showModal,
     showPreviewModal,
     showEditBtnModal,
     editedText,
     inputTextList,
+    socialLinksList,
     btnCount,
     containerCount,
     buttonNames,
     buttonColors,
     borderRadius,
+    textThickness,
     initializeStoresWithLocalStorage,
     stores,
     savedChanges,
     bodyBackgroundColor,
     showEditBgColorModal,
+    showEditLinksPickerModal,
   } from "../lib/builderstore";
+  
+  import { text } from "svelte/internal";
 
   let hoveredIndex = null;
 
@@ -63,6 +71,13 @@
       const defaultRadius = 0.5; // Set your default border radius value here
       const newArr = [...arr];
       newArr.push(defaultRadius);
+      return newArr;
+    });
+
+    textThickness.update((arr) => {
+      const defaultThickness = 10; // Set your default border radius value here
+      const newArr = [...arr];
+      newArr.push(defaultThickness);
       return newArr;
     });
 
@@ -121,6 +136,13 @@
       return [...arr];
     });
 
+    textThickness.update((arr) => {
+      if (arr.length > 0) {
+        arr.pop();
+      }
+      return [...arr];
+    });
+
     inputTextList.update((arr) => {
       if (arr.length > 0) {
         arr.pop();
@@ -164,12 +186,33 @@
       return arr;
     });
 
+    textThickness.update((arr) => {
+      while (arr.length < length) {
+        const defaultRadius = 0; // Set your default border radius value here
+        arr.push(defaultRadius);
+      }
+      return arr;
+    });
+
     // Ensure inputTextList has the correct number of elements
     inputTextList.update((arr) =>
       arr.length === length ? arr : new Array(length).fill("")
     );
     btnCount.set(length);
     containerCount.set(length);
+
+    socialLinksList.update((links) => {
+      // Here's where you'd establish default keys if necessary
+      // For instance, if buttonNames included 'home', 'twitter', 'youtube', you'd ensure defaults
+      // Loop over your expected keys (in this case 'home', 'twitter', 'youtube') to ensure they exist
+    $buttonNames.forEach((name) => {
+        if (!(name in links)) {
+          links[name] = ''; // Use existing or fallback to empty string
+        }
+    });
+
+      return { ...links }; // Return combined default and existing links
+    });
   }
 
   let draggedIndex = null; // New variable
@@ -200,6 +243,7 @@
     $inputTextList = [...$inputTextList];
     $buttonColors = [...$buttonColors];
     $borderRadius = [...$borderRadius]; // Make a copy of borderRadius
+    $textThickness = [...$textThickness]; 
 
     // Swap function for readability and reusability
     function swapArrayElements(array, i, j) {
@@ -211,12 +255,14 @@
     swapArrayElements($inputTextList, dragIndex, dropIndex);
     swapArrayElements($buttonColors, dragIndex, dropIndex);
     swapArrayElements($borderRadius, dragIndex, dropIndex); // Swap borderRadius as well
+    swapArrayElements($textThickness, dragIndex, dropIndex); // Swap borderRadius as well
 
     // Update the stores
     buttonNames.set($buttonNames);
     inputTextList.set($inputTextList);
     buttonColors.set($buttonColors);
     borderRadius.set($borderRadius); // Update the borderRadius store
+    textThickness.set($textThickness); 
   }
 
   // Generic modal stuff below
@@ -264,6 +310,16 @@
         },
       });
 
+      if (response.status === 401) {
+        // If it is 401, remove the token from the local storage
+        showLoggedOutNotification();
+        localStorage.removeItem("token");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        throw new Error("Invalid or expired token. Token has been removed.");
+      }
+
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
@@ -273,6 +329,7 @@
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {
+        sendStoreDataToServer(false);
         throw new Error(
           "Expected responseData.data to be a string representing a Python dictionary."
         );
@@ -310,34 +367,23 @@
     }
   });
 
-  $: {
-    $buttonColors,
-    $borderRadius,
-    $buttonNames,
-    $showModal,
-    $showPreviewModal,
-    $showEditBtnModal,
-    $editedText,
-    $inputTextList,
-    $btnCount,
-    $containerCount,
-    $bodyBackgroundColor,
-    $showEditBgColorModal;
-  }
-
-  async function sendStoreDataToServer() {
+  async function sendStoreDataToServer(displayNotif) {
     savedChanges.set(true);
     console.log("Saved changes state: ", $savedChanges);
 
     // Get the current values from the stores
+    const titleColorValue = get(titleColor)
     const buttonColorsValue = get(buttonColors);
     const borderRadiusValue = get(borderRadius);
+    const textThicknessValue = get(textThickness);
     const buttonNamesValue = get(buttonNames);
     const showModalValue = get(showModal);
     const showPreviewModalValue = get(showPreviewModal);
     const showEditBtnModalValue = get(showEditBtnModal);
     const editedTextValue = get(editedText);
     const inputTextListValue = get(inputTextList);
+    const socialLinksListValue = get(socialLinksList);
+    const showEditLinksPickerModalValue = get(showEditLinksPickerModal);
     const btnCountValue = get(btnCount);
     const containerCountValue = get(containerCount);
     const bodyBackgroundColorValue = get(bodyBackgroundColor);
@@ -345,14 +391,18 @@
 
     // Create an object containing all the relevant data
     const dataToSend = {
+      titleColor: titleColorValue,
       buttonColors: buttonColorsValue,
       borderRadius: borderRadiusValue,
+      textThickness: textThicknessValue,
       buttonNames: buttonNamesValue,
       showModal: showModalValue,
       showPreviewModal: showPreviewModalValue,
       showEditBtnModal: showEditBtnModalValue,
       editedText: editedTextValue,
       inputTextList: inputTextListValue,
+      socialLinksList: socialLinksListValue,
+      showEditLinksPickerModal: showEditLinksPickerModalValue,
       btnCount: btnCountValue,
       containerCount: containerCountValue,
       bodyBackgroundColor: bodyBackgroundColorValue,
@@ -383,19 +433,42 @@
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      // If needed, handle the response from the server
       const responseData = await response.json();
       console.log("Data sent successfully!", responseData);
-      showSuccessNotification();
+      // We run publish first time user goes to editor.svelte to create .json file
+      // But we don't want to show the notification they didn't press the Publish button
+      if (displayNotif){
+        showSuccessNotification();
+      }
     } catch (error) {
       console.error("Failed to send data:", error);
       showFailedNotification();
     }
   }
 
+  $: {
+    $titleColor,
+    $buttonColors,
+    $borderRadius,
+    $textThickness,
+    $buttonNames,
+    $showModal,
+    $showPreviewModal,
+    $showEditBtnModal,
+    $editedText,
+    $inputTextList,
+    $socialLinksList,
+    $btnCount,
+    $containerCount,
+    $bodyBackgroundColor,
+    $showEditBgColorModal,
+    $showEditLinksPickerModal;
+  }
+
   // Mischelaneous stuff here
   let showSuccessBar = false;
   let ShowFailedBar = false;
+  let showLoggedOutNotifBar = false;
 
   function showSuccessNotification() {
     showSuccessBar = true;
@@ -405,8 +478,16 @@
     ShowFailedBar = true;
   }
 
+  function showLoggedOutNotification() {
+    showLoggedOutNotifBar = true;
+  }
+
   function openColorEditModal() {
     showEditBgColorModal.set(true);
+  }
+
+  function openLinksEditModal() {
+    showEditLinksPickerModal.set(true);
   }
 </script>
 
@@ -417,7 +498,7 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Content saved!"
+  message="Saved!"
   color="#2dc23c"
   textShadow="#00ff48"
 />
@@ -426,6 +507,13 @@
   message="Error"
   color="#c22d2d"
   textShadow="#ff0037"
+/>
+
+<LoggedOutNotif
+  bind:showBar={showLoggedOutNotifBar}
+  message="Session expired, please log in again"
+  color="#9e9e9e"
+  textShadow="#828282"
 />
 
 <br />
@@ -440,8 +528,7 @@
 
     <div class="body">
       <div class="body-container">
-        <br />
-        <br />
+        <h1 class="tabbar" style="font-size: calc(2em + 0.2vw);">Editor</h1>
 
         <div class="title-component">
           <div>
@@ -477,10 +564,10 @@
           <div class="edit-and-remove-btn-container">
             <div class="add-and-remove-buttons-container">
               <button class="add-btn-class" on:click={() => addBtn()}>
-                <h2 style="padding: 1.5rem 0;" class="modal-btn-text">Add</h2>
+                <h2 style="padding: 0.8rem 0;" class="modal-btn-text">Add</h2>
               </button>
               <button class="add-btn-class" on:click={() => removeLastBtn()}>
-                <h2 style="padding: 1.5rem 0;" class="modal-btn-text">
+                <h2 style="padding: 0.8rem 0;" class="modal-btn-text">
                   Remove
                 </h2>
               </button>
@@ -493,13 +580,18 @@
         <br />
         <br />
         <br />
-        <button class="colorPickerBtn" on:click={() => openColorEditModal()}>
+        <button style="margin-left: 0.6rem;" class="colorPickerBtn" on:click={() => openColorEditModal()}>
           🎨
-          <span class="tooltip">Background</span>
+          <span class="tooltip">Global Colors</span>
         </button>
 
-        <button class="save-edits-btn" on:click={() => sendStoreDataToServer()}
-          >Publish</button
+        <button class="colorPickerBtn" on:click={() => openLinksEditModal()}>
+          🔗
+          <span class="tooltip">Social Links</span>
+        </button>
+
+        <button class="save-edits-btn" on:click={() => sendStoreDataToServer(true)}
+          >Save & Publish</button
         >
         <br />
         <br />
@@ -508,6 +600,10 @@
 
       <div>
         <ColorSchemeModal />
+      </div>
+
+      <div>
+        <LinksPickerModal />
       </div>
 
       {#each Array($containerCount) as _, index (index)}
@@ -521,7 +617,7 @@
 
         <div class="template-container">
           <BtnEditModal
-            bind:showModal={$showEditBtnModal[index]}
+            bind:showBtnModal={$showEditBtnModal[index]}
             on:closeEditBtnModal={() => closeEditBtnModal(index)}
             {index}
           />
@@ -529,8 +625,6 @@
       {/each}
     </div>
 
-    <div class="horizontal-bar" />
-    <!-- Add this -->
     <div class="output-container">
       <Previewbuilder />
     </div>
@@ -556,10 +650,9 @@
   }
 
   .body {
-    overflow-y: hidden;
     margin: 0 auto;
     padding: 0;
-    height: 100vh;
+    min-height: 80vh;
   }
 
   .parrent-body {
@@ -576,10 +669,9 @@
   .body-container {
     margin: 0 auto;
     padding: 0;
-    background-color: #27324ba8;
+    background-color: #27324b3d;
     height: auto;
-    border-radius: 0.5rem;
-    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.15);
     width: calc(15rem + 40vw);
     margin-top: 2rem;
   }
@@ -589,19 +681,30 @@
     font-size: calc(1.3em + 0.5vw);
     border-radius: 0.5rem 0.5rem 0rem 0rem;
     display: flex;
-    background-color: #27324bce;
+    background-color: #27324b3f;
     justify-content: space-between; /* Space items between the edges */
     align-items: center;
     box-shadow: 0px 3px 3px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .tabbar {
+    text-align: center;
+    color: #f2f2f2;
+    font-size: calc(1.3em + 0.5vw);
+    padding: 1.5rem;
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    border: none;
+    cursor: text;
   }
 
   .editing-text {
     text-align: center;
     color: #f2f2f2;
     font-size: calc(1.3em + 0.5vw);
-    padding: 1rem;
-    border-radius: 1rem;
-    background-color: #212a3e3a;
+    padding: 1.5rem;
+    border-radius: 0.3rem;
+    background-color: #27324b3f;
     border: none;
     cursor: text;
     width: 80%;
@@ -616,6 +719,7 @@
     align-items: center;
     display: flex;
     flex-direction: column;
+    margin-top: 2rem;
   }
 
   .btn-container {
@@ -631,7 +735,7 @@
     cursor: pointer;
     border: none;
     background-color: rgba(12, 218, 22, 0);
-    margin-top: 4rem;
+    margin-top: 5rem;
     font-size: 1.2em;
     color: #bebebe;
     padding: 0.5rem;
@@ -689,13 +793,6 @@
     transition: 0.1s ease-in-out;
   }
 
-  /* Is unused atm, but this is a <span> meant to fill the space as an emoji such as 🍪 */
-  .emoji {
-    text-align: left;
-    font-size: 1.5em;
-    margin-left: 1vw;
-  }
-
   .modal-btn-text {
     flex: 1;
     text-align: center;
@@ -710,8 +807,7 @@
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.12);
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.2);
-    margin-right: 1.5rem;
-    margin-left: 1rem;
+    margin-left: 0.1rem;
     margin-top: 4rem;
   }
 
@@ -721,6 +817,8 @@
 
   .colorPickerBtn:hover .tooltip {
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+    visibility: visible;
+    opacity: 1;
   }
 
   .tooltip {
@@ -744,16 +842,10 @@
     content: "";
     position: absolute;
     top: 100%; /* Arrow will appear at the bottom of the tooltip */
-    left: 50%;
-    margin-left: -1.5rem;
+    left: 35%;
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
-  }
-
-  .colorPickerBtn:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
   }
 
   .save-edits-btn {
@@ -783,18 +875,18 @@
   }
 
   @media screen and (max-width: 1300px) {
+    .body {
+      min-height: 0;
+      height: auto;
+    }
+    
     .body-container {
       width: 90%;
     }
 
-    .body {
-      height: 50rem;
-      margin-bottom: 15px;
-    }
-
     .parrent-body {
       display: block;
-    }
+  }
 
     .body-container {
       margin: 0 auto;

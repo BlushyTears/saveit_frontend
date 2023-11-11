@@ -1,37 +1,36 @@
-<!-- 95% of the layout is static, but few things such as coloring, emojis, content, social links are exclusive and thus are to be generated -->
-
-<!-- Layout.svelte is a hardcoded outcome example of a basic template skeleton.svelte with added customization -->
-<!-- Page customization and content is stored in a bucket together -->
-
-<!-- Below is an example of a layout.svelte file that was hardcoded -->
-
-<script>
-  import Modal from "../lib/modal.svelte";
-  import ProfileImg from "../assets/profile.png";
-  import cookieImage from "../assets/cookies.png";
-  import coffeeImage from "../assets/coffee.png";
-  import Logo from "../assets/backlogo.png";
+<script lang="ts">
+  import Logo from "../assets/favedis.png";
+  import { navigate } from "svelte-routing";
   import { onDestroy, onMount } from "svelte";
   import { backend_url } from "../lib/urls";
   import { hexToRgba, getCookie } from "../lib/helpers.js";
   import GenModal from "../lib/genmodalview.svelte";
+  import HomeLogo from '../assets/home_logo.png'
+  import YoutubeLogo from '../assets/youtube_logo.png'
+  import TwitterLogo from '../assets/twitter_logo.png'
+
   import {
     showPreviewModal,
     editedText,
     inputTextList,
     btnCount,
     containerCount,
+    socialLinksList,
     buttonNames,
     buttonColors,
     borderRadius,
+    textThickness,
     initializeStoresWithLocalStorage,
     stores,
     savedChanges,
+    titleColor,
     bodyBackgroundColor,
+    userImage,
   } from "../lib/builderstore";
 
+  const token = localStorage.getItem("token");
   let hoveredIndex = null;
-  let isHovering = false;
+  let outputMessageH1 = "Loading page...";
 
   function openModal(index) {
     showPreviewModal.update((arr) => {
@@ -47,14 +46,11 @@
     });
   }
 
-  function toggleHover(isHovered) {
-    isHovering = isHovered;
+  function navigateToEditor() {
+    window.location.href = "/editor";
   }
 
-  function navigateToEditor() {
-    window.location.href = '/editor';
-  }
-  
+
   function updateAllStores() {
     // Ensure showModal and showEditBtnModal have the correct number of elements
     const length = $buttonNames.length;
@@ -90,149 +86,321 @@
     containerCount.set(length);
   }
 
+  let isGenpage = false;
+  let foundPage = false;
+
   onMount(async () => {
-  try {
-    // Extract the last part of the URL (after the last '/')
-    const pathParts = window.location.pathname.split('/');
-    const firstNameFromURL = pathParts[pathParts.length - 1];
 
-    console.log('Name from URL:', firstNameFromURL);
-    const csrfToken = getCookie("csrftoken");
-    const token = localStorage.getItem("token");
+    try {
+      // Extract the last part of the URL (after the last '/')
+      const pathParts = window.location.pathname.split("/");
+      const firstNameFromURL = pathParts[pathParts.length - 1];
 
-    const response = await fetch(backend_url + "/api/getdatapublic/", {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": csrfToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ first_name: firstNameFromURL })
-    });
+      if (firstNameFromURL == "genpage") {
+        isGenpage = true;
+      }
 
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
+      console.log("foundPage status ", foundPage);
 
-    const responseData = await response.json();
-    console.log("Response data from server: ", responseData);
+      console.log("Name from URL:", firstNameFromURL);
+      const csrfToken = getCookie("csrftoken");
 
-    // Ensure responseData.data is a string and valid JSON before processing
-    if (typeof responseData.data !== "string") {
-      throw new Error(
-        "Expected responseData.data to be a string representing a Python dictionary."
+      const response = await fetch(backend_url + "/api/getdatapublic/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ first_name: firstNameFromURL }),
+      });
+
+      if (!response.ok) {
+        foundPage = false;
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Response data from server: ", responseData);
+
+      // Handle JSON data
+      if (responseData.data) {
+        // Ensure responseData.data is a string and valid JSON before processing
+        if (typeof responseData.data !== "string") {
+          throw new Error(
+            "Expected responseData.data to be a string representing a Python dictionary (file likely doesn't exist)."
+          );
+        }
+        let jsonString = responseData.data;
+
+        if (jsonString.startsWith("b'")) {
+          jsonString = jsonString.substring(2, jsonString.length - 1);
+        }
+
+        jsonString = jsonString
+          .replace(/\\\\\\"/g, '\\"')
+          .replace(/\\\\/g, "\\");
+
+        const jsonObject = JSON.parse(jsonString);
+
+        // Parse the cleaned JSON string into a JavaScript object
+        Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
+          if (stores[storeName]) {
+            stores[storeName].set(storeValue);
+            localStorage.setItem(storeName, JSON.stringify(storeValue));
+          }
+        });
+        foundPage = true;
+
+        // Initialize stores with local storage or fetched data
+        initializeStoresWithLocalStorage();
+      }
+
+      // Handle image data
+      if (responseData.image_data && responseData.image_data.length > 0) {
+        userImage.set(`data:image/png;base64,${responseData.image_data}`);
+        console.log("Image URL fetched:", $userImage); // Directly log the store's value
+      }
+
+      // Miscellaneous tasks, like dispatching events
+      dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
+      updateAllStores();
+      savedChanges.set(true);
+    } catch (error) {
+      foundPage = false;
+      console.error(
+        "There has been a problem with your fetch operation::",
+        error
       );
     }
-    let jsonString = responseData.data;
+  });
 
-    if (jsonString.startsWith("b'")) {
-      jsonString = jsonString.substring(2, jsonString.length - 1);
-    }
+  let buttonStyles = [];
 
-    jsonString = jsonString
-        .replace(/\\\\\\"/g, '\\"')
-        .replace(/\\\\/g, '\\'); 
-
-    const jsonObject = JSON.parse(jsonString);
-
-    // Parse the cleaned JSON string into a JavaScript object
-    Object.entries(jsonObject).forEach(([storeName, storeValue]) => {
-      if (stores[storeName]) {
-        stores[storeName].set(storeValue);
-        localStorage.setItem(storeName, JSON.stringify(storeValue));
-      }
-    });
-
-    // Initialize stores with local storage or fetched data
-    initializeStoresWithLocalStorage();
-
-    // Miscellaneous tasks, like dispatching events
-    dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
-    updateAllStores();
-    savedChanges.set(true);
-  } catch (error) {
-    console.error(
-      "There has been a problem with your fetch operation::",
-      error
-    );
+  $: {
+    buttonStyles = $buttonColors.map((buttonColor, index) => ({
+      btnBorderRadius: $borderRadius[index],
+      textThickness: $textThickness[index],
+      txtColor: hexToRgba(buttonColor[0].text.color, buttonColor[0].text.alpha),
+      btnColor: hexToRgba(
+        buttonColor[0].button.color,
+        buttonColor[0].button.alpha
+      ),
+      btnHover: hexToRgba(
+        buttonColor[0].hover.color,
+        buttonColor[0].hover.alpha
+      ),
+      btnBorder: hexToRgba(
+        buttonColor[0].border.color,
+        buttonColor[0].border.alpha
+      ),
+      btnShadow: hexToRgba(
+        buttonColor[0].shadow.color,
+        buttonColor[0].shadow.alpha
+      ),
+    }));
   }
-});
 
 </script>
-<div
-  class="output-body"
-  style="height: 100vh; background-color: {hexToRgba($bodyBackgroundColor.bodybackground.color, $bodyBackgroundColor.bodybackground.alpha)};"
->
-    <a href="javascript:void(0);" on:click={navigateToEditor} class="logo-container">
-    <img src={Logo} alt="Logo" class="site-logo" />
-  </a>
-  <br />
 
-  <h1 class="editing-text" style="margin-top: 2rem; background: none;">
-    {$editedText}
-  </h1>
+{#if !isGenpage}
+  {#if foundPage}
+    <div
+      class="output-body"
+      style="min-height: 100vh; background-color: {hexToRgba(
+        $bodyBackgroundColor.body.color,
+        $bodyBackgroundColor.body.alpha
+      )};"
+    >
 
-  {#each $buttonNames as name, index (index)}
-  <div class="btn-container">
-    <button 
-    class="recipe-link" 
-    on:click={() => openModal(index)}
-    on:mouseover={() => hoveredIndex = index}
-    on:mouseout={() => hoveredIndex = null}
-    on:focus={() => hoveredIndex = index}
-    on:blur={() => hoveredIndex = null}
-    style="background-color: {hoveredIndex === index ? 
-    hexToRgba($buttonColors[index][0].hover.color, $buttonColors[index][0].hover.alpha) : 
-    hexToRgba($buttonColors[index][0].button.color, $buttonColors[index][0].button.alpha)};
-    border-radius: {$borderRadius[index]}px;
-    border-color: {hexToRgba($buttonColors[index][0].border.color, $buttonColors[index][0].border.alpha)};">
-    <h2 class="modal-btn-text" style="color: 
-      {hexToRgba($buttonColors[index][0].text.color, $buttonColors[index][0].text.alpha)};">{$buttonNames[index]} {$borderRadius[index]}
-    </h2>
-  </button>
+    {#if token}
+    <a
+      href="http://localhost:5173/editor"
+      on:click={navigateToEditor}
+      class="logo-container"
+    >
+      <img src={Logo} alt="Logo" class="site-logo" />
+    </a>
+    {:else}
+      <a
+        href="http://localhost:5173/"
+        class="logo-container"
+      >
+        <img src={Logo} alt="Logo" class="site-logo" />
+      </a>
+    {/if}
 
-  </div>
-{/each}
+      <br />
 
-  {#each Array($containerCount) as _, index (index)}
-    <div class="template-container">
-      <GenModal
-        on:mouseover={() => toggleHover(true)}
-        on:mouseout={() => toggleHover(false)}
-        on:focus={() => toggleHover(true)}
-        on:blur={() => toggleHover(false)}
-        bind:showModal={$showPreviewModal[index]}
-        on:closeModal={() => closeModal(index)}
-        {index}
-      />
+      <div class="header-component">
+        <img
+          style="margin-bottom: -5rem; margin-top: 8rem;"
+          class="profile-img"
+          src={$userImage}
+          alt="Unable to load profile image"
+        />
+
+        <div class="social-icons" style="margin-top: 6rem;">
+          {#if $socialLinksList.home}
+          <a href="{$socialLinksList.home}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={HomeLogo}
+              alt="Home"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+          
+          {#if $socialLinksList.twitter}
+          <a href="{$socialLinksList.twitter}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={TwitterLogo}
+              alt="Twitter"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+          
+          {#if $socialLinksList.youtube}
+          <a href="{$socialLinksList.youtube}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={YoutubeLogo}
+              alt="YouTube"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+        </div>
+        
+
+        <h1
+          class="editing-text"
+          style="background: none; font-weight: 1; color: {hexToRgba(
+            $titleColor.body.color,
+            $titleColor.body.alpha
+          )}"
+        >
+          {$editedText}
+        </h1>
+      </div>
+
+      {#each $buttonNames as name, index (index)}
+        <div class="btn-container">
+          <button
+            class="recipe-link {hoveredIndex === index ? 'hovered' : ''}"
+            on:click={() => openModal(index)}
+            on:mouseover={() => (hoveredIndex = index)}
+            on:mouseout={() => (hoveredIndex = null)}
+            on:focus={() => (hoveredIndex = index)}
+            on:blur={() => (hoveredIndex = null)}
+            style="--btn-hover-color: {buttonStyles[index].btnHover};
+        --btn-color: {buttonStyles[index].btnColor};
+        --btn-border-radius: {buttonStyles[index].btnBorderRadius}px;
+        --btn-border-color: {buttonStyles[index].btnBorder};
+        --btn-shadow-color: {buttonStyles[index].btnShadow}"
+          >
+            <h2
+              class="modal-btn-text"
+              style="color: {buttonStyles[index].txtColor};
+            --textThickness: {buttonStyles[index].textThickness};
+          "
+            >
+              {$buttonNames[index]}
+            </h2>
+          </button>
+        </div>
+      {/each}
+
+      <div class="footer-div" />
+      <br />
+
+      <!-- ... -->
     </div>
-  {/each}
-  <br />
 
-</div>
+    {#each Array($containerCount) as _, index (index)}
+      <div class="template-container">
+        <GenModal
+          bind:showModal={$showPreviewModal[index]}
+          on:closeModal={() => closeModal(index)}
+          {index}
+        />
+      </div>
+    {/each}
+    <div
+      class="footer"
+      style="background-color: {hexToRgba(
+        $bodyBackgroundColor.body.color,
+        $bodyBackgroundColor.body.alpha
+      )};"
+    />
+  {:else}
+    <div
+      style="background-color: {hexToRgba(
+        $titleColor.body.color,
+        $titleColor.body.alpha
+      )};"
+      class="center"
+    >
+      <br />
+      <h1>
+        {outputMessageH1}
+      </h1>
+    </div>
+  {/if}
+{:else}
 
-<style>
+  <div
+    style="background-color: {hexToRgba(
+      $titleColor.body.color,
+      $titleColor.body.alpha
+    )};"
+    class="center"
+  >
+    <br />
+    <h1>Failed to load</h1>
+  </div>
+{/if}
 
-.logo-container {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-}
+<style lang="scss">
+  .output-body {
+    flex: 1;
+  }
 
-.site-logo {
-  width: 120px; /* You can adjust the size if needed */
-  height: auto;
-  cursor: pointer;
-}
-.site-logo:hover {
-    background-color: rgba(255, 255,255, 0.1);
-    transform: 0.1s;
-}
+  .logo-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+  }
+
+  .site-logo {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 15rem; /* You can adjust the size if needed */
+    height: auto;
+    cursor: pointer;
+  }
+  .site-logo:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+    transform: 0.15s;
+  }
+
+  .header-component {
+    margin: 0;
+    align-items: center;
+    display: flex;
+    flex-direction: column; /* Stacks the template-container divs vertically */
+  }
+
+  .profile-img {
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+  }
 
   .editing-text {
     text-align: center;
     color: #f2f2f2;
-    font-size: calc(1.3em + 0.5vw);
+    font-size: calc(3.3em + 0.5vw);
     padding: 1rem;
     border: none;
     cursor: text;
@@ -260,14 +428,47 @@
     margin-top: 1rem;
   }
 
-  .recipe-link:hover {
-    background-color: #f7c4a5;
-    transition: 0.15s ease-in-out;
+  .recipe-link {
+    background-color: var(--btn-color);
+    box-shadow: 0px 0px 5px 2px var(--btn-shadow-color);
+    &:hover {
+      background-color: var(--btn-hover-color);
+    }
+
+    border-radius: var(--btn-border-radius);
+    border-color: var(--btn-border-color);
   }
 
   .modal-btn-text {
+    color: var(--text-color);
+  }
+
+  .modal-btn-text {
+    font-weight: var(--textThickness);
     color: white;
     flex: 1;
     text-align: center;
+  }
+
+  .center {
+    height: 100vh;
+    text-align: center;
+  }
+
+  .center h1 {
+    width: 30%;
+    color: white;
+    margin: 0 auto;
+    padding: 20px; /* optional padding */
+    margin-top: 10rem;
+    font-size: calc(1em + 1vw);
+  }
+
+  // There's some white space generated for no reason, so we override that with a ducktaped footer div
+  // Can try to change this and go to a generated page and look at bottom to see what happens if confusing
+  .footer {
+    background-color: var(--body-bg-color);
+    height: 6vh;
+    width: 100%;
   }
 </style>

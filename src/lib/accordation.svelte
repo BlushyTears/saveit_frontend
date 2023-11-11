@@ -46,6 +46,7 @@
 
   .accordion-button:hover {
     background-color: #2c3a58;
+    border-radius: 0;
   }
   .icon {
     float: right;

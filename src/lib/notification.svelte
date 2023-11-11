@@ -32,18 +32,16 @@
 
 <style>
 .notification-bar {
-  box-shadow: 0px 0px 4px 2px #ff0037;
   position: fixed;
   top: -10px;
   left: 50%;  /* move the left edge to the center of the viewport */
   transform: translateX(-50%);  /* move it back by half its own width */
-  width: calc(25% + 10rem);
-  background-color: #4CAF50;
+  width: calc(10% + 10rem);
   color: white;
   text-align: center;
   border-radius: 0 0 0.5rem 0.5rem;
   padding: 2rem;
-  font-size: 2em;
+  font-size: 2.5em;
   z-index: 1000;
   transition: top 0.1s ease-in-out; /* 1-second animation */
 }

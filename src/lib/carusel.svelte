@@ -19,15 +19,23 @@
   ];
 
   function calculatePostWidth() {
-    const carouselPost = posts.querySelector(".carousel-post");
-    if (carouselPost) {
-      postWidth = carouselPost.getBoundingClientRect().width;
-    }
+  if (!posts) {
+    console.error('The posts variable is not bound to a DOM element.');
+    return;
   }
+  const carouselPost = posts.querySelector(".carousel-post");
+  if (carouselPost) {
+    postWidth = carouselPost.getBoundingClientRect().width;
+  }
+}
 
-  function updateCarousel() {
-    posts.style.transform = `translateX(-${currentIndex * postWidth}px)`;
+function updateCarousel() {
+  if (!posts) {
+    console.error('The posts variable is not bound to a DOM element.');
+    return;
   }
+  posts.style.transform = `translateX(-${currentIndex * postWidth}px)`;
+}
 
   const modulus = images.length;
 
@@ -62,11 +70,14 @@
   }
 
   onMount(() => {
-    setTimeout(() => {
-      calculatePostWidth();
-      updateCarousel();
-   }, 500);  // 500ms delay needed to help the carusel load properly (otherwise it doesn't work)
-  });
+  if (!posts) {
+    console.error('The posts variable is not yet bound to a DOM element. Make sure the binding is in place and not under any conditions which are not yet met.');
+    return;
+  }
+
+  calculatePostWidth();
+  updateCarousel();
+});
 </script>
 
 <div class="carousel">

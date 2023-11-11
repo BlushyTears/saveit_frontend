@@ -6,6 +6,7 @@
 
   export let showModal = false;
   export let index = 1;
+  export let showInstructions = false;
 
   let quill: any;
   // Because frontend frameworks are reactive sometimes they are also stupid. We need to use "tempText" variable for the content as long as its open
@@ -21,6 +22,11 @@
     $inputTextList[index] = tempText;
     savedChanges.set(false);
     dialog.close();
+  }
+
+  function handleImageInstructions() {
+    // Toggle the instructions display
+    showInstructions = !showInstructions;
   }
   
   const toolbarOptions = [
@@ -41,25 +47,36 @@ onMount(() => {
       }
     });
 
-  quill.on('text-change', function(delta) {
-  delta.ops.forEach(op => {
-    if (op.insert && typeof op.insert === 'string') {
-      const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.png|\.gif))/);
-      if (match) {
-        setTimeout(() => {
-          const imageUrl = match[1];
-          const position = quill.getText().indexOf(imageUrl);
-          if (position !== -1) {
-            quill.deleteText(position, imageUrl.length);
-            quill.insertEmbed(position, 'image', imageUrl);
-          }
-        }, 0);
-      }
+    const editorContainer = document.querySelector(`.editor-${index}`);
+    if (editorContainer) {
+        const toolbar = editorContainer.previousElementSibling; // Adjust this if toolbar is not immediately before .editor in the DOM
+        const customButton = toolbar.appendChild(document.createElement('span'));
+        customButton.className = 'ql-formats';
+        const button = document.createElement('button');
+        button.innerHTML = 'Images';
+        button.title = 'Image Instructions';
+        button.onclick = handleImageInstructions;
+        customButton.appendChild(button);
     }
-  });
-});
 
-    console.log(tempText);
+    quill.on('text-change', function(delta) {
+      delta.ops.forEach(op => {
+        if (op.insert && typeof op.insert === 'string') {
+          const match = op.insert.match(/(https?:\/\/[^\s]+?(?:\.jpg|\.jpeg|\.png|\.gif))/);
+          if (match) {
+            setTimeout(() => {
+              const imageUrl = match[1];
+              const position = quill.getText().indexOf(imageUrl);
+              if (position !== -1) {
+                quill.deleteText(position, imageUrl.length);
+                quill.insertEmbed(position, 'image', imageUrl);
+              }
+            }, 0);
+          }
+        }
+      });
+    });
+
     quill.root.innerHTML = tempText;
 
     quill.on("text-change", () => {
@@ -118,6 +135,19 @@ onMount(() => {
       </div>
       <hr />
       <div>
+        {#if showInstructions}
+        <div class="image-instructions">
+          <p>Instructions for adding an image:</p>
+          <ul>
+            <li>Visit a popular image hosting site such as imgur and select an image</li>
+            <li>Right click the image and press "Copy Image Address" and paste it here</li>
+            <li>The image will be automatically loaded when you paste it here in the editor.</li>
+            <li>It should have this form: https://i.imgur.com/KT6wCMs.png</li>
+            <li> Accepted formats: .png, .jpg, .jpeg, .gif (Yes, you read the last one right)</li>
+          </ul>
+          <button style="padding: 0.2rem; float: right; cursor: pointer;" on:click={() => showInstructions = false}>Close Instructions</button>
+        </div>
+        {/if}
         <!-- Contenteditable = false makes it so you're forced to press on top and create lines with enter.
         But this is on purpose as otherwise it screws the forum editor up when you try to 
         make a text bold, it puts the editor-mouse at the start without bolding the text for instance -->
@@ -131,6 +161,18 @@ onMount(() => {
 </dialog>
 
 <style>
+
+.image-instructions {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 10;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
 .editor {
     min-height: 600px;
     max-height: 800px;

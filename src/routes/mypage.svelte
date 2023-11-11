@@ -9,9 +9,6 @@
   import { Router, Link, Route, navigate } from "svelte-routing";
   import Modal from "../lib/modal.svelte";
   import ProfileImg from "../assets/profile.png";
-  import cookieImage from "../assets/cookies.png";
-  import coffeeImage from "../assets/coffee.png";
-  import Logo from "../assets/logo.jpg";
   import { onDestroy, onMount } from "svelte";
   import {savedChanges} from '../lib/builderstore';
 
@@ -58,7 +55,7 @@
     <!-- gotta use a loop to automate this later -->
     <button
       class="recipe-link"
-      style="background-image: url({cookieImage});"
+      style="background-image: url();"
       on:click={() => openModal(0)}
     >
       <span class="emoji">🍪</span>
@@ -67,7 +64,7 @@
 
     <button
       class="recipe-link"
-      style="background-image: url({coffeeImage});"
+      style="background-image: url();"
       on:click={() => openModal(1)}
     >
       <span class="emoji">☕</span>
@@ -219,7 +216,7 @@
   </div>
   <div class="footer">
     <a href={token !== null ? '/home' : '/editor'} class="nav-link" on:click={handleClick}>
-      <img class="logo" src={Logo} alt="Logo" />
+      <img class="logo" alt="Logo" />
     </a>
   </div>
 </main>

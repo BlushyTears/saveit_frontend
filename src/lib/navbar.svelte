@@ -5,6 +5,8 @@
   import Editor from "../routes/editor.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
+  import Recoverpw from "../routes/recoverpw.svelte";
+  import Recoverusername from "../routes/recoverusername.svelte";
   import Personal from "../routes/personal.svelte";
   import NotFound from "../routes/notfound.svelte";
   import Spinner from "../lib/loadspinner.svelte";
@@ -13,6 +15,8 @@
   import { currentSetting } from "./navbarStore.js";
   import { onMount } from "svelte";
   import { backend_url } from "../lib/urls";
+
+  import FaveDisLogo from '../assets/favedis.png';
 
   import { linkname, savedChanges } from "../lib/builderstore";
 
@@ -40,46 +44,56 @@
   const token = localStorage.getItem("token");
 
   async function logOutClick(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    isLoading = true;
+  // Display a confirmation prompt to the user
+  const shouldLogOut = window.confirm("Are you sure you want to log out?");
+  
+  if (!shouldLogOut) {
+    // The user clicked Cancel, so do not proceed with logout
+    return;
+  }
 
-    const csrfToken = getCookie("csrftoken");
+  isLoading = true;
 
-    try {
-      const response = await fetch(backend_url + "/api/logout/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-          Authorization: `Token ${token}`,
-        },
-      });
+  const csrfToken = getCookie("csrftoken");
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("User logged out successfully:", data);
-        showSuccessNotification(); // If you're showing a notification
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      } else {
-        const errorData = await response.json();
-        showFailedNotification(); // If you're showing a notification
-        setTimeout(() => {
-          window.location.reload();
-        }, 3500);
-        console.error("Logout failed on server:", errorData);
-      }
-    } catch (error) {
+  try {
+    const response = await fetch(backend_url + "/api/logout/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+        Authorization: `Token ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("User logged out successfully:", data);
+      showSuccessNotification(); // If you're showing a notification
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+      navigate("/");
+    } else {
+      const errorData = await response.json();
       showFailedNotification(); // If you're showing a notification
       setTimeout(() => {
         window.location.reload();
       }, 3500);
-      console.error("Other error during logout:", error);
+      console.error("Logout failed on server:", errorData);
     }
-    localStorage.removeItem("token"); // Remove the token from local storage
+  } catch (error) {
+    showFailedNotification(); // If you're showing a notification
+    setTimeout(() => {
+      window.location.reload();
+    }, 3500);
+    console.error("Other error during logout:", error);
   }
+  localStorage.removeItem("token"); // Remove the token from local storage
+}
+
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -88,45 +102,78 @@
   }
 
   async function handleMyPageNavigation(event) {
-    event.preventDefault();
-    try {
-      console.log("Before fetching user first name");
-      console.log("After fetching user first name");
-      console.log("Fetched Path:", $linkname); // Debugging
-      handleNavigation($linkname || "/genpage");
-      window.location.reload();
-    } catch (err) {
-      console.error("Error fetching the path:", err);
+  event.preventDefault();
+  const targetPath = $linkname || "/genpage";
+
+  // Check if there are unsaved changes
+  if (!$savedChanges) {
+    const userConfirmation = window.confirm(
+      "You have unsaved genpage changes. Are you sure you want to leave?"
+    );
+    if (!userConfirmation) {
+      return;
     }
   }
+
+  try {
+    console.log("Fetched Path:", targetPath); // Debugging
+    handleNavigation(targetPath);
+    window.location.reload();
+  } catch (err) {
+    console.error("Error fetching the path:", err);
+  }
+}
 
   // Hamburger menu logic
   let showMenu = false;
   let menuElement; // Reference to the menu DOM element
 
   function handleNavigation(path) {
-    if (!$savedChanges) {
-      console.log(url);
-      const userConfirmation = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
-      );
-      if (!userConfirmation) {
-        return; // If the user clicks "Cancel", we exit the function early without navigating
-      }
-    }
-    console.log("Navigating to:", path);
+  // Check if the current path is not one of the specified routes where we want to warn the user
+  const shouldWarnOnExit = ["/personal", "/editor", '/'].includes(path);
 
-    if (path === "/mypage") {
-      currentSetting.set("mypage");
-    } else if (path === "/oauth") {
-      currentSetting.set("oauth");
-    } else {
-      currentSetting.set("navbar");
+  // Only trigger the unsaved changes warning if we're on a path that should warn
+  if (shouldWarnOnExit && !$savedChanges) {
+    console.log(url);
+    const userConfirmation = window.confirm(
+      "You have unsaved changes. Are you sure you want to leave?"
+    );
+    if (!userConfirmation) {
+      return; // Prevent navigation if the user cancels
     }
-    navigate(path);
   }
 
+  // Your existing settings update logic
+  if (path === "/mypage") {
+    currentSetting.set("mypage");
+  } else if (path === "/oauth") {
+    currentSetting.set("oauth");
+  } else {
+    currentSetting.set("navbar");
+  }
+
+  // Proceed with the navigation
+  navigate(path);
+}
+
+
   onMount(() => {
+    let currentUrl = window.location.pathname;
+
+    // Without these checkers, the user is navigated to /home even if url ends with /personal for instance
+    if (currentUrl.endsWith("/editor")) {
+      navigate("/editor");
+    } 
+    else if (currentUrl.endsWith("/personal")) {
+      navigate("/personal");
+    } 
+    else if (currentUrl.endsWith("/login")) {
+      navigate("/");
+    } 
+    else if (currentUrl.endsWith("/register")) {
+      navigate("/");
+    } 
+
     document.addEventListener("navigate", handleNavigation);
 
     const closeMenuOnClickOutside = (event) => {
@@ -184,8 +231,8 @@
             role="button"
             class="nav-link"
           >
-            Home
-          </a>
+          <img src={FaveDisLogo} alt="FaveDis Logo" class="main-logo" />
+        </a>
 
           <button
             class="hamburger-menu"
@@ -205,8 +252,8 @@
             bind:this={menuElement}
           >
             {#if isLoggedIn}
+              <!-- svelte-ignore a11y-missing-attribute -->
               <a
-                href="javascript:void(0);"
                 on:click|preventDefault={() => handleNavigation("/personal")}
                 on:keydown={(e) => {
                   if (e.key === "Enter") handleNavigation("/personal");
@@ -218,8 +265,8 @@
                 Personal
               </a>
 
+              <!-- svelte-ignore a11y-missing-attribute -->
               <a
-                href="javascript:void(0);"
                 on:click|preventDefault={() => handleNavigation("/editor")}
                 on:keydown={(e) => {
                   if (e.key === "Enter") handleNavigation("/editor");
@@ -231,8 +278,8 @@
                 Editor
               </a>
 
+              <!-- svelte-ignore a11y-missing-attribute -->
               <a
-                href="javascript:void(0);"
                 on:click|preventDefault={logOutClick}
                 on:keydown={(e) => {
                   if (e.key === "Enter") logOutClick();
@@ -244,8 +291,8 @@
                 Log out
               </a>
 
+              <!-- svelte-ignore a11y-missing-attribute -->
               <a
-                href="javascript:void(0);"
                 on:click|preventDefault={handleMyPageNavigation}
                 on:keydown={(e) => {
                   if (e.key === "Enter") handleMyPageNavigation(e);
@@ -259,8 +306,8 @@
             {/if}
 
             {#if !isLoggedIn}
+              <!-- svelte-ignore a11y-missing-attribute -->
               <a
-                href="javascript:void(0);"
                 on:click|preventDefault={() => handleNavigation("/register")}
                 on:keydown={(e) => {
                   if (e.key === "Enter") handleNavigation("/register");
@@ -272,8 +319,8 @@
                 Register
               </a>
 
+                            <!-- svelte-ignore a11y-missing-attribute -->
               <a
-                href="javascript:void(0);"
                 on:click|preventDefault={() => handleNavigation("/login")}
                 on:keydown={(e) => {
                   if (e.key === "Enter") handleNavigation("/login");
@@ -304,6 +351,8 @@
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/genpage" component={Genpage} />
+        <Route path="/recoverpassword" component={Recoverpw} />
+        <Route path="/recoverusername" component={Recoverusername} />
         <Route component={NotFound} />
       </div>
     </Router>
@@ -322,6 +371,13 @@
     z-index: 1000; /* Ensure the navbar is above other content */
   }
 
+  .main-logo {
+    margin-top: 0.5rem;
+    width: 9rem;  /* Adjust this value to your preference */
+    height: auto;
+    vertical-align: middle;
+  }
+
   .navbar {
     box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
     background-color: #2a3552;
@@ -332,20 +388,21 @@
     text-decoration: none;
     width: calc(5rem + 40%);
     height: 3rem;
-    padding: 1.3rem;
+    padding: 1.8rem;
     border-radius: 6rem;
     margin: 0 auto;
     position: relative; /* Added this line */
   }
 
   .nav-links-right {
+    cursor: pointer;
     margin-left: 2rem;
     display: flex;
     align-items: center;
   }
 
   a {
-    font-size: 1.3em;
+    font-size: 1.5em;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -374,7 +431,7 @@
   }
 
   /* Media query for small screens */
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1400px) {
     .nav-links-right {
       box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.15);
       display: none;

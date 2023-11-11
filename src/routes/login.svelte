@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { Link } from "svelte-routing";
   import { time_ranges_to_array } from "svelte/internal";
 
   import LoadingSpinner from "../lib/loadspinner.svelte";
@@ -9,10 +10,14 @@
   import GLogo from "../assets/glogo.png";
   import CoffeeWoman from "../assets/coffeewoman.jpg";
 
-  import { getCookie, generateRandomNonce, generateRandomState } from "../lib/helpers";
+  import { getCookie } from "../lib/helpers";
 
+  const googleClientId = "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
   let showSuccessBar = false;
   let ShowFailedBar = false;
+  let isLoading = false;
+  let username = "";
+  let password = "";
 
   function showSuccessNotification() {
     showSuccessBar = true;
@@ -21,11 +26,6 @@
   function showFailedNotification() {
     ShowFailedBar = true;
   }
-
-  let isLoading = false;
-
-  let username = "";
-  let password = "";
 
   async function loginBtn(event) {
     event.preventDefault();
@@ -73,8 +73,6 @@
   function loginWithGoogle() {
     isLoading = true;
     // Redirect to Google's OAuth 2.0 login
-    const googleClientId =
-      "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
     const redirectUri = frontend_url;
     const scope = "email profile openid";
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
@@ -127,6 +125,11 @@
         <button class="google-login-btn" on:click={loginWithGoogle}>
           <img src={GLogo} alt="Google Icon" class="google-icon" />
         </button>
+        <div class="centered-content">
+          <!-- Adding the Forgot password link -->
+          <Link to="/recoverpassword" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Password?</Link>
+          <Link to="/recoverusername" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Username?</Link>
+      </div>
       </div>
     </form>
   </div>

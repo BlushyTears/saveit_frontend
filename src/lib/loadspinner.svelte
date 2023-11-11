@@ -3,6 +3,7 @@
 <!-- Spinner.svelte -->
 <style>
   .spinner {
+    margin-top: -0.6rem;
     border: 5px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     border-top: 5px solid #000;

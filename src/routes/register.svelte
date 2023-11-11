@@ -36,7 +36,7 @@
 
   async function handleSubmit(event) {
     event.preventDefault();
-
+    isLoading = true;
     const csrfToken = getCookie("csrftoken");
 
     // Check if passwords match
@@ -72,12 +72,13 @@
         }, 1500);
       } else {
         const errorData = await response.json();
-        showSuccessNotification();
+        showFailedNotification();
         console.error("Registration failed:", errorData);
       }
     } catch (error) {
       console.error("Error during registration:", error);
     }
+    isLoading = false;
   }
 
   function loginWithGoogle() {
@@ -107,12 +108,15 @@
 <div class="all-register-form">
   <div class="register-box">
     <div class="register-title">
-      <h2 style="color: white; font-size: 2.2em; margin-bottom: 1rem;">
-        Register Form
-      </h2>
-      {#if isLoading}
-        <Spinner />
-      {/if}
+      <div class="register-container">
+        <h2 class="register-heading">
+          Register Form
+        </h2>
+        {#if isLoading}
+          <Spinner />
+        {/if}
+      </div>
+      
     </div>
     <form on:submit={handleSubmit}>
       <input
@@ -174,6 +178,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .register-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .register-heading {
+    color: white;
+    font-size: 2.2em;
+    margin-bottom: 1rem;
+    margin-right: 1rem; /* Adds some space between the heading and spinner */
   }
 
   .register-box {
