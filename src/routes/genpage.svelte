@@ -2,7 +2,7 @@
   import Logo from "../assets/favedis.png";
   import { navigate } from "svelte-routing";
   import { onDestroy, onMount } from "svelte";
-  import { backend_url } from "../lib/urls";
+  import { backend_url, frontend_url } from "../lib/urls";
   import { hexToRgba, getCookie } from "../lib/helpers.js";
   import GenModal from "../lib/genmodalview.svelte";
   import HomeLogo from '../assets/home_logo.png'
@@ -214,20 +214,20 @@
 
     {#if token}
     <a
-      href="http://localhost:5173/editor"
+      href="{`${frontend_url}/editor`}"
       on:click={navigateToEditor}
       class="logo-container"
     >
       <img src={Logo} alt="Logo" class="site-logo" />
     </a>
-    {:else}
-      <a
-        href="http://localhost:5173/"
-        class="logo-container"
-      >
-        <img src={Logo} alt="Logo" class="site-logo" />
-      </a>
-    {/if}
+  {:else}
+    <a
+      href="{frontend_url}"
+      class="logo-container"
+    >
+      <img src={Logo} alt="Logo" class="site-logo" />
+    </a>
+  {/if}
 
       <br />
 
