@@ -109,8 +109,8 @@
     }
   }
 
-  const MIN_WIDTH = 400; // Set your minimum width
-  const MIN_HEIGHT = 400; // Set your minimum height
+  const MIN_WIDTH = 30; // Set your minimum width
+  const MIN_HEIGHT = 30; // Set your minimum height
 
   function initializeCropper(imageData: string) {
     const imageElement = new Image();
@@ -212,8 +212,6 @@
 <!-- Button to open the modal -->
 <button on:click={toggleModal}>Change Profile</button>
 
-
-
 {#if isModalOpen}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="modal-overlay" on:click={closeModalOnOutsideMouseUp}>
@@ -264,7 +262,6 @@
           </div>
         {/if}
       </div>
-
     </div>
   </div>
 {/if}
@@ -310,8 +307,8 @@
 
   /* Get element by ID is faster load time for processing somehow than class */
   #cropped-image-preview {
-    max-width: 400px; /* Adjust as needed */
-    max-height: 400px; /* Adjust as needed */
+    max-width: 800px; /* Adjust as needed */
+    max-height: 800px; /* Adjust as needed */
     display: block;
     margin: 0;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
@@ -344,15 +341,11 @@
   }
 
   .image-upload-form {
-    width: 250px;
-    height: 250px;
     display: flex;
     flex-direction: column;
   }
 
   input[type="file"] {
-    width: 250px;
-    height: 250px;
     flex: 1;
     padding: 0.8rem;
     border: none;
