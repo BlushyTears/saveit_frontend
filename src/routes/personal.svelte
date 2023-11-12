@@ -131,6 +131,10 @@
   });
 </script>
 
+<svelte:head>
+  <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet" />
+</svelte:head>
+
 <br>
 <main class="content">
   <SuccessNotif bind:showBar={showSuccessBar} message="Link changed!" />

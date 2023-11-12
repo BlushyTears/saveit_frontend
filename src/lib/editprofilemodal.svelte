@@ -108,11 +108,11 @@
     }
   }
 
-  const MIN_WIDTH = 100; // Set your minimum width
-  const MIN_HEIGHT = 100; // Set your minimum height
+  const MIN_WIDTH = 50; // Set your minimum width
+  const MIN_HEIGHT = 50; // Set your minimum height
 
-  const MAX_WIDTH = 500; // Set your maximum width
-  const MAX_HEIGHT = 500; // Set your maximum height
+  const MAX_WIDTH = 1000; // Set your maximum width
+  const MAX_HEIGHT = 1000; // Set your maximum height
 
 function initializeCropper(imageData: string) {
   const imageElement = new Image();
@@ -230,7 +230,6 @@ function initializeCropper(imageData: string) {
 
 <svelte:head>
   <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet" />
-  <script src="/path/to/cropper.js"></script>
 </svelte:head>
 
 <!-- Button to open the modal -->
@@ -357,8 +356,6 @@ function initializeCropper(imageData: string) {
 
   .image-preview img {
     border-radius: 50%;
-    width: 250px;
-    height: 250px;
     max-width: 500px;
     max-height: 500px;
     margin-bottom: 10px; /* Adjust as needed */

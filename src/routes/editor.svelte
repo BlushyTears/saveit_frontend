@@ -39,8 +39,6 @@
     showEditLinksPickerModal,
   } from "../lib/builderstore";
   
-  import { text } from "svelte/internal";
-
   let hoveredIndex = null;
 
   function addBtn() {
