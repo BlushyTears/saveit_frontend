@@ -114,54 +114,68 @@
   const MAX_WIDTH = 500; // Set your maximum width
   const MAX_HEIGHT = 500; // Set your maximum height
 
-
-  function initializeCropper(imageData: string) {
-    const imageElement = new Image();
+function initializeCropper(imageData: string) {
+  const imageElement = new Image();
   imageElement.src = imageData;
 
   imageElement.onload = () => {
-    let scaledImageData = imageData;
+    let width = imageElement.width;
+    let height = imageElement.height;
+    let isImageScaled = false; // Flag to check if scaling is required
 
     // Create a canvas to perform the image resizing
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    // Calculate the scale for the image to fit it within the max dimensions
-    const scaleWidth = MAX_WIDTH / imageElement.width;
-    const scaleHeight = MAX_HEIGHT / imageElement.height;
-    const scale = Math.min(scaleWidth, scaleHeight, 1); // Adding 1 ensures that the scale is never more than 100% for larger images.
+    // Check if the image size exceeds the maximum limits
+    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+      // Calculate the scale to fit the image within max dimensions
+      const scale = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+      width *= scale;
+      height *= scale;
+      isImageScaled = true; // Set the flag as true since scaling is done
+    }
 
-    // Set the canvas dimensions to the resized dimensions
-    canvas.width = imageElement.width * scale;
-    canvas.height = imageElement.height * scale;
+    // Apply minimum dimension constraints
+    width = Math.max(MIN_WIDTH, width);
+    height = Math.max(MIN_HEIGHT, height);
 
-    // Draw the image to the canvas, possibly scaled down
-    ctx?.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+    // Set the canvas dimensions to the new dimensions
+    canvas.width = width;
+    canvas.height = height;
+
+    // Draw the image to the canvas, scaled as needed
+    if (isImageScaled) {
+      // Only scale the image if needed
+      ctx.drawImage(imageElement, 0, 0, width, height);
+    } else {
+      // If no scaling is required, draw the image as it is
+      ctx.drawImage(imageElement, 0, 0);
+    }
 
     // Convert the canvas back to an image data URL
-    scaledImageData = canvas.toDataURL();
+    let scaledImageData = canvas.toDataURL();
 
-      const targetElement = document.querySelector(
-        ".image-to-crop"
-      ) as HTMLImageElement;
-      if (targetElement) {
-        targetElement.src = scaledImageData;
+    // Set the scaled image data as the source for the image to crop
+    const targetElement = document.querySelector('.image-to-crop') as HTMLImageElement;
+    if (targetElement) {
+      targetElement.src = scaledImageData;
 
-        if (cropper) {
-          cropper.destroy();
-        }
-
-        cropper = new Cropper(targetElement, {
-          aspectRatio: 1,
-          viewMode: 1,
-          // Force a minimum crop size to avoid super small image crops which takes forever to load
-          // For now you can crop 33% of original image
-          minCropBoxWidth: MIN_WIDTH,
-          minCropBoxHeight: MIN_HEIGHT,
-        });
+      if (cropper) {
+        cropper.destroy();
       }
-    };
-  }
+
+      // Initialize Cropper with the new scaled image data
+      cropper = new Cropper(targetElement, {
+        aspectRatio: 1,
+        viewMode: 1,
+        minCropBoxWidth: MIN_WIDTH,
+        minCropBoxHeight: MIN_HEIGHT,
+      });
+    }
+  };
+}
+
 
   function uploadImageToPreview() {
     if (cropper) {
