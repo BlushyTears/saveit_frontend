@@ -111,28 +111,35 @@
   const MIN_WIDTH = 100; // Set your minimum width
   const MIN_HEIGHT = 100; // Set your minimum height
 
+  const MAX_WIDTH = 500; // Set your maximum width
+  const MAX_HEIGHT = 500; // Set your maximum height
+
+
   function initializeCropper(imageData: string) {
     const imageElement = new Image();
-    imageElement.src = imageData;
+  imageElement.src = imageData;
 
-    imageElement.onload = () => {
-      let scaledImageData = imageData;
+  imageElement.onload = () => {
+    let scaledImageData = imageData;
 
-      // Check image dimensions and scale if needed
-      if (imageElement.width < MIN_WIDTH || imageElement.height < MIN_HEIGHT) {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+    // Create a canvas to perform the image resizing
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-        // Set the canvas dimensions to the minimum dimensions
-        canvas.width = Math.max(MIN_WIDTH, imageElement.width);
-        canvas.height = Math.max(MIN_HEIGHT, imageElement.height);
+    // Calculate the scale for the image to fit it within the max dimensions
+    const scaleWidth = MAX_WIDTH / imageElement.width;
+    const scaleHeight = MAX_HEIGHT / imageElement.height;
+    const scale = Math.min(scaleWidth, scaleHeight, 1); // Adding 1 ensures that the scale is never more than 100% for larger images.
 
-        // Draw the image to the canvas, scaled up
-        ctx?.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+    // Set the canvas dimensions to the resized dimensions
+    canvas.width = imageElement.width * scale;
+    canvas.height = imageElement.height * scale;
 
-        // Convert the canvas back to an image data URL
-        scaledImageData = canvas.toDataURL();
-      }
+    // Draw the image to the canvas, possibly scaled down
+    ctx?.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+
+    // Convert the canvas back to an image data URL
+    scaledImageData = canvas.toDataURL();
 
       const targetElement = document.querySelector(
         ".image-to-crop"
