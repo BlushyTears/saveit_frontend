@@ -8,7 +8,6 @@
   import LoggedOutNotif from "../lib/notification.svelte";
   import LoadingSpinner from "../lib/loadspinner.svelte";
   import EditProfileModal from "../lib/editprofilemodal.svelte";
-  import Editprofilemodal2 from "../lib/editprofilemodal2.svelte";
   import { userImage } from "../lib/builderstore";
   import { tick } from "svelte";
 
@@ -131,9 +130,6 @@
     savedChanges.set(true);
   });
 </script>
-
-
-
 
 <br>
 <main class="content">
