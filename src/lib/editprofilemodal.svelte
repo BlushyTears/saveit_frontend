@@ -343,6 +343,7 @@
   }
 
   .image-upload-form {
+    max-height: 500px;
     display: flex;
     flex-direction: column;
   }
