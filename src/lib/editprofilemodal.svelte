@@ -318,6 +318,8 @@
   }
 
   .image-to-crop {
+    width: 250px;
+    height: 250px;
     margin: 0 auto;
   }
 
@@ -330,8 +332,8 @@
 
   .image-preview img {
     border-radius: 50%;
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     margin-bottom: 10px; /* Adjust as needed */
   }
 
@@ -342,11 +344,15 @@
   }
 
   .image-upload-form {
+    width: 250px;
+    height: 250px;
     display: flex;
     flex-direction: column;
   }
 
   input[type="file"] {
+    width: 250px;
+    height: 250px;
     flex: 1;
     padding: 0.8rem;
     border: none;
@@ -385,10 +391,4 @@
     background-color: #ad11d4;
   }
 
-  .image-preview img {
-    border-radius: 50%;
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-  }
 </style>
