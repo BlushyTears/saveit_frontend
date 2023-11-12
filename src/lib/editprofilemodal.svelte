@@ -356,6 +356,8 @@ function initializeCropper(imageData: string) {
   }
 
   .image-to-crop {
+    max-width: 250px;
+    height: auto;
     margin: 0 auto;
   }
 
