@@ -320,6 +320,8 @@
 
   .image-to-crop {
     margin: 0 auto;
+    max-height: 400px;
+    max-width: 400px;
   }
 
   /* Image preview styles */
