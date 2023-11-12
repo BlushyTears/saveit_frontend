@@ -326,6 +326,8 @@
 
   /* Image preview styles */
   .image-preview {
+    max-height: 400px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -352,6 +354,7 @@
 
   input[type="file"] {
     max-height: 250px;
+    max-width: 250px;
     flex: 1;
     padding: 0.8rem;
     border: none;
@@ -394,6 +397,5 @@
     border-radius: 50%;
     width: 200px;
     height: 200px;
-    object-fit: cover;
   }
 </style>
