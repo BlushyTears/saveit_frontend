@@ -305,7 +305,6 @@
     width: 70%;
     min-height: 10rem;
     height: auto;
-    max-height: 250px;
     margin: 0; /* to center it if you like */
   }
 
@@ -320,14 +319,10 @@
 
   .image-to-crop {
     margin: 0 auto;
-    max-height: 400px;
-    max-width: 400px;
   }
 
   /* Image preview styles */
   .image-preview {
-    max-height: 400px;
-    max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -347,14 +342,11 @@
   }
 
   .image-upload-form {
-    max-height: 250px;
     display: flex;
     flex-direction: column;
   }
 
   input[type="file"] {
-    max-height: 250px;
-    max-width: 250px;
     flex: 1;
     padding: 0.8rem;
     border: none;
@@ -397,11 +389,6 @@
     border-radius: 50%;
     width: 200px;
     height: 200px;
+    object-fit: cover;
   }
-
-  .image-to-crop {
-    max-width: 250px;
-    max-height: 250px;
-  }
-  
 </style>
