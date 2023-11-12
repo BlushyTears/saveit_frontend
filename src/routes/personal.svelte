@@ -8,6 +8,7 @@
   import LoggedOutNotif from "../lib/notification.svelte";
   import LoadingSpinner from "../lib/loadspinner.svelte";
   import EditProfileModal from "../lib/editprofilemodal.svelte";
+  import Editprofilemodal2 from "../lib/editprofilemodal2.svelte";
   import { userImage } from "../lib/builderstore";
   import { tick } from "svelte";
 
@@ -164,7 +165,7 @@
         <img src={$userImage} alt="User Image" />
       {/if}
       <div class="profile-edit-button">
-        <EditProfileModal />
+        <Editprofilemodal2 />
       </div>
     </div>
     <div class="change-buttons">
