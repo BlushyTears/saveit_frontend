@@ -155,7 +155,7 @@
           localStorage.removeItem("token");
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 750);
           throw new Error("Invalid or expired token. Token has been removed.");
         }
 
