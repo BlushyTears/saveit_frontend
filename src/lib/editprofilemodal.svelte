@@ -341,11 +341,15 @@
   }
 
   .image-upload-form {
+    max-width: 250px;
+    max-height: 250px;
     display: flex;
     flex-direction: column;
   }
 
   input[type="file"] {
+    width: 250px;
+    height: 250px;
     flex: 1;
     padding: 0.8rem;
     border: none;
