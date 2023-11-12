@@ -305,6 +305,7 @@
     width: 70%;
     min-height: 10rem;
     height: auto;
+    max-height: 1000px;
     margin: 0; /* to center it if you like */
   }
 
