@@ -114,8 +114,8 @@
   const MIN_WIDTH = 50; // Set your minimum width
   const MIN_HEIGHT = 50; // Set your minimum height
 
-  const MAX_WIDTH = 250; // Set your maximum width
-  const MAX_HEIGHT = 250; // Set your maximum height
+  const MAX_WIDTH = 500; // Set your maximum width
+  const MAX_HEIGHT = 500; // Set your maximum height
 
 function initializeCropper(imageData: string) {
   const imageElement = new Image();
