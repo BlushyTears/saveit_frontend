@@ -76,7 +76,6 @@
       const response = await fetch(backend_url + "/api/updateprofile/", {
         method: "POST",
         headers: {
-          "Content-Type": "multipart/form-data",
           "X-CSRFToken": csrfToken,
           Authorization: `Token ${token}`,
         },
@@ -109,8 +108,8 @@
     }
   }
 
-  const MIN_WIDTH = 400; // Set your minimum width
-  const MIN_HEIGHT = 400; // Set your minimum height
+  const MIN_WIDTH = 100; // Set your minimum width
+  const MIN_HEIGHT = 100; // Set your minimum height
 
   function initializeCropper(imageData: string) {
     const imageElement = new Image();
@@ -310,16 +309,16 @@
 
   /* Get element by ID is faster load time for processing somehow than class */
   #cropped-image-preview {
-    max-width: 400px; /* Adjust as needed */
-    max-height: 400px; /* Adjust as needed */
+    max-width: 500px;
+    max-height: 500px;
     display: block;
     margin: 0;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
 
   .image-to-crop {
-    width: 250px;
-    height: 250px;
+    max-width: 500px;
+    max-height: 500px;
     margin: 0 auto;
   }
 
@@ -344,15 +343,15 @@
   }
 
   .image-upload-form {
-    width: 250px;
-    height: 250px;
+    max-width: 500px;
+    max-height: 500px;
     display: flex;
     flex-direction: column;
   }
 
   input[type="file"] {
-    width: 250px;
-    height: 250px;
+    max-width: 500px;
+    max-height: 500px;
     flex: 1;
     padding: 0.8rem;
     border: none;
@@ -393,7 +392,7 @@
 
   .image-preview img {
     border-radius: 50%;
-    width: 250px;
-    height: 250px;
+    max-width: 500px;
+    max-height: 500px;
   }
 </style>
