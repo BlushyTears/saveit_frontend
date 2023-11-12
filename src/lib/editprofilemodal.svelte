@@ -302,8 +302,9 @@
 
   .cropper-container {
     width: 70%;
-    min-height: 10rem;
+    min-height: 5rem;
     height: auto;
+    max-height: 20rem;
     margin: 0; /* to center it if you like */
   }
 
