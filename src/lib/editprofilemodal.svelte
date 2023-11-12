@@ -178,6 +178,7 @@ function initializeCropper(imageData: string) {
 
 
   function uploadImageToPreview() {
+    console.log('loading cropper preview: ', Cropper);
     if (cropper) {
       const modifiedImageData = cropper.getCroppedCanvas().toDataURL();
 
@@ -211,6 +212,9 @@ function initializeCropper(imageData: string) {
       initializeCropper(imgSrc);
     }
   }
+
+  console.log('loading cropper: ', Cropper); // Should log the Cropper function if loaded properly
+
 
 </script>
 
