@@ -108,8 +108,8 @@
     }
   }
 
-  const MIN_WIDTH = 50; // Set your minimum width
-  const MIN_HEIGHT = 50; // Set your minimum height
+  const MIN_WIDTH = 100; // Set your minimum width
+  const MIN_HEIGHT = 100; // Set your minimum height
 
   function initializeCropper(imageData: string) {
     const imageElement = new Image();
@@ -191,6 +191,7 @@
     }
   }
 
+  // The rest of your existing script logic here...
 </script>
 
 <SuccessNotif
@@ -214,6 +215,7 @@
 
 <!-- Button to open the modal -->
 <button on:click={toggleModal}>Change Profile</button>
+
 
 {#if isModalOpen}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -312,13 +314,16 @@
 
   /* Get element by ID is faster load time for processing somehow than class */
   #cropped-image-preview {
-
+    max-width: 500px;
+    max-height: 500px;
     display: block;
     margin: 0;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
 
   .image-to-crop {
+    max-width: 500px;
+    max-height: 500px;
     margin: 0 auto;
   }
 
