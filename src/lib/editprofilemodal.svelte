@@ -191,7 +191,6 @@
     }
   }
 
-  // The rest of your existing script logic here...
 </script>
 
 <SuccessNotif
@@ -215,7 +214,6 @@
 
 <!-- Button to open the modal -->
 <button on:click={toggleModal}>Change Profile</button>
-
 
 {#if isModalOpen}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -322,8 +320,6 @@
   }
 
   .image-to-crop {
-    max-width: 500px;
-    max-height: 500px;
     margin: 0 auto;
   }
 
