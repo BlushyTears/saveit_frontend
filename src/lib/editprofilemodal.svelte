@@ -150,8 +150,8 @@
           viewMode: 1,
           // Force a minimum crop size to avoid super small image crops which takes forever to load
           // For now you can crop 33% of original image
-          minCropBoxWidth: MIN_WIDTH / 3,
-          minCropBoxHeight: MIN_HEIGHT / 3,
+          minCropBoxWidth: MIN_WIDTH,
+          minCropBoxHeight: MIN_HEIGHT,
         });
       }
     };
