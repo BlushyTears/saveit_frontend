@@ -303,6 +303,8 @@
   }
 
   .cropper-container {
+    max-width: 500px;
+    max-height: 500px;
     width: 70%;
     min-height: 5rem;
     height: auto;
@@ -325,6 +327,8 @@
 
   /* Image preview styles */
   .image-preview {
+    max-width: 500px;
+    max-height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -334,6 +338,8 @@
     border-radius: 50%;
     width: 250px;
     height: 250px;
+    max-width: 500px;
+    max-height: 500px;
     margin-bottom: 10px; /* Adjust as needed */
   }
 
