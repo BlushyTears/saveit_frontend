@@ -13,6 +13,10 @@
   let ShowFailedBar = false;
   let mouseDownInsideModal = false;
   let isLoading = false;
+  let showImageToCrop = true;
+  let showPreview = false;
+  let cropper;
+  let imgSrc;
 
   function toggleModal() {
     isModalOpen = !isModalOpen;
@@ -41,10 +45,6 @@
     ShowFailedBar = true;
   }
 
-  let showImageToCrop = true;
-  let showPreview = false;
-  let cropper;
-  let imgSrc;
 
   async function uploadImageToServer() {
     isLoading = true;
@@ -102,7 +102,10 @@
       const reader = new FileReader();
       reader.onload = function (e) {
         imgSrc = e.target.result;
-        initializeCropper(imgSrc);
+        // This next line will now only run after onMount ensuring the target element is available.
+        if (showImageToCrop) { // Ensure the image-to-crop area is meant to be shown.
+          initializeCropper(imgSrc);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -233,7 +236,8 @@ function initializeCropper(imageData: string) {
 />
 
 <svelte:head>
-  <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet" />
+	<link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js"></script>
 </svelte:head>
 
 <!-- Button to open the modal -->
@@ -421,7 +425,7 @@ function initializeCropper(imageData: string) {
 
   .image-preview img {
     border-radius: 50%;
-    max-width: 500px;
-    max-height: 500px;
+    max-width: 250px;
+    max-height: 250px;
   }
 </style>
