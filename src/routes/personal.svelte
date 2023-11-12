@@ -132,9 +132,7 @@
   });
 </script>
 
-<svelte:head>
-  <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet" />
-</svelte:head>
+
 
 
 <br>
@@ -165,7 +163,7 @@
         <img src={$userImage} alt="User Image" />
       {/if}
       <div class="profile-edit-button">
-        <Editprofilemodal2 />
+        <EditProfileModal/>
       </div>
     </div>
     <div class="change-buttons">

@@ -208,6 +208,11 @@
   textShadow="#828282"
 />
 
+<svelte:head>
+  <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet" />
+  <script src="/path/to/cropper.js"></script>
+</svelte:head>
+
 <!-- Button to open the modal -->
 <button on:click={toggleModal}>Change Profile</button>
 

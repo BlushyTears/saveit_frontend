@@ -56,6 +56,7 @@
   }
 }
 
+
   
   function onUpload() {
     const canvas = cropper.getCroppedCanvas();
@@ -70,6 +71,11 @@
     onMount(() => {
     });
   </script>
+
+<svelte:head>
+  <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet" />
+  <script src="/path/to/cropper.js"></script>
+</svelte:head>
 
     <button on:click="{() => isOpen = true}">Open Cropper</button>
 
