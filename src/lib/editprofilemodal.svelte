@@ -114,8 +114,8 @@
   const MIN_WIDTH = 50; // Set your minimum width
   const MIN_HEIGHT = 50; // Set your minimum height
 
-  const MAX_WIDTH = 1000; // Set your maximum width
-  const MAX_HEIGHT = 1000; // Set your maximum height
+  const MAX_WIDTH = 250; // Set your maximum width
+  const MAX_HEIGHT = 250; // Set your maximum height
 
 function initializeCropper(imageData: string) {
   const imageElement = new Image();
@@ -218,6 +218,12 @@ function initializeCropper(imageData: string) {
 
   console.log('loading cropper: ', Cropper); // Should log the Cropper function if loaded properly
 
+  import { onMount } from 'svelte';
+  let imgElement;
+
+  onMount(() => {
+    imgElement = document.querySelector('.image-to-crop'); 
+  });
 
 </script>
 
