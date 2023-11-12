@@ -305,7 +305,7 @@
     width: 70%;
     min-height: 10rem;
     height: auto;
-    max-height: 1000px;
+    max-height: 250px;
     margin: 0; /* to center it if you like */
   }
 
@@ -343,12 +343,13 @@
   }
 
   .image-upload-form {
-    max-height: 500px;
+    max-height: 250px;
     display: flex;
     flex-direction: column;
   }
 
   input[type="file"] {
+    max-height: 250px;
     flex: 1;
     padding: 0.8rem;
     border: none;
