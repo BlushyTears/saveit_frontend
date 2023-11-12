@@ -398,4 +398,33 @@
     width: 200px;
     height: 200px;
   }
+
+  /* Base styles */
+/* ... Your existing styles ... */
+
+/* Responsive styles */
+@media only screen and (max-width: 600px) { /* Adjust the max-width as per your design requirements */
+  .cropper-container, #cropped-image-preview, .image-to-crop {
+    width: 100%; /* Adjust width to fit mobile screens */
+    max-height: none; /* Remove max-height restrictions */
+  }
+  
+  .modal {
+    width: calc(100% - 20px); /* Full width with a little margin */
+    max-width: none; /* Override max-width for mobile */
+  }
+  
+  /* Adjust button sizes for smaller screens */
+  button, .custom-upload-btn {
+    padding: 0.6rem 1rem; /* Slightly smaller padding */
+    font-size: 0.9em; /* Smaller font size */
+  }
+
+  .image-preview img {
+    width: 90vw; /* Responsive width */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 400px; /* Limit the size to a maximum */
+  }
+}
+
 </style>
