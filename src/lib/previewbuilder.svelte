@@ -197,9 +197,8 @@
     color: #f2f2f2;
     font-size: calc(1.3em + 0.5vw);
     padding: 1.5rem;
-    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 1rem;
-    border: none;
+    border: 1px solid rgba(99, 99, 99, 0.5);
+    border-radius: 0 0 1rem 1rem;
     cursor: text;
   }
 
@@ -228,9 +227,9 @@
 
 
   .output-body {
+    border: 1px solid rgba(99, 99, 99, 0.5);
     margin: 0 auto;
     height: auto;
-    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.1);
     width: 30vw;
     margin-top: 2rem;
   }

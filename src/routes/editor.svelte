@@ -522,11 +522,13 @@
     <!-- <p style="">Followers: 1276</p> -->
   </div>
   <div class="parrent-body">
-    <br />
 
     <div class="body">
+      
       <div class="body-container">
         <h1 class="tabbar" style="font-size: calc(2em + 0.2vw);">Editor</h1>
+        <br />
+        <br />
 
         <div class="title-component">
           <div>
@@ -535,6 +537,7 @@
               <input bind:value={$editedText} class="editing-text" />
             </h1>
           </div>
+          
 
           {#each $buttonNames as name, index (index)}
             <div
@@ -574,6 +577,13 @@
         </div>
         <!-- The right amount of linebreaks is needed in order to make the button stay inside the container at the bottom
             (secret trick), that makes us of the foundational pushing that is html (margin-bottom doesn't work obviously) -->
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <br />
         <br />
         <br />
@@ -662,6 +672,7 @@
     width: 95%;
     margin: auto;
     margin-top: 2rem;
+    border: 1px solid rgba(99, 99, 99, 0.5);
   }
 
   .body-container {
@@ -669,7 +680,7 @@
     padding: 0;
     background-color: #27324b3d;
     height: auto;
-    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(99, 99, 99, 0.5);
     width: calc(15rem + 40vw);
     margin-top: 2rem;
   }
@@ -682,7 +693,7 @@
     background-color: #27324b3f;
     justify-content: space-between; /* Space items between the edges */
     align-items: center;
-    box-shadow: 0px 3px 3px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(99, 99, 99, 0.5);
   }
 
   .tabbar {
@@ -690,9 +701,8 @@
     color: #f2f2f2;
     font-size: calc(1.3em + 0.5vw);
     padding: 1.5rem;
-    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 1rem;
-    border: none;
+    border: 1px solid rgba(99, 99, 99, 0.5);
+    border-radius: 0 0 1rem 1rem;
     cursor: text;
   }
 
@@ -703,7 +713,7 @@
     padding: 1.5rem;
     border-radius: 0.3rem;
     background-color: #27324b3f;
-    border: none;
+    border: 1px solid rgba(99, 99, 99, 0.5);
     cursor: text;
     width: 80%;
     margin: 0 auto;
@@ -745,7 +755,7 @@
   }
 
   .btn-container.hovered {
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(99, 99, 99, 0.5);
     padding: 2rem;
     border-radius: 3rem;
   }
@@ -754,7 +764,7 @@
     border: none;
     font-family: "Roboto Condensed", sans-serif;
     background-color: rgba(0, 0, 0, 0);
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(99, 99, 99, 0.5);
     color: rgb(223, 223, 223);
     background-size: cover;
     cursor: pointer;
@@ -776,8 +786,7 @@
     border: none;
     font-family: "Roboto Condensed", sans-serif;
     background-color: #394867;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(99, 99, 99, 0.616);
+    border: 1px solid rgba(99, 99, 99, 0.5);
     color: rgb(223, 223, 223);
     cursor: pointer;
     padding: 0 calc(2rem + 5vw);
