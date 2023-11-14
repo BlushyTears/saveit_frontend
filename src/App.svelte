@@ -19,6 +19,15 @@
     else if (currentUrl.endsWith("/personal")) {
       current = "home";
     }
+    else if (currentUrl.endsWith("/recoverusername")) {
+      current = "home";
+    }
+    else if (currentUrl.endsWith("/recoverpassword")) {
+      current = "home";
+    }
+    else if (currentUrl.endsWith("/resetpw")) {
+      current = "home";
+    }
     else if (currentUrl.endsWith("/editor")) {
       current = "home";
     }
@@ -29,6 +38,7 @@
       current = "home";
     }
     else if (currentUrl.endsWith("/")) {
+      
       current = "home";
     } else {
       current = "genpage";

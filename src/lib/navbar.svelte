@@ -1,5 +1,5 @@
 <script>
-  import { Router, Route, navigate } from "svelte-routing";
+  import { Router, Route, navigate, Link } from "svelte-routing";
   import Home from "../routes/home.svelte";
   import Genpage from "../routes/mypage.svelte";
   import Editor from "../routes/editor.svelte";
@@ -7,6 +7,7 @@
   import Register from "../routes/register.svelte";
   import Recoverpw from "../routes/recoverpw.svelte";
   import Recoverusername from "../routes/recoverusername.svelte";
+  import SubmitPwReset from "../routes/submitpwreset.svelte";
   import Personal from "../routes/personal.svelte";
   import NotFound from "../routes/notfound.svelte";
   import Spinner from "../lib/loadspinner.svelte";
@@ -161,18 +162,35 @@
     let currentUrl = window.location.pathname;
 
     // Without these checkers, the user is navigated to /home even if url ends with /personal for instance
+
+    if (currentUrl.startsWith("/resetpw/")) {
+    const segments = currentUrl.split('/');
+    if (segments.length >= 4) { // Check if the URL has the required segments
+      const userId = segments[2];
+      const token = segments[3];
+      navigate(`/resetpw/${userId}/${token}`); // Navigate using the full dynamic path
+    }
+  }
+
     if (currentUrl.endsWith("/editor")) {
       navigate("/editor");
     } 
     else if (currentUrl.endsWith("/personal")) {
       navigate("/personal");
     } 
+    else if (currentUrl.endsWith("/recoverusername")) {
+      navigate("/recoverusername");
+    } 
+    else if (currentUrl.endsWith("/recoverpassword")) {
+      navigate("/recoverpassword");
+    } 
     else if (currentUrl.endsWith("/login")) {
-      navigate("/");
+      navigate("/login");
     } 
     else if (currentUrl.endsWith("/register")) {
-      navigate("/");
+      navigate("/register");
     } 
+
 
     document.addEventListener("navigate", handleNavigation);
 
@@ -351,8 +369,9 @@
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/genpage" component={Genpage} />
-        <Route path="/recoverpassword" component={Recoverpw} />
         <Route path="/recoverusername" component={Recoverusername} />
+        <Route path="/recoverpassword" component={Recoverpw} />
+        <Route path="resetpw/:userId/:token" component={SubmitPwReset} />
         <Route component={NotFound} />
       </div>
     </Router>

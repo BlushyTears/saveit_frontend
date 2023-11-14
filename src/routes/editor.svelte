@@ -777,6 +777,7 @@
     font-family: "Roboto Condensed", sans-serif;
     background-color: #394867;
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(99, 99, 99, 0.616);
     color: rgb(223, 223, 223);
     cursor: pointer;
     padding: 0 calc(2rem + 5vw);
