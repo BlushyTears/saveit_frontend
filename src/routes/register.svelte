@@ -1,8 +1,4 @@
 <script>
-  import Home from "../routes/home.svelte";
-  import Layout from "./mypage.svelte";
-  import Login from "../routes/login.svelte";
-  import Register from "../routes/register.svelte";
   import GLogo from "../assets/glogo.png";
   import WelcomeParty from "../assets/welcomeparty.jpg";
   import Spinner from "../lib/loadspinner.svelte";
@@ -76,6 +72,7 @@
         console.error("Registration failed:", errorData);
       }
     } catch (error) {
+      showFailedNotification();
       console.error("Error during registration:", error);
     }
     isLoading = false;
@@ -100,7 +97,7 @@
 />
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Register fail."
+  message="Error."
   color="#c22d2d"
   textShadow="#ff0037"
 />

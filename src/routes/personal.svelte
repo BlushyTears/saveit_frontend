@@ -14,9 +14,7 @@
   let showSuccessBar = false;
   let ShowFailedBar = false;
   let showLoggedOutNotifBar = false;
-  let emailToVerify = "";
   let newPassword = "";
-  let newEmail = "";
   let isLoading = false;
 
   function showSuccessNotification() {

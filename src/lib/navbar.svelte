@@ -1,7 +1,6 @@
 <script>
   import { Router, Route, navigate, Link } from "svelte-routing";
   import Home from "../routes/home.svelte";
-  import Genpage from "../routes/mypage.svelte";
   import Editor from "../routes/editor.svelte";
   import Login from "../routes/login.svelte";
   import Register from "../routes/register.svelte";
@@ -368,7 +367,6 @@
         <Route path="/editor" component={Editor} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/genpage" component={Genpage} />
         <Route path="/recoverusername" component={Recoverusername} />
         <Route path="/recoverpassword" component={Recoverpw} />
         <Route path="resetpw/:userId/:token" component={SubmitPwReset} />
