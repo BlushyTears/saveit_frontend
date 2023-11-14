@@ -48,6 +48,7 @@
 
   function navigateToEditor() {
       navigate("/editor");
+      window.location.reload();
   }
 
 
