@@ -70,7 +70,6 @@
 
     if (response.ok) {
       const data = await response.json();
-      console.log("User logged out successfully:", data);
       showSuccessNotification(); // If you're showing a notification
       setTimeout(() => {
         window.location.reload();
@@ -134,7 +133,6 @@
 
   // Only trigger the unsaved changes warning if we're on a path that should warn
   if (shouldWarnOnExit && !$savedChanges) {
-    console.log(url);
     const userConfirmation = window.confirm(
       "You have unsaved changes. Are you sure you want to leave?"
     );

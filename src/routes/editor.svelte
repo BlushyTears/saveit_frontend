@@ -323,7 +323,6 @@
       }
 
       const responseData = await response.json();
-      console.log("Response data from server:", responseData);
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {
@@ -367,7 +366,6 @@
 
   async function sendStoreDataToServer(displayNotif) {
     savedChanges.set(true);
-    console.log("Saved changes state: ", $savedChanges);
 
     // Get the current values from the stores
     const titleColorValue = get(titleColor)
@@ -407,7 +405,6 @@
       showEditBgColorModal: showPreviewBtnModalValue,
     };
 
-    console.log("Data being sent: ", JSON.stringify(dataToSend));
     const csrfToken = getCookie("csrftoken");
 
     const token = localStorage.getItem("token");
@@ -432,7 +429,6 @@
       }
 
       const responseData = await response.json();
-      console.log("Data sent successfully!", responseData);
       // We run publish first time user goes to editor.svelte to create .json file
       // But we don't want to show the notification they didn't press the Publish button
       if (displayNotif){

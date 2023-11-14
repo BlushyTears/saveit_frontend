@@ -47,8 +47,6 @@
       password,
     };
 
-    console.log("userdata: ", userData);
-
     try {
       const response = await fetch(backend_url + "/api/register/", {
         method: "POST",
@@ -61,7 +59,7 @@
 
       if (response.ok) {
         const data = await response.json();
-        console.log("User registered successfully:", data);
+        console.log("User registered successfully");
         showSuccessNotification();
         setTimeout(() => {
           window.location.reload();
