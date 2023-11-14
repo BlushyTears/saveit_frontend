@@ -47,7 +47,7 @@
   }
 
   function navigateToEditor() {
-    window.location.href = "/editor";
+      navigate("/editor");
   }
 
 
@@ -214,7 +214,6 @@
 
     {#if token}
     <a
-      href="{`${frontend_url}/editor`}"
       on:click={navigateToEditor}
       class="logo-container"
     >
@@ -270,7 +269,6 @@
           </a>
           {/if}
         </div>
-        
 
         <h1
           class="editing-text"

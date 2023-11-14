@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { Link } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
   import { time_ranges_to_array } from "svelte/internal";
 
   import LoadingSpinner from "../lib/loadspinner.svelte";
@@ -58,6 +58,7 @@
         setTimeout(() => {
           window.location.reload();
         }, 1000);
+        navigate("/");
       } else {
         const errorData = await response.json();
         console.error("Login failed:", errorData);
