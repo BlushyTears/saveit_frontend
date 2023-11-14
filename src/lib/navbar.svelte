@@ -16,7 +16,7 @@
   import { onMount } from "svelte";
   import { backend_url } from "../lib/urls";
 
-  import FaveDisLogo from '../assets/favedis.png';
+  import FavedisLogo from '../assets/favedis.png';
 
   import { linkname, savedChanges } from "../lib/builderstore";
 
@@ -92,7 +92,6 @@
   }
   localStorage.removeItem("token"); // Remove the token from local storage
 }
-
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -246,7 +245,7 @@
             role="button"
             class="nav-link"
           >
-          <img src={FaveDisLogo} alt="FaveDis Logo" class="main-logo" />
+          <img src={FavedisLogo} alt="FaveDis Logo" class="main-logo" />
         </a>
 
           <button

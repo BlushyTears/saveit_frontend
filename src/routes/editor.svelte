@@ -38,6 +38,7 @@
     showEditBgColorModal,
     showEditLinksPickerModal,
   } from "../lib/builderstore";
+  import { navigate } from "svelte-routing";
   
   let hoveredIndex = null;
 
@@ -312,9 +313,7 @@
         // If it is 401, remove the token from the local storage
         showLoggedOutNotification();
         localStorage.removeItem("token");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        navigate('/');
         throw new Error("Invalid or expired token. Token has been removed.");
       }
 
