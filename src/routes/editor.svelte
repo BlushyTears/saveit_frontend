@@ -572,17 +572,17 @@
         </div>
         <!-- The right amount of linebreaks is needed in order to make the button stay inside the container at the bottom
             (secret trick), that makes us of the foundational pushing that is html (margin-bottom doesn't work obviously) -->
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
         <button style="margin-left: 0.6rem;" class="colorPickerBtn" on:click={() => openColorEditModal()}>
           🎨
           <span class="tooltip">Global Colors</span>
@@ -594,7 +594,7 @@
         </button>
 
         <button class="save-edits-btn" on:click={() => sendStoreDataToServer(true)}
-          >Save & Publish</button
+          >Publish</button
         >
         <br />
         <br />
