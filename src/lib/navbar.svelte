@@ -114,7 +114,6 @@
   }
 
   try {
-    console.log("Fetched Path:", targetPath); // Debugging
     handleNavigation(targetPath);
     window.location.reload();
   } catch (err) {
@@ -198,6 +197,7 @@
 
     // When pressing outside of hamburger menu this code closes it
     document.addEventListener("click", closeMenuOnClickOutside);
+    
   });
 
   function toggleMenu(event) {

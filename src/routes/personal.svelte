@@ -17,8 +17,11 @@
   let newPassword = "";
   let isLoading = false;
 
-  function showSuccessNotification() {
+  let message = 'Success!';
+
+  function showSuccessNotification(_message) {
     showSuccessBar = true;
+    message = _message;
   }
 
   function showFailedNotification() {
@@ -70,6 +73,7 @@
       }
 
       if (response.ok) {
+        showSuccessNotification('Linkname updated');
         console.log("Data sent successfully.");
       } else {
         console.error("Error sending data:", response.statusText);
@@ -110,6 +114,7 @@
         if (response.ok) {
             console.log("Data sent successfully.");
             // Provide some feedback to the user
+            showSuccessNotification('Email verified');
             alert(responseData.detail || "Email verification initiated successfully.");
         } else {
             console.error("Error sending data:", response.statusText);
@@ -131,25 +136,26 @@
 
 <br>
 <main class="content">
-  <SuccessNotif bind:showBar={showSuccessBar} message="Link changed!" />
-  <FailedNotif bind:showBar={ShowFailedBar} message="Link change fail." />
+  <SuccessNotif bind:showBar={showSuccessBar} color="#2dc23c" textShadow="#00ff48" message="Success" />
+  <FailedNotif bind:showBar={ShowFailedBar} message="Fail." />
   <LoggedOutNotif
     bind:showBar={showLoggedOutNotifBar}
+    color="#c22d2d"
+    textShadow="#ff0037"
     message="Session expired, please log in again"
   />
 
   <section class="body-section">
     <form on:submit={submitInfo} class="login-form">
       <div class="input-group">
-        <h2 class="favedis-header">favedis.com/</h2>
         <input
           type="text"
           id="link"
           bind:value={$linkname}
           required
-          placeholder="Enter your linkname"
+          placeholder="Pick your linkname"
         />
-        <button type="submit">Update</button>
+        <button class='generic-btn' type="submit">Update</button>
       </div>
     </form>
     <div class="image-section">
@@ -162,8 +168,9 @@
     </div>
     <div class="change-buttons">
       <button type="submit">Change Password</button>
+      <br>
       {#if !$isEmailVerified}
-      <button style="background-color: #7c1e1e;" on:click={verifyEmail}>Verify E-mail</button>
+      <button style="background-color: #7c1e1e;" class='generic-btn' on:click={verifyEmail}>Verify E-mail</button>
       {/if}
       <!--
         For future use if needed by users
@@ -173,10 +180,10 @@
 </main>
 
 <style>
-  /* Base styling */
-  * {
-    box-sizing: border-box;
-    font-family: "Arial", sans-serif;
+
+  @font-face {
+    font-family: "Monofonto";
+    src: url("../assets/monofontorg.otf") format("opentype");
   }
 
   .content {
@@ -197,7 +204,7 @@
     background-color: #2e3757;
     border-radius: 5px;
     padding: 2rem;
-    width: 100%;
+    width: 85%;
   }
 
   .login-form {
@@ -222,16 +229,11 @@
   .input-group {
     display: flex;
     gap: 1rem;
-    width: 70%;
-  }
-
-  .favedis-header,
-  h2 {
-    color: white;
-    margin-top: 0.5rem;
+    max-width: 70%;
   }
 
   input {
+    font-size: calc(1em + 0.3vw);
     min-height: 3rem; 
     padding-left: 10px;
     border-radius: 1rem;
@@ -242,13 +244,12 @@
   }
 
   button {
+    font-size: calc(1em + 0.3vw);
     border-radius: 2rem;
     cursor: pointer;
     margin: 0 auto;
     border: none;
-    width: 50%;
-    padding: 1rem;
-    background-color: #7c1e1e;
+    padding: 1rem 2rem;
     background-color: #293255;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     color: white;
@@ -268,21 +269,23 @@
   .change-buttons {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
   }
 
   @media (max-width: 768px) {
+    .input-group {
+      width: 1rem;
+    }
+
+    #link{
+      width: 45vw;
+    }
+
     .body-section {
       flex-direction: column;
     }
 
     .content {
       padding: 1rem;
-    }
-
-    .input-group {
-      flex-direction: column;
-      gap: 1rem;
     }
 
     .change-buttons {

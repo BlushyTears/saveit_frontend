@@ -7,6 +7,8 @@
   import GenModal from "../lib/genmodalview.svelte";
   import HomeLogo from '../assets/home_logo.png'
   import YoutubeLogo from '../assets/youtube_logo.png'
+  import InstagramLogo from '../assets/instagram_logo.png'
+  import FacebookLogo from '../assets/facebook_logo.png'
   import TwitterLogo from '../assets/twitter_logo.png'
 
   import {
@@ -201,6 +203,22 @@
     }));
   }
 
+  // Automatically re-route when url changes, otherwise it requires manual reload
+  onMount(() => {
+    const handlePopState = (event) => {
+        // Check if the current URL path is on of the navbar routes from logged in state:
+        if (window.location.pathname === '/editor' || window.location.pathname === '/' || window.location.pathname === '/personal') {
+            window.location.reload();
+        }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+        window.removeEventListener('popstate', handlePopState);
+    };
+});
+
 </script>
 
 {#if !isGenpage}
@@ -239,33 +257,53 @@
           alt="Unable to load profile image"
         />
 
-        <div class="social-icons" style="margin-top: 6rem;">
+        <div style="margin-top: 6rem;" >
           {#if $socialLinksList.home}
-          <a href="{$socialLinksList.home}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.home}" class='social-icon' target="_blank" rel="noopener noreferrer">
             <img
+              class="social-icon-image"
               src={HomeLogo}
               alt="Home"
-              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
           
           {#if $socialLinksList.twitter}
-          <a href="{$socialLinksList.twitter}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.twitter}" class='social-icon' target="_blank" rel="noopener noreferrer">
             <img
+              class="social-icon-image"
               src={TwitterLogo}
               alt="Twitter"
-              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+
+          {#if $socialLinksList.instagram}
+          <a href="{$socialLinksList.instagram}" class='social-icon' target="_blank" rel="noopener noreferrer">
+            <img
+              class="social-icon-image"
+              src={InstagramLogo}
+              alt="Twitter"
+            />
+          </a>
+          {/if}
+
+          {#if $socialLinksList.facebook}
+          <a href="{$socialLinksList.facebook}" class='social-icon' target="_blank" rel="noopener noreferrer">
+            <img
+              class="social-icon-image"
+              src={FacebookLogo}
+              alt="Twitter"
             />
           </a>
           {/if}
           
           {#if $socialLinksList.youtube}
-          <a href="{$socialLinksList.youtube}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.youtube}" class='social-icon' target="_blank" rel="noopener noreferrer">
             <img
+              class="social-icon-image"
               src={YoutubeLogo}
               alt="YouTube"
-              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
@@ -395,6 +433,25 @@
     height: 12rem;
     width: 12rem;
   }
+
+  .social-icon {
+    border-radius: 15%; 
+    padding: 0.4rem;
+  }
+
+  .social-icon:hover {
+    transition: 0.3s;
+  }
+
+  .social-icon-image {
+  width: 30px; 
+  height: 30px;
+  transition: transform 0.15s; /* Apply the transition to the transform property */
+}
+
+.social-icon-image:hover {
+  transform: scale(1.1); /* Scale up the icon by 10% */
+}
 
   .editing-text {
     text-align: center;

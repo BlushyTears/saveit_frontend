@@ -1,188 +1,128 @@
-
 <script>
-  import { onMount } from "svelte";
-  import Example_Page from "../assets/examplepage.png";
-  import Example_Page2 from "../assets/examplepage.png";
-  let currentIndex = 0;
-  let posts;
-  let postWidth;
-  let initialTouchPos = null;
+  import { onMount, onDestroy } from "svelte";
+  import Example_Page3 from "../assets/examplepage1.png"; // Ensure this is a different image
 
   const images = [
-    { src: Example_Page, alt: "Carusel image could not load" },
-    { src: Example_Page2, alt: "Carusel image could not load" },
-    { src: Example_Page, alt: "Carusel image could not load" },
-    { src: Example_Page2, alt: "Carusel image could not load" },
-    { src: Example_Page, alt: "Carusel image could not load" },
-    { src: Example_Page2, alt: "Carusel image could not load" },
-    { src: Example_Page, alt: "Carusel image could not load" },
+    { src: Example_Page3, alt: "Carousel image 1" },
+    { src: Example_Page3, alt: "Carousel image " },
+    { src: Example_Page3, alt: "Carousel image 1" },
+    { src: Example_Page3, alt: "Carousel image " },
+    { src: Example_Page3, alt: "Carousel image 1" },
+    { src: Example_Page3, alt: "Carousel image " },
+    { src: Example_Page3, alt: "Carousel image 1" },
+    { src: Example_Page3, alt: "Carousel image " },
+    { src: Example_Page3, alt: "Carousel image 1" },
+    { src: Example_Page3, alt: "Carousel image " },
+    { src: Example_Page3, alt: "Carousel image 1" },
+    { src: Example_Page3, alt: "Carousel image " },
+    // Add more images as needed
   ];
 
-  function calculatePostWidth() {
-  if (!posts) {
-    console.error('The posts variable is not bound to a DOM element.');
-    return;
-  }
-  const carouselPost = posts.querySelector(".carousel-post");
-  if (carouselPost) {
-    postWidth = carouselPost.getBoundingClientRect().width;
-  }
-}
 
-function updateCarousel() {
-  if (!posts) {
-    console.error('The posts variable is not bound to a DOM element.');
-    return;
-  }
-  posts.style.transform = `translateX(-${currentIndex * postWidth}px)`;
-}
-
-  const modulus = images.length;
-
-  function moveToNext() {
-    currentIndex = (currentIndex + 1) % modulus;
-    updateCarousel();
-  }
-
-  function moveToPrev() {
-    if (currentIndex > 0) {
-      currentIndex = (currentIndex - 1) % modulus;
-      updateCarousel();
-    }
-  }
-
-  function onTouchStart(event) {
-    initialTouchPos = event.touches[0].clientX;
-  }
-
-  function onTouchMove(event) {
-    if (!initialTouchPos) return;
-
-    let diff = initialTouchPos - event.touches[0].clientX;
-    if (Math.abs(diff) > 30) {
-      if (diff > 0) {
-        moveToNext();
-      } else {
-        moveToPrev();
-      }
-      initialTouchPos = null;
-    }
-  }
-
-  onMount(() => {
-  if (!posts) {
-    console.error('The posts variable is not yet bound to a DOM element. Make sure the binding is in place and not under any conditions which are not yet met.');
-    return;
-  }
-
-  calculatePostWidth();
-  updateCarousel();
-});
 </script>
 
-<div class="carousel">
-  <div bind:this={posts}
-       class="carousel-container"
-       on:touchstart={onTouchStart}
-       on:touchmove={onTouchMove}>
-    {#each images as image}
-      <div class="carousel-post">
-        <img src={image.src} alt={image.alt} />
-      </div>
-    {/each}
-  </div>
-  <div class="carousel-controls">
-    <button class="nextNPrevBtns" on:click={moveToPrev}>Prev</button>
-    <div class="carousel-dots">
-      {#each images as _, i}
-        <div
-          class={i === currentIndex ? "dot active-dot" : "dot"}
-          on:click={() => { currentIndex = i; updateCarousel(); }}
-          on:keydown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();  // Prevent the default action to avoid scrolling the page
-              currentIndex = i;
-              updateCarousel();
-            }
-          }}
-          tabindex="0"
-          role="button"
-          aria-label={`Go to slide ${i + 1}`}
-        />
-      {/each}
-    </div>
-    <button class="nextNPrevBtns" on:click={moveToNext}>Next</button>
-  </div>
-</div>
+<body>
+  <footer class="footer">
+    <div class="bd-best">
+      <div class="bd-best-list">
+        <!-- First set of images -->
+        {#each images as image}
+          <figure class="bd-best-item">
+            <img class="kl_img" src={image.src} alt={image.alt}>
+          </figure>
+        {/each}
 
-<br>
+        <!-- Duplicate set for continuous loop -->
+        {#each images as image}
+          <figure class="bd-best-item">
+            <img class="kl_img" src={image.src} alt={image.alt}>
+          </figure>
+        {/each}
+
+        {#each images as image}
+        <figure class="bd-best-item">
+          <img class="kl_img" src={image.src} alt={image.alt}>
+        </figure>
+      {/each}
+      </div>
+    </div>
+  </footer>
+</body>
+
+
 
 <style>
-  .carousel {
-    position: relative;
-    width: 90%;
-    margin: 0 auto;
+  /* CSS for the best list and other styles */
+  .bd-best {
+    height: calc(50rem);
+    padding: 0.5rem 0;
     overflow: hidden;
+    position: relative;
   }
 
-  .carousel-container {
+  .kl_img {
+    max-width: 35rem;
+    width: 70vw;
+  }
+
+  .bd-best-list {
+    animation-duration: 600s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    left: 0;
+    position: absolute;
+    top: 1rem;
+    -webkit-animation-name: bdBestCarousel;
+    animation-name: bdBestCarousel;
   }
 
-  .carousel-post {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    background-color: lightgray;
+  .bd-best-item {
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: 16px;
+    transition-duration: 85ms;
+    transition-property: box-shadow, transform;
   }
 
-  .carousel-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
+  .bd-best-item:hover {
+    box-shadow: 0 1em 1em rgba(0,0,0,.1);
+    transform: translateY(-.1em);
   }
 
-  .carousel-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .bd-best-list:hover {
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
   }
 
-  .dot {
-    width: 0.6rem;
-    height: 0.6rem;
-    background-color: gray;
-    border-radius: 50%;
-    margin: 0 0.3rem;
-    cursor: pointer;
+  @keyframes bdBestCarousel {
+    100% {
+      transform: translateX(calc(-155% + 3120px));
+    }
   }
 
-  .active-dot {
-    background-color: black;
+  .footer {
+    padding: 0 0 0 !important;
+    background-color: #39486700;
   }
 
-  .nextNPrevBtns {
-    font-size: 1.5em;
-    border: none;
-    cursor: pointer;
-    color: white;
-    background-color: #3f537c;
-    padding: 0.6rem 1.2rem;
-    border-radius: 0.5rem;
+  @media (min-width: 3700px) {
+    .bd-best {
+      min-height: 400px;
+    }
+
+    .bd-best-item {
+      width: 200px;
+      height: 100px;
+    }
+
+    .bd-best-list {
+      animation-duration: 80s;
+    }
+
+    .kl_img {
+      width: 300px;
+    }
   }
 
-  .nextNPrevBtns:hover {
-    background-color: #4c689e;
-    transition: 0.1s ease;
-  }
-
-  @media screen and (max-width: 1000px) {
-    .carousel {
-    width: 90%;
-  }
-  }
 </style>

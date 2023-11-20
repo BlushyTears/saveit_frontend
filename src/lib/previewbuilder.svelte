@@ -20,8 +20,9 @@
 
   import HomeLogo from '../assets/home_logo.png'
   import YoutubeLogo from '../assets/youtube_logo.png'
+  import InstagramLogo from '../assets/instagram_logo.png'
   import TwitterLogo from '../assets/twitter_logo.png'
-
+  import FacebookLogo from '../assets/facebook_logo.png'
   import Previewmodal from "./previewmodal.svelte";
   import { hexToRgba } from "./helpers";
 
@@ -107,6 +108,26 @@
       <a href="{$socialLinksList.twitter}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
         <img
           src={TwitterLogo}
+          alt="Twitter"
+          style="width: 30px; height: 30px;"
+        />
+      </a>
+      {/if}
+
+      {#if $socialLinksList.instagram}
+      <a href="{$socialLinksList.instagram}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+        <img
+          src={InstagramLogo}
+          alt="Twitter"
+          style="width: 30px; height: 30px;"
+        />
+      </a>
+      {/if}
+
+      {#if $socialLinksList.facebook}
+      <a href="{$socialLinksList.facebook}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+        <img
+          src={FacebookLogo}
           alt="Twitter"
           style="width: 30px; height: 30px;"
         />

@@ -4,7 +4,6 @@
   import SuccessNotif from "../lib/notification.svelte";
   import FailedNotif from "../lib/notification.svelte";
   import Spinner from "../lib/loadspinner.svelte";
-  import { userImage } from "../lib/builderstore";
   import { tick } from "svelte";
   import Cropper from "cropperjs";
 
@@ -400,35 +399,36 @@ function initializeCropper(imageData: string) {
   }
 
   button{
+    font-size: 1em;
     cursor: pointer;
-    background-color: #bf15e9;
+    background-color: #293255;
     color: white;
     padding: 0.8rem 1.2rem;
     border: none;
     border-radius: 2rem;
-    font-size: 1.1em;
     transition: background-color 0.2s;
   }
 
   button:hover{
-    background-color: #ad11d4;
+    background-color: #434e74;
   }
 
   .custom-upload-btn {
-    font-size: 1.1em;
+    font-size: 1em;
     width: 6rem;
     display: inline-block;
     padding: 0.8rem 1.2rem;
-    background-color: #bf15e9;
+    background-color: #293255;
     color: #fff;
     border: none;
     border-radius: 2rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: "Monofonto", fallback;
   }
 
   .custom-upload-btn:hover {
-    background-color: #ad11d4;
+    background-color: #434e74;
   }
 
   .image-preview img {

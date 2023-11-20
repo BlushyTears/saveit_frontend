@@ -17,6 +17,8 @@
     const updatedLinks = {
       home: ensureHttps(get(socialLinksList).home),
       twitter: ensureHttps(get(socialLinksList).twitter),
+      instagram: ensureHttps(get(socialLinksList).instagram),
+      facebook: ensureHttps(get(socialLinksList).facebook),
       youtube: ensureHttps(get(socialLinksList).youtube)
     };
     
@@ -90,6 +92,26 @@
           bind:value={$socialLinksList.twitter}
           type="text"
           id="twitterLink"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
+
+      <div class="input-container">
+        <label for="instagramLink">Instagram link:</label>
+        <input
+          bind:value={$socialLinksList.instagram}
+          type="text"
+          id="instagramLink"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
+
+      <div class="input-container">
+        <label for="facebookLink">Facebook link:</label>
+        <input
+          bind:value={$socialLinksList.facebook}
+          type="text"
+          id="facebookLink"
           placeholder="Leave this empty to not display on page"
         />
       </div>

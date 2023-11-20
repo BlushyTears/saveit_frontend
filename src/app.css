@@ -15,25 +15,23 @@ a.nav-link {
     src: url("../assets/monofontorg.otf") format("opentype");
 }
 
-@font-face {
-  font-family: "Monofonto";
-  src: url("../assets/timesromance.otf") format("opentype");
-}
-
 button,
+input[type='file'],
 h1,
 h2,
 h3,
 a
 {
-  font-family: "Monofonto", fallback, sans-serif;
+  font-family: "Monofonto", fallback;
   color: black;
   margin: 0;
   padding: 0;
 }
 
 p {
-  font-family: "Monofonto", fallback, sans-serif;
+  font-family: "Monofonto", fallback;
   margin: 0;
   padding: 0;
 }
+
+

@@ -1,8 +1,10 @@
 <script lang="ts">
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { onMount } from "svelte";
-  import Coffee_Illustration from "../assets/coffee_illustration.svg";
+  import Coffee_illustration from "../assets/coffee_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
+  import Cooking_illustration from "../assets/cooking_illustration.svg";
+  import Teamwork_illustration from "../assets/teamwork_illustration.svg";
   import Accordion from "../lib/accordation.svelte";
   import Carusel from "../lib/carusel.svelte";
   import LoadingSpinner from "../lib/loadspinner.svelte";
@@ -10,7 +12,7 @@
   import LoggedOutNotif from "../lib/notification.svelte";
   import { savedChanges } from "../lib/builderstore";
   import { backend_url } from "../lib/urls";
-
+  import { fade, fly } from 'svelte/transition';
   import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
   import { setImage } from "../lib/builderstore";
@@ -37,6 +39,12 @@
       navigate("/login");
     }
   }
+
+  function takeToRegister(event) {
+    event.preventDefault();
+    navigate("/register");
+  }
+
 
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
@@ -187,6 +195,73 @@
       loading = false;
     }
   }
+
+  // Animations section 2
+  let originalHeadline = "Minutes Away from Getting Started.";
+  let newHeadline = "Build your own customized creator page";
+  let headline = originalHeadline;
+
+  let originalDescription = "Faveit is a linksharing site for sharing information such as cooking, drinks and more.";
+  let newDescription = "Using our powerful editor you can customize your own page to your liking and express your creativity";
+  let description = originalDescription;
+
+  let animateHeadlineOut = false;
+  let animateHeadlineIn = false;
+  let animateDescriptionOut = false;
+  let animateDescriptionIn = false;
+
+  let isOriginalHeadline = true;
+  let isOriginalDescription = true;
+
+  function updateHeadline() {
+    animateHeadlineOut = true;
+
+    setTimeout(() => {
+      headline = isOriginalHeadline ? newHeadline : originalHeadline;
+      isOriginalHeadline = !isOriginalHeadline;
+      animateHeadlineOut = false;
+      animateHeadlineIn = true;
+
+      setTimeout(() => {
+        animateHeadlineIn = false;
+      }, 1000);
+    }, 1000);
+  }
+
+  function updateDescription() {
+    animateDescriptionOut = true;
+
+    setTimeout(() => {
+      description = isOriginalDescription ? newDescription : originalDescription;
+      isOriginalDescription = !isOriginalDescription;
+      animateDescriptionOut = false;
+      animateDescriptionIn = true;
+
+      setTimeout(() => {
+        animateDescriptionIn = false;
+      }, 1000);
+    }, 2000);
+  }
+
+  function randomInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function animateHeadline() {
+    updateHeadline();
+    setTimeout(animateHeadline, randomInterval(7000, 12000)); // Random interval
+  }
+
+  function animateDescription() {
+    updateDescription();
+    setTimeout(animateDescription, randomInterval(10000, 15000)); // Random interval
+  }
+
+  onMount(() => {
+    setTimeout(animateHeadline, randomInterval(1000, 5000));
+    setTimeout(animateDescription, randomInterval(1000, 5000));
+  });
+
 </script>
 
 <SuccessNotif
@@ -229,12 +304,13 @@
       </div>
       <img
         class="section1-illustration"
-        src={Coffee_Illustration}
+        src={Coffee_illustration}
         alt="Coffee Illustration"
         style="width: calc(15vw + 15rem); height: calc(15vw + 15rem);"
         width="500"
         height="500"
       />
+
     </section>
     <div>
       <form on:submit={handleSubmit} class="formBtnClaim">
@@ -245,38 +321,62 @@
           required
           placeholder="favedis.com/YourLinkHere"
         />
-        <button class="claimButton" type="submit">Claim</button>
+        <button class="claimButton">Claim</button>
       </form>
     </div>
 
     <section class="section2">
       <div class="section2-main">
-        <br />
-        <img
-          class="section2-illustration"
-          src={Barista_illustration}
-          alt="Coffee Illustration"
-        />
-
+        <img class="section2-illustration" src={Cooking_illustration} alt="Cooking Illustration" />
         <div class="text-chunk-section2">
-          <h2
-            style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;"
-          >
-            Minutes Away from Getting Started.
-          </h2>
-          <br />
-
-          <p style="font-size: calc(1.4em + 0.5vw); color: white;">
-            Faveit is a hub of hubs where you explore new food and drink with
-            others that have similar preferences to you in order to more
-            effectively find what you like: You can follow creators and be
-            notified whenever they release a new recipe
+          <h2 style="color: white; font-size: calc(3em + 2vw);">Master the Art of Cooking</h2>
+          <p style="color: white; font-size: calc(1.4em + 0.5vw);">
+            Elevate your culinary skills with our easy-to-follow recipes and expert tips. Perfect for cooks of all levels!
           </p>
+      <br>
+      <button class="getStartedBtn" on:click={handleSubmit}>Get started for free</button>
         </div>
+      </div>
+      <br>
+    </section>
+
+    
+    <section class="section3">
+      <div class="section3-main">
+        <div class="text-chunk-section3">
+          <h2 style="color: white; font-size: calc(3em + 2vw);">Join Our Foodie Community</h2>
+          <p style="color: white; font-size: calc(1.4em + 0.5vw);">
+            Connect with fellow food enthusiasts, share your culinary adventures, and get inspired!
+          </p>
+          <br>
+          <button class="getStartedBtn" on:click={handleSubmit}>Sign up now</button>
+        </div>
+        <img class="section3-illustration" src={Teamwork_illustration} alt="Teamwork Illustration" />
       </div>
     </section>
 
-    <section class="section3">
+<section class="section4">
+  <div class="section4-main">
+    <br />
+    <img
+      class="section4-illustration"
+      src={Barista_illustration}
+      alt="Coffee Illustration"
+    />
+    <div class="text-chunk-section4">
+      <h2 class:animateOut={animateHeadlineOut} class:animateIn={animateHeadlineIn} style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;">
+        {headline}
+      </h2>
+      <p class:animateOut={animateDescriptionOut} class:animateIn={animateDescriptionIn} style="font-size: calc(1.4em + 0.5vw); color: white;">
+        {description}
+      </p>
+      <br>
+      <button class="getStartedBtn" on:click={handleSubmit}>Register here</button>
+    </div>
+  </div>
+</section>
+
+    <section class="section5">
       <!-- Don't remove this "<br>" blindly lol -->
       <br />
 
@@ -295,7 +395,7 @@
       <Carusel />
     </section>
 
-    <section class="section4">
+    <section class="section6">
       <br />
 
       <div
@@ -452,14 +552,31 @@ Accent color (coral): #FF6B6B -->
   }
 
   /* Section 1: */
-  .section1 {
-    flex-direction: row;
-    justify-content: space-around;
-    display: flex;
-    align-items: center;
-    height: 80rem;
-    background: #394867;
-  }
+/* Section 1 Modified: */
+.section1 {
+  position: relative;
+  flex-direction: row;
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  height: 80rem;
+  background: #394867;
+}
+
+/* New ::after element for Section 1 */
+.section1::after {
+  content: "";
+  position: absolute;
+  margin-left: 7vw;
+  margin-top: 4rem;
+  left: 0; /* Starts from the left */
+  top: 0;
+  width: 40%; /* Adjust the width as needed */
+  height: 65%; /* Full height of the section */
+  background: #39486700; /* Semi-transparent black cover */
+  box-shadow: 14px 14px 14px 14px rgba(0, 0, 0, 0.2);
+  z-index: 0; /* To ensure it's above the text */
+}
 
   .section1-illustration {
     margin-top: -20rem;
@@ -502,33 +619,19 @@ Accent color (coral): #FF6B6B -->
     transition: 0.1s ease-in-out;
   }
 
+
   /* Section 1 END */
 
-  /* Section 2: */
+  /* Section 2 START */
 
   .section2 {
     height: calc(65rem + 10vw);
-    background-color: #ff8c00;
-  }
-
-  /* Curvy boii */
-  .section3::after {
-    content: "";
-    position: absolute;
-    width: 150%;
-    top: 0;
-    border-radius: 150% 150%;
-    left: 0;
-    overflow-x: hidden;
-    border-top: 20rem solid transparent;
-    background: #ff8c00;
-    transform: translate(-15%, -10rem);
+    background: linear-gradient(180deg, #e49a3f, #ff8c00);
   }
 
   .section2 p {
     margin: 0 auto;
     font-size: 1.5em;
-    max-width: 35rem;
   }
 
   /* Includes image and text contents into a container */
@@ -542,39 +645,159 @@ Accent color (coral): #FF6B6B -->
 
   /* Only image contents within the main container */
   .section2-illustration {
+    width: calc(20vw + 20rem);
+    height: calc(20vw + 20rem);
+    margin-top: 10rem;
+    margin-left: 15vw;
+  }
+
+  /* Only text contents within the main container */
+  .text-chunk-section2 {
+  height: 27rem;
+  padding: 5rem;
+  margin-right: 10vw;
+  margin-left: 5vw;
+  padding-top: 5rem;
+  max-width: 30%;
+  margin-top: 15rem;
+}
+
+
+  /* Section 2 END */
+
+  /* Section 3 */
+  .section3-main {
+    position: relative;
+    min-height: 75rem;
+    display: flex;
+    text-align: center;
+  }
+
+  /* Only text contents within the main container */
+  .text-chunk-section3 {
+    height: 35rem;
+    padding: 5rem;
+    margin-left: 10vw;
+    margin-right: 5vw;
+    padding-top: 5rem;
+    max-width: 30%;
     margin-top: 15rem;
+  }
+
+  .section3 p {
+    margin: 0 auto;
+    font-size: 1.5em;
+    max-width: 35rem;
+  }
+
+  /* Only image contents within the main container */
+  .section3-illustration {
+    margin-top: 15rem;
+    width: calc(20vw + 20rem);
+    height: calc(20vw + 20rem);
+  }
+
+  /* Section 3 END */
+
+  /* Section 4 START */
+  .section4 {
+    height: calc(65rem + 10vw);
+    background-color: #ff8c00;
+  }
+
+  .section4 p {
+    margin: 0 auto;
+    font-size: 1.5em;
+    max-width: 35rem;
+  }
+
+  /* Includes image and text contents into a container */
+  .section4-main {
+    /* This adds empty space between section 1 and two 
+    otherwise hard to detect why there's space there */
+    margin-top: 5rem;
+    display: flex;
+    text-align: center;
+  }
+
+  /* Only image contents within the main container */
+  .section4-illustration {
+    margin-top: 5rem;
     margin-left: 17vw;
     width: calc(20vw + 20rem);
     height: calc(20vw + 20rem);
   }
 
   /* Only text contents within the main container */
-  .text-chunk-section2 {
+  .text-chunk-section4 {
     max-width: 30%;
     margin-top: 21rem;
   }
 
-  /* Section 2 END */
+  /* Section 4 Animations */
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
 
-  /* ASIOUJDOIASJWEOIFSJIOFJSDFSDFWSEG */
-  /* Section 2: */
-  .section3 {
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animateOut {
+    animation: slideOut 1s forwards;
+  }
+
+  .animateIn {
+    animation: slideIn 1s forwards;
+  }
+
+  /* Section 4 END */
+
+  /* Section 5: */
+  .section5::after {
+    content: "";
+    position: absolute;
+    width: 150%;
+    top: 0;
+    border-radius: 150% 150%;
+    left: 0;
+    overflow-x: hidden;
+    border-top: 20rem solid transparent;
+    background: #ff8c00;
+    transform: translate(-15%, -10rem);
+  }
+
+  .section5 {
     min-height: calc(30vw + 70rem);
     background: linear-gradient(180deg, #758ab6, #394867);
     position: relative;
   }
 
-  /* Section 3 END */
+  /* Section 5 END */
 
-  /* Section 4 START */
+  /* Section 6 START */
 
-  .section4 {
+  .section6 {
     display: block;
     margin-top: 4rem;
     margin-bottom: 0;
   }
 
-  /* Section 4 END */
+  /* Section 6 END */
 
   /* FOOTER START */
   .footer {
@@ -587,55 +810,167 @@ Accent color (coral): #FF6B6B -->
 
   /* FOOTER END */
 
-  /* Media Queries: */
 
+  /* Misc START */
+
+  .getStartedBtn {
+    padding: 1rem 3rem;
+    font-size: calc(1em + 0.3vw);
+    border: none;
+    border-radius: 1rem;
+    background-color: rgb(231, 134, 207);
+    color: white;
+    cursor: pointer;
+  }
+
+  .getStartedBtn:hover {
+    transition: 0.3s;
+    background-color: rgb(204, 114, 181);
+  }
+  /* Misc END */
+
+  /* Media Queries: */
   @media screen and (max-width: 1200px) {
-    .section2 {
+    .section4 {
       height: 75rem;
     }
-    .text-chunk-section2 {
+    .text-chunk-section4 {
       margin: 0 auto;
     }
-    .section2-illustration {
+    .section4-illustration {
       margin: 0 auto;
     }
-    .section2-main {
+    .section4-main {
       flex-direction: column;
       justify-content: center;
     }
 
-    .text-chunk-section2 {
+    .text-chunk-section4 {
       max-width: 80%;
     }
 
-    .section3 {
+    .section5 {
       min-height: 80rem;
     }
 
-    .section3::after {
+    .section5::after {
       transform: translate(-15%, -5rem);
       border-top: 15rem solid transparent;
     }
   }
 
-  @media screen and (max-width: 800px) {
-    .section1 {
+  @media screen and (max-width: 1200px) {
+  .section2-main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section2-illustration {
+    margin-top: 2rem;
+    margin-left: 0;
+    width: 80%;
+  }
+
+  .text-chunk-section2 {
+    margin-top: 2rem;
+    margin-left: 0;
+    max-width: 80%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .section3-main {
+    min-height: auto;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .section3-illustration {
+    margin-left: 0;
+    width: 80%;
+  }
+
+  .text-chunk-section3 {
+    margin-left: 0;
+    max-width: 80%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .section6 {
+    padding: 2rem;
+  }
+
+  .section-4-container {
+    min-height: auto;
+    padding: 2rem 1rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .section1::after {
+    margin-left: 10vw;
+    margin-top: -5rem; 
+    width: 80%; 
+    height: 63%; 
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .section3 {
+    height: auto;
+  }
+
+  .section1-illustration {
+    padding-top: 5rem;
+    width: 90%;
+  }
+
+  .section1 {
       flex-direction: column;
       justify-content: flex-start;
       margin-top: 4rem;
       height: 65rem;
     }
-    .section1-illustration {
-      margin: 0 auto;
-      margin-top: 2rem;
-    }
-    .text-chunk-section1 {
-      margin-top: 0;
-    }
-
-    .section3::after {
-      border-top: 10rem solid transparent;
-      transform: translate(-15%, -5rem);
-    }
+  .section1-illustration {
+    margin: 0 auto;
+    margin-top: 2rem;
   }
+  .text-chunk-section1 {
+    margin-top: 0;
+  }
+
+  .text-chunk-section3 {
+    font-size: calc(1em + 1vw);
+    margin-top: 2rem;
+  }
+
+  .section2-main {
+    min-height: 85rem;
+  }
+
+  .section3-main {
+    min-height: 65rem;
+  }
+
+  .section2 {
+    height: auto;
+  }
+
+  .section2-illustration {
+    width: 90%;
+  }
+
+  .text-chunk-section2 {
+    font-size: calc(1em + 1vw);
+  }
+
+  .section5::after {
+    border-top: 10rem solid transparent;
+    transform: translate(-15%, -5rem);
+  }
+
+  .section6 h3 {
+    font-size: 2em;
+  }
+}
+
 </style>
