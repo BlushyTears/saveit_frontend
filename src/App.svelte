@@ -3,6 +3,10 @@
   import GenPage from "./routes/genpage.svelte";
   import Navbar from "./lib/navbar.svelte";
 
+  import { inject } from '@vercel/analytics';
+ 
+  inject();
+
   let current;
 
   // This below is a workaround because svelte routing is pretty bad with anything non-spa routing related

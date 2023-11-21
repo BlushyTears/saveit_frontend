@@ -54,7 +54,7 @@
 <style>
   /* CSS for the best list and other styles */
   .bd-best {
-    height: calc(50rem);
+    height: calc(35rem);
     padding: 0.5rem 0;
     overflow: hidden;
     position: relative;
@@ -103,7 +103,7 @@
 
   .footer {
     padding: 0 0 0 !important;
-    background-color: #39486700;
+    background: none;
   }
 
   @media (min-width: 3700px) {
