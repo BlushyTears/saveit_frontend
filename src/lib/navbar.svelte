@@ -6,6 +6,8 @@
   import Register from "../routes/register.svelte";
   import Recoverpw from "../routes/recoverpw.svelte";
   import Recoverusername from "../routes/recoverusername.svelte";
+  import TOS from "../routes/tos.svelte";
+  import PrivacyPolicy from "../routes/policy.svelte";
   import SubmitPwReset from "../routes/submitpwreset.svelte";
   import Personal from "../routes/personal.svelte";
   import NotFound from "../routes/notfound.svelte";
@@ -185,7 +187,12 @@
     else if (currentUrl.endsWith("/register")) {
       navigate("/register");
     } 
-
+    else if (currentUrl.endsWith("/tos")) {
+      navigate("/tos");
+    }     
+    else if (currentUrl.endsWith("/policy")) {
+      navigate("/policy");
+    } 
 
     document.addEventListener("navigate", handleNavigation);
 
@@ -366,6 +373,8 @@
         <Route path="/login" component={Login} />
         <Route path="/recoverusername" component={Recoverusername} />
         <Route path="/recoverpassword" component={Recoverpw} />
+        <Route path="/policy" component={PrivacyPolicy} />
+        <Route path="/tos" component={TOS} />
         <Route path="resetpw/:userId/:token" component={SubmitPwReset} />
         <Route component={NotFound} />
       </div>

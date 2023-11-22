@@ -41,8 +41,13 @@
     else if (currentUrl.endsWith("/login")) {
       current = "home";
     }
+    else if (currentUrl.endsWith("/policy")) {
+      current = "home";
+    }
+    else if (currentUrl.endsWith("/tos")) {
+      current = "home";
+    }
     else if (currentUrl.endsWith("/")) {
-      
       current = "home";
     } else {
       current = "genpage";

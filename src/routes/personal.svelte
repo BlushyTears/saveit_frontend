@@ -81,6 +81,7 @@
     } catch (error) {
       console.error("Error sending data:", error);
     }
+    isLoading = false; 
   }
 
   async function verifyEmail(event) {
@@ -156,6 +157,11 @@
           placeholder="Pick your linkname"
         />
         <button class='generic-btn' type="submit">Update</button>
+        {#if isLoading}
+        <div style="margin-top: 1.3rem;">
+          <LoadingSpinner />
+        </div>
+      {/if}
       </div>
     </form>
     <div class="image-section">
@@ -204,7 +210,7 @@
     background-color: #2e3757;
     border-radius: 5px;
     padding: 2rem;
-    width: 85%;
+    width: 86%;
   }
 
   .login-form {
@@ -228,7 +234,7 @@
 
   .input-group {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     max-width: 70%;
   }
 
@@ -277,7 +283,7 @@
     }
 
     #link{
-      width: 45vw;
+      width: 35vw;
     }
 
     .body-section {
