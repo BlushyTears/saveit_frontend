@@ -164,6 +164,7 @@ export const savedChanges = writable(true);
 export const isEmailVerified = writable(false);
 export const currentRoute = writable(null);
 export const userImage = writable("");
+export const userWallpaper = writable("");
 
 export function setImage(newImage: string) {
   userImage.set(newImage); // Use the set method to update the store's value
@@ -171,4 +172,12 @@ export function setImage(newImage: string) {
 
 export function clearImage() {
   userImage.set(""); // Set to an empty string (or null if you want, but ensure the initial value and this match in type)
+}
+
+export function setWpImage(newImage: string) {
+  userWallpaper.set(newImage); // Use the set method to update the store's value
+}
+
+export function clearWpImage() {
+  userWallpaper.set(""); // Set to an empty string (or null if you want, but ensure the initial value and this match in type)
 }

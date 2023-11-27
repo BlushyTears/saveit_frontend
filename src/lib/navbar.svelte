@@ -103,7 +103,10 @@
 
   async function handleMyPageNavigation(event) {
   event.preventDefault();
-  const targetPath = $linkname || "/genpage";
+
+  // Try to retrieve 'linkname' from localStorage, default to '/genpage' if not found
+  const storedLinkName = localStorage.getItem("linkname");
+  const targetPath = storedLinkName || "/genpage";
 
   // Check if there are unsaved changes
   if (!$savedChanges) {
@@ -122,6 +125,7 @@
     console.error("Error fetching the path:", err);
   }
 }
+
 
   // Hamburger menu logic
   let showMenu = false;

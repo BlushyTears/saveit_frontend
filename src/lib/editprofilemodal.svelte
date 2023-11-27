@@ -44,7 +44,6 @@
     ShowFailedBar = true;
   }
 
-
   async function uploadImageToServer() {
     isLoading = true;
     const previewImage = document.getElementById(
@@ -280,7 +279,7 @@ function initializeCropper(imageData: string) {
           <br />
           {#if imgSrc}
             <button style="width: 50%;" on:click={uploadImageToPreview}
-              >Upload</button
+              >Preview</button
             >
           {/if}
         {/if}

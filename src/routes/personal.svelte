@@ -16,6 +16,7 @@
   let showLoggedOutNotifBar = false;
   let newPassword = "";
   let isLoading = false;
+  let linkName = localStorage.getItem("linkname");
 
   let message = 'Success!';
 
@@ -154,7 +155,7 @@
           id="link"
           bind:value={$linkname}
           required
-          placeholder="Pick your linkname"
+          placeholder={linkName}
         />
         <button class='generic-btn' type="submit">Update</button>
         {#if isLoading}

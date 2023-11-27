@@ -8,7 +8,6 @@
   import FailedNotif from "../lib/notification.svelte";
   import { backend_url, frontend_url } from "../lib/urls";
   import GLogo from "../assets/glogo.png";
-  import CoffeeWoman from "../assets/coffeewoman.jpg";
 
   import { getCookie } from "../lib/helpers";
 
@@ -130,26 +129,24 @@
           <!-- Adding the Forgot password link -->
           <Link to="/recoverpassword" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Password?</Link>
           <Link to="/recoverusername" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Username?</Link>
+          <Link to="/register" style="color: white; text-decoration: none; margin-top: 1rem; text-align: center;">Don't have an account? Register here</Link>
       </div>
       </div>
     </form>
   </div>
-  <div class="coffee-woman-div">
-    <img src={CoffeeWoman} alt="Coffee Woman" class="coffee-woman" />
-  </div>
 </div>
 
 <style>
-  .all-login-form {
+.all-login-form {
     margin-top: -9rem;
-    margin-left: 12vw;
+    margin-right: 40vw;
     display: flex;
     align-items: center;
     justify-content: center;
     height: calc(100vh + 5.6rem);
     padding: 2rem;
     flex-wrap: wrap;
-  }
+}
 
   .centered-content {
     display: flex;
@@ -209,115 +206,30 @@
     cursor: pointer;
   }
 
-  .coffee-woman-div {
-    flex-basis: 50%;
-    max-width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-    height: 60%;
-  }
-
-  .coffee-woman {
-    border-radius: 5rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 99%;
-    height: auto;
-    object-fit: cover;
-  }
-
-  /* Media Queries */
-  @media screen and (max-width: 1484px) {
+  @media (max-width: 600px) {
     .all-login-form {
-      margin-left: 0;
-    }
-  }
-
-  /* Media Queries */
-  @media screen and (max-width: 1384px) {
-    .all-login-form {
-      margin-left: 0;
-      margin-top: 2rem;
-    }
-    .coffee-woman-div {
-      flex: 0 0 80%;
-      max-width: 90%;
-    }
-    .login-form {
-      margin-right: 1rem;
-    }
-    .coffee-woman-div {
-      height: 70vh; /* Adjusted height for smaller screens */
-    }
-
-    .coffee-woman {
-      box-shadow: none;
-      /* Scaling the image to make it bigger */
-      transform: scale(1.5) translate(-35%, -35%); /* Zooming in and shifting the image higher up */
-    }
-  }
-
-  @media screen and (max-width: 1384px) {
-    .coffee-woman-div {
-      height: 60vh; /* Adjusted height for smaller screens */
-    }
-
-    .coffee-woman {
-      /* Scaling the image to make it bigger */
-      transform: scale(1.4) translate(-50%, -45%); /* Zooming in and shifting the image higher up */
-    }
-  }
-
-  @media screen and (max-width: 868px) {
-    .login-form,
-    .coffee-woman-div {
-      flex: 0 0 90%;
-      max-width: 100%;
+        margin-top: 0;
+        margin-right: 0;
     }
 
     .login-form {
-      margin-right: 0;
-      margin-bottom: 2rem;
-    }
-
-    .coffee-woman-div {
-      height: 70vh; /* Adjusted height for smaller screens */
-    }
-
-    .coffee-woman {
-      /* Scaling the image to make it bigger */
-      transform: scale(2) translate(-35%, -30%); /* Zooming in and shifting the image higher up */
-    }
-  }
-
-  @media screen and (max-width: 668px) {
-    .login-form {
-      padding: 1rem;
+        flex: 0 0 100%; /* Full width on small screens */
+        margin-right: 0;
+        padding: 1rem;
     }
 
     .login-form input,
     .login-form button {
-      padding: 0.6rem;
-      font-size: 1em;
+        font-size: 1em; /* Smaller font size */
+        margin: 0 auto;
+        margin-bottom: 1rem;
     }
 
-    .coffee-woman-div {
-      flex: 0 0 90%;
+    .login-title h2 {
+        font-size: 1.5em; /* Smaller title */
     }
 
-    .login-form {
-      margin-right: 0;
-      margin-bottom: 2rem;
-    }
+    /* Adjust other elements as needed for smaller screens */
+}
 
-    .coffee-woman {
-      /* Scaling the image to make it bigger */
-      transform: scale(2) translate(-45%, -45%); /* Zooming in and shifting the image higher up */
-    }
-  }
 </style>

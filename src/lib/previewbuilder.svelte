@@ -16,6 +16,7 @@
     titleColor,
     bodyBackgroundColor,
     userImage,
+    userWallpaper,
   } from "../lib/builderstore";
 
   import HomeLogo from '../assets/home_logo.png'
@@ -71,8 +72,6 @@
     }));
   }
 
-
-
 </script>
 
 <div
@@ -80,7 +79,8 @@
   style="background-color: {hexToRgba(
     $bodyBackgroundColor.body.color,
     $bodyBackgroundColor.body.alpha
-  )};"
+  )};
+    {$userWallpaper ? `background-image: url(${$userWallpaper}); background-size: cover; background-position: center;` : ''}"
 >
   <h1 class="tabbar" style="font-size: calc(2em + 0.2vw);">Preview</h1>
   <br />

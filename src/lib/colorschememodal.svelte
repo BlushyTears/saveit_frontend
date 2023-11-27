@@ -28,9 +28,9 @@
       on:mouseup|stopPropagation
       on:keydown|stopPropagation
   >
-      <div class="content-container" style="position: relative; padding: 4rem;">
+      <div class="content-container" style="position: relative;">
         <div>
-            <h3 >Global Colors:</h3>
+            <h3 >Miscellaneous</h3>
             <br />
             <ColorPickerGeneric />
         </div>

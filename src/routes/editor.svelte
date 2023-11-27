@@ -37,6 +37,7 @@
     bodyBackgroundColor,
     showEditBgColorModal,
     showEditLinksPickerModal,
+    userWallpaper,
   } from "../lib/builderstore";
   import { navigate } from "svelte-routing";
   
@@ -81,12 +82,12 @@
     });
 
     // We hardcode a bunch of empty newlines in the quilljs text editor so you're not limited to interacting with text input at
-    // the very top only and can now press anywhere in the modal, rather than having to manually create new lines from the top.
+    // the very top only and can now press anywhere in the editor, rather than having to manually create new lines from the top.
     // Won't need to be removed unless height of modal is changed and we dont want a scrollbar on the y-axis (unlikely)
     inputTextList.update((arr) => [
       ...arr,
       "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
-    ]); // Add a new empty text field
+    ]);
 
     btnCount.update((n) => newNames.length);
     containerCount.update((n) => newNames.length);
@@ -331,6 +332,10 @@
         );
       }
       let jsonString = responseData.data;
+
+      if (responseData.wallpaper_data && responseData.wallpaper_data.length > 0) {
+        userWallpaper.set(`data:image/png;base64,${responseData.wallpaper_data}`);
+      }
 
       if (jsonString.startsWith("b'")) {
         jsonString = jsonString.substring(2, jsonString.length - 1);
@@ -585,12 +590,12 @@
           <br />
         <button style="margin-left: 0.6rem;" class="colorPickerBtn" on:click={() => openColorEditModal()}>
           🎨
-          <span class="tooltip">Global Colors</span>
+          <span class="tooltip">Miscellaneous</span>
         </button>
 
         <button class="colorPickerBtn" on:click={() => openLinksEditModal()}>
           🔗
-          <span class="tooltip">Social Links</span>
+          <span class="tooltip2">Social Links</span>
         </button>
 
         <button class="save-edits-btn" on:click={() => sendStoreDataToServer(true)}
@@ -818,12 +823,13 @@
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.35);
   }
 
-  .colorPickerBtn:hover .tooltip {
+  .colorPickerBtn:hover .tooltip, .colorPickerBtn:hover .tooltip2 {
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
     visibility: visible;
     opacity: 1;
   }
 
+  /* These two tooltips are pure spagetti, only reason it's not modularized is because I don't think there will be more buttons like this */
   .tooltip {
     font-size: 0.7em;
     visibility: hidden;
@@ -834,9 +840,9 @@
     padding: 0.6rem;
     border-radius: 0.3rem;
     z-index: 1;
-    bottom: 125%; /* Position the tooltip above the button */
+    bottom: 125%;
     left: 50%;
-    margin-left: -1.5rem; /* Centers the tooltip */
+    margin-left: -1.5rem;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -844,8 +850,35 @@
   .tooltip::after {
     content: "";
     position: absolute;
-    top: 100%; /* Arrow will appear at the bottom of the tooltip */
-    left: 35%;
+    top: 100%; 
+    left: 20%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  .tooltip2 {
+    font-size: 0.7em;
+    visibility: hidden;
+    position: absolute;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    z-index: 1;
+    bottom: 125%; 
+    left: 50%;
+    margin-left: -1.5rem; 
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip2::after {
+    content: "";
+    position: absolute;
+    top: 100%; 
+    left: 30%;
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
@@ -858,7 +891,7 @@
     border-radius: 1rem;
     color: rgb(240, 240, 240);
     background-color: #d69d32;
-    border: 1px solid rgb(148, 92, 7); /* 2px width, solid style, red color */
+    border: 1px solid rgb(148, 92, 7); 
     margin-bottom: 0.5rem;
     margin-right: 0.5rem;
     margin-top: 3rem;

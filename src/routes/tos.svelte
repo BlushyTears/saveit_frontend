@@ -1,7 +1,9 @@
-<br />
+<body>
+  <br />
 <h3 style="font-size: 2em; color: white;">
   Terms of Service for Favedis
 </h3>
+
 <br />
 
 <div style="max-width: 70%; margin: 0 auto;">
@@ -76,3 +78,21 @@
   <br />
   <br />
 </div>
+</body>
+
+
+
+
+<style>
+  body {
+      height: 90vh;
+      background-color: #2f3e5c;
+      color: white;
+      text-align: center;
+      margin-top: 5rem;
+  }
+
+  h1, h2, a {
+      color: white;
+  }
+</style>

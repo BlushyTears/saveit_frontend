@@ -16,6 +16,7 @@
     const selected = $buttonColors[index][subIndex][nameType.toLowerCase()];
     if (selected && selected.color && selected.alpha != null && colorDisplay) {
       colorDisplay.style.backgroundColor = `rgba(${parseInt(selected.color.substring(1, 3), 16)}, ${parseInt(selected.color.substring(3, 5), 16)}, ${parseInt(selected.color.substring(5, 7), 16)}, ${selected.alpha})`;
+      hiddenInput.value = selected.color; // Set color input value
     }
   }
 

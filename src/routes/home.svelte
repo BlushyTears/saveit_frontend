@@ -15,7 +15,6 @@
   import { fade, fly } from 'svelte/transition';
   import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
-  import { setImage } from "../lib/builderstore";
 
   let showSuccessBar = false;
 
@@ -67,7 +66,6 @@
 
     if (isAuthenticated) {
       // The user is already authenticated, no need to proceed with Google OAuth
-      fetchData();
     } else if (code) {
       // User has a Google auth code, proceed with google login
       fetch(backend_url + "/api/googleauth/", {
@@ -150,61 +148,7 @@
   });
 
   let loading = false;
-  // Get the user's name upon login here, since we want to make sure the store $linkname has a value once they nav to /mypage
-  // (Normally kinda random to do something like this, hence the note)
-  export async function fetchData() {
-    const token = localStorage.getItem("token");
-    const csrfToken = getCookie(); // Ensure you have a function to get the CSRF token
-    if (token) {
-      loading = true;
-      try {
-        const response = await fetch(backend_url + "/api/getname/", {
-          method: "POST",
-          headers: {
-            "X-CSRFToken": csrfToken,
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
-        });
-
-        if (response.status === 401) {
-          showLoggedOutNotification();
-          localStorage.removeItem("token");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-          throw new Error("Invalid or expired token. Token has been removed.");
-        }
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch data: ${response.status} ${response.statusText}`
-          );
-        }
-
-        const data = await response.json();
-
-        // Update the name store
-        linkname.set(data.first_name);
-
-        // Update the image store if image data is present
-        if (data.image_data && data.image_data.length > 0) {
-          userImage.set(`data:image/png;base64,${data.image_data}`);
-        }
-
-        // Update the email verified store
-        isEmailVerified.set(data.email_verified);
-      } catch (error) {
-        console.error("An error occurred while fetching data:", error);
-      } finally {
-        loading = false;
-      }
-    } else {
-      // Handle scenario when there is no token
-      loading = false;
-    }
-  }
-
+  
   // Animations section 2
   let originalHeadline = "Minutes Away from Getting Started.";
   let newHeadline = "Build your own customized creator page";
@@ -395,7 +339,7 @@
         <h1
           style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
         >
-          Example Layouts
+          Examples
         </h1>
       </div>
       <br />
@@ -436,6 +380,7 @@
     </section>
 
     <section class="footer">
+      <br />
       <div>
         <button class="hrefBtn" on:click={navigateToPrivacyPolicy}>Privacy Policy</button>
       </div>
@@ -446,19 +391,6 @@
     </section>
   </main>
 {/if}
-
-<!-- 
-Existing color 1: #212a3e
-Existing color 2: #394867
-
-Lighter blue: #567aa5
-Even Lighter blue: #7a9dcb
-Complementary warm color: #A57F60
-Soft gray: #A9A9A9
-Off-white: #F2F2F2
-Darker gray: #666666
-Contrast color (green): #6AB187
-Accent color (coral): #FF6B6B -->
 
 <style>
   @font-face {
@@ -747,10 +679,15 @@ Accent color (coral): #FF6B6B -->
   }
 
   .hrefBtn {
+    color: white;
     font-size: 1.2em;
     border: none;
     background: none;
     cursor: pointer;
+  }
+
+  .hrefBtn:hover {
+    color: rgb(201, 201, 201);
   }
 
   /* FOOTER END */

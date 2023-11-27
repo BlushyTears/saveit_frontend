@@ -17,12 +17,18 @@
         <p>We collect and store the following information:</p>
         <br>
         <ul>
-            User Account Information: When you create an account with us, we collect your email address and password for login purposes.
+            User Account Information: When you create an account with us, we collect your email address and password (hashed) for login purposes.
+        </ul>
+        <ul>
+            Vercel Analytics Tracking: In order to improve the functionality and user experience of our website, we use Vercel Analytics.
+            This tool helps us understand how our website is being used by tracking user interactions and behaviors on the site.
+            The data collected through Vercel Analytics includes, but is not limited to, page views, click patterns, and the time spent on various sections of our site.
+            This information is collected anonymously and is used solely for the purpose of enhancing our website and tailoring it to better meet the needs of our users.
         </ul>
     </section>
 
     <section>
-        <h2>2. How We Use Your Information</h2>
+        <h2>2. How We Use Your personal Information</h2>
         <br>
         <p>We use the information we collect solely for the following purposes:</p>
         <ul>

@@ -28,6 +28,7 @@
     titleColor,
     bodyBackgroundColor,
     userImage,
+    userWallpaper,
   } from "../lib/builderstore";
 
   const token = localStorage.getItem("token");
@@ -98,15 +99,46 @@
       // Extract the last part of the URL (after the last '/')
       const pathParts = window.location.pathname.split("/");
       const firstNameFromURL = pathParts[pathParts.length - 1];
+      const csrfToken = getCookie("csrftoken");
+      let isLoggedIn = localStorage.getItem("token") !== null;
 
       if (firstNameFromURL == "genpage") {
+        if(isLoggedIn) {
+          try {
+            const response = await fetch(backend_url + "/api/getname/", {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": csrfToken,
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`,
+            },
+          });
+
+          const data = await response.json();
+
+          if (localStorage.getItem("linkname") != data.first_name) {
+            localStorage.setItem("linkname", data.first_name);
+          }
+
+          if(data.first_name != null) {
+            navigate('/' + data.first_name);
+          }
+          else {
+            navigate('/' + localStorage.getItem("linkname"));
+          }
+          window.location.reload();
+
+          } catch (error) {
+            console.error("An error occurred while fetching data:", error);
+          } 
+        }
+        
         isGenpage = true;
       }
 
       console.log("foundPage status ", foundPage);
 
       console.log("Name from URL:", firstNameFromURL);
-      const csrfToken = getCookie("csrftoken");
 
       const response = await fetch(backend_url + "/api/getdatapublic/", {
         method: "POST",
@@ -152,6 +184,7 @@
             localStorage.setItem(storeName, JSON.stringify(storeValue));
           }
         });
+
         foundPage = true;
 
         // Initialize stores with local storage or fetched data
@@ -161,7 +194,10 @@
       // Handle image data
       if (responseData.image_data && responseData.image_data.length > 0) {
         userImage.set(`data:image/png;base64,${responseData.image_data}`);
-        console.log("Image URL fetched:", $userImage); // Directly log the store's value
+      }
+
+      if (responseData.wallpaper_data && responseData.wallpaper_data.length > 0) {
+        userWallpaper.set(`data:image/png;base64,${responseData.wallpaper_data}`);
       }
 
       // Miscellaneous tasks, like dispatching events
@@ -171,7 +207,7 @@
     } catch (error) {
       foundPage = false;
       console.error(
-        "There has been a problem with your fetch operation::",
+        "There has been a problem with your fetch operation:",
         error
       );
     }
@@ -221,6 +257,7 @@
 
 </script>
 
+
 {#if !isGenpage}
   {#if foundPage}
     <div
@@ -228,7 +265,8 @@
       style="min-height: 100vh; background-color: {hexToRgba(
         $bodyBackgroundColor.body.color,
         $bodyBackgroundColor.body.alpha
-      )};"
+      )};
+      {$userWallpaper ? `background-image: url(${$userWallpaper}); background-size: cover; background-position: center;` : ''}"
     >
 
     {#if token}
@@ -347,9 +385,6 @@
         </div>
       {/each}
 
-      <div class="footer-div" />
-      <br />
-
       <!-- ... -->
     </div>
 
@@ -362,13 +397,7 @@
         />
       </div>
     {/each}
-    <div
-      class="footer"
-      style="background-color: {hexToRgba(
-        $bodyBackgroundColor.body.color,
-        $bodyBackgroundColor.body.alpha
-      )};"
-    />
+
   {:else}
     <div
       style="background-color: {hexToRgba(

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { bodyBackgroundColor, titleColor } from "./builderstore";
+  import EditWallPaperModal from "./editwallpapermodal.svelte";
 
   let bodyColorDisplay: HTMLElement;
   let titleColorDisplay: HTMLElement;
@@ -10,6 +11,7 @@
     const selected = $bodyBackgroundColor.body;
     if (selected && selected.color && bodyColorDisplay) {
       bodyColorDisplay.style.backgroundColor = `rgba(${parseInt(selected.color.substring(1, 3), 16)}, ${parseInt(selected.color.substring(3, 5), 16)}, ${parseInt(selected.color.substring(5, 7), 16)}, ${selected.alpha})`;
+      hiddenBodyInput.value = selected.color; // Set color input value
     }
   }
 
@@ -17,6 +19,7 @@
     const selected = $titleColor.body;
     if (selected && selected.color && titleColorDisplay) {
       titleColorDisplay.style.backgroundColor = `rgba(${parseInt(selected.color.substring(1, 3), 16)}, ${parseInt(selected.color.substring(3, 5), 16)}, ${parseInt(selected.color.substring(5, 7), 16)}, ${selected.alpha})`;
+      hiddenTitleInput.value = selected.color; // Set color input value
     }
   }
 
@@ -47,7 +50,6 @@
       };
     });
   }
-
 
   function handleBodyAlphaChange(e: Event) {
     const input = e.target as HTMLInputElement;
@@ -108,6 +110,7 @@
   <input bind:this={hiddenBodyInput} type="color" class="colorPicker hidden" on:input={handleBodyBgChange} />
 </div>
 
+<br>
 <!-- Title Color Picker -->
 <div class="color-container">
   <div class="flex-container"
@@ -122,11 +125,14 @@
   <input bind:this={hiddenTitleInput} type="color" class="colorPicker hidden" on:input={handleTitleChange} />
 </div>
 
+<br>
+
+<EditWallPaperModal />
+
 <style>
 .color-container {
   display: flex;
   align-items: center;
-  float: right;
   gap: 1rem;
 }
 

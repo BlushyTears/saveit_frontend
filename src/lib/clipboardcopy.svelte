@@ -2,9 +2,11 @@
   import CopyIcon from "../assets/copyicon.png";
   import Notification from "./notification.svelte";
   import { linkname } from "./builderstore";
+
+  let linkName = localStorage.getItem("linkname");
   
   const maxLinkLength = 20; // Maximum length of the displayed link
-  let fullLink = `favedis.com/${$linkname}`;
+  let fullLink = `favedis.com/${linkName}`;
   let truncatedLink = fullLink;
 
   // Check if the link needs truncation

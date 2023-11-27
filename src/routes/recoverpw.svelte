@@ -1,12 +1,31 @@
 <script>
-  import { Link } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
   import { backend_url } from "../lib/urls";
 
+  import SuccessNotif from "../lib/notification.svelte";
+  import FailedNotif from "../lib/notification.svelte";
+  import Spinner from "../lib/loadspinner.svelte";
+
   let email = "";
+  let showSuccessBar = false;
+  let showFailedBar = false;
+  let isLoading = false;
+    
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+  
+  function showFailedNotification() {
+    showFailedBar = true;
+  }
+
+  function navigateToLogin() {
+    navigate('/login');
+  }
 
   async function submitEmail(event) {
     event.preventDefault(); // prevent form from doing a default submission (page refresh)
-
+    isLoading = true;
     console.log('email: ', email);
     const response = await fetch(backend_url + "/api/passwordresetrequest/", {
       method: "POST",
@@ -16,14 +35,17 @@
       body: JSON.stringify({ email }),
     });
     if (response.ok) {
-      // Handle success, maybe close modal and clear the form
-      email = ""; // Clear email after successful submission
+      showSuccessNotification();
     } else {
-      // Handle error, maybe with an alert or a message in the UI
+      showFailedNotification();
       alert("There was an error submitting your email.");
     }
+    isLoading = false;
   }
 </script>
+
+<SuccessNotif bind:showBar={showSuccessBar} message="Password recovery sent" color="#2dc23c" textShadow="#00ff48" />
+<FailedNotif bind:showBar={showFailedBar} message="Error" color="#9e9e9e" textShadow="#828282" />
 
 <div class="recover-container">
   <p class="info-text" style="color: white;">
@@ -39,10 +61,13 @@
       required
     />
     <button type="submit">Send Reset Link</button>
+    {#if isLoading}
+    <div class='spinner-class'><Spinner /></div>
+  {/if}
   </form>
 
   <div class="back-to-login">
-    <Link to="/login">Back to Login</Link>
+    <button on:click={navigateToLogin}>Back to Login</button>
   </div>
 </div>
 
@@ -72,6 +97,10 @@
     max-width: 300px;
   }
 
+  .spinner-class {
+    margin: 0 auto;
+  }
+
   .recover-form input,
   .recover-form button {
     padding: 0.8rem;
@@ -92,15 +121,25 @@
   }
 
   .back-to-login {
+    color: white;
     margin-top: 1rem;
   }
 
-  .back-to-login a {
-    color: #4285f4;
-    text-decoration: none;
+  .back-to-login button {
+    text-decoration: underline;
+    font-size: 1.2em;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: rgb(177, 177, 177);
   }
 
-  .back-to-login a:hover {
-    text-decoration: underline;
+  .back-to-login button:hover {
+    color: rgb(233, 233, 233);
   }
+
+  p {
+    color: white;
+  }
+
 </style>
