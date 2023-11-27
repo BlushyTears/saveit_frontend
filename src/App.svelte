@@ -56,7 +56,7 @@
     if (token) {
       loading = true;
       try {
-        const response = await fetch(backend_url + "/api/getname/", {
+        const response = await fetch(backend_url + "/api/getuserdetails/", {
           method: "POST",
           headers: {
             "X-CSRFToken": csrfToken,
