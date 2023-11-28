@@ -14,6 +14,8 @@
   import Previewbuilder from "../lib/previewbuilder.svelte";
   import ColorSchemeModal from "../lib/colorschememodal.svelte";
   import LinksPickerModal from "../lib/editlinkspickermodal.svelte";
+  import LoadingSpinner from "../lib/loadspinner.svelte";
+
 
   import { getCookie } from "../lib/helpers";
 
@@ -42,8 +44,54 @@
   } from "../lib/builderstore";
   import { navigate } from "svelte-routing";
   
+  // Mischelaneous
   let hoveredIndex = null;
+  let loading = false;
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+  let showLoggedOutNotifBar = false;
 
+  function showSuccessNotification() {
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification() {
+    ShowFailedBar = true;
+  }
+
+  function showLoggedOutNotification() {
+    showLoggedOutNotifBar = true;
+  }
+
+  function openColorEditModal() {
+    showEditBgColorModal.set(true);
+  }
+
+  function openLinksEditModal() {
+    showEditLinksPickerModal.set(true);
+  }
+
+  let draggedIndex = null; // New variable
+
+  function onDragStart(event, index) {
+    event.dataTransfer.setData("text/plain", index.toString());
+    draggedIndex = index; // Set the dragged index
+  }
+
+  function onDrop(event, dropIndex) {
+    const dragIndex = Number(event.dataTransfer.getData("text/plain"));
+    if (dragIndex !== dropIndex) {
+      swapButtons(dragIndex, dropIndex);
+    }
+    hoveredIndex = null; // Reset the hovered index after the drop
+  }
+
+  function allowDrop(event, index) {
+    event.preventDefault();
+    hoveredIndex = index; // Set the hovered index
+  }
+
+  // Core stuff starts here
   function addBtn() {
     savedChanges.set(false);
     const newNames = [...$buttonNames, `New recipe`];
@@ -216,26 +264,6 @@
     });
   }
 
-  let draggedIndex = null; // New variable
-
-  function onDragStart(event, index) {
-    event.dataTransfer.setData("text/plain", index.toString());
-    draggedIndex = index; // Set the dragged index
-  }
-
-  function onDrop(event, dropIndex) {
-    const dragIndex = Number(event.dataTransfer.getData("text/plain"));
-    if (dragIndex !== dropIndex) {
-      swapButtons(dragIndex, dropIndex);
-    }
-    hoveredIndex = null; // Reset the hovered index after the drop
-  }
-
-  function allowDrop(event, index) {
-    event.preventDefault();
-    hoveredIndex = index; // Set the hovered index
-  }
-
   function swapButtons(dragIndex, dropIndex) {
     savedChanges.set(false);
 
@@ -327,12 +355,11 @@
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {
-        sendStoreDataToServer(false);
         throw new Error(
           "Expected responseData.data to be a string representing a Python dictionary."
         );
       }
-      
+
       let jsonString = responseData.data;
       userImage.set(responseData.profile_image_url);
       userWallpaper.set(responseData.wallpaper_image_url);
@@ -368,7 +395,7 @@
     }
   });
 
-  async function sendStoreDataToServer(displayNotif) {
+  async function sendStoreDataToServer() {
     savedChanges.set(true);
 
     // Get the current values from the stores
@@ -414,6 +441,7 @@
     const token = localStorage.getItem("token");
 
     try {
+      loading = true;
       // Make a POST request to send the data to the backend
       const response = await fetch(backend_url + "/api/postdata/", {
         method: "POST",
@@ -432,16 +460,12 @@
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const responseData = await response.json();
-      // We run publish first time user goes to editor.svelte to create .json file
-      // But we don't want to show the notification they didn't press the Publish button
-      if (displayNotif){
-        showSuccessNotification();
-      }
+      showSuccessNotification();
     } catch (error) {
       console.error("Failed to send data:", error);
       showFailedNotification();
     }
+    loading = false;
   }
 
   $: {
@@ -463,30 +487,6 @@
     $showEditLinksPickerModal;
   }
 
-  // Mischelaneous stuff here
-  let showSuccessBar = false;
-  let ShowFailedBar = false;
-  let showLoggedOutNotifBar = false;
-
-  function showSuccessNotification() {
-    showSuccessBar = true;
-  }
-
-  function showFailedNotification() {
-    ShowFailedBar = true;
-  }
-
-  function showLoggedOutNotification() {
-    showLoggedOutNotifBar = true;
-  }
-
-  function openColorEditModal() {
-    showEditBgColorModal.set(true);
-  }
-
-  function openLinksEditModal() {
-    showEditLinksPickerModal.set(true);
-  }
 </script>
 
 <svelte:head>
@@ -538,7 +538,6 @@
             </h1>
           </div>
           
-
           {#each $buttonNames as name, index (index)}
             <div
               class="btn-container {hoveredIndex === index
@@ -592,19 +591,21 @@
           🎨
           <span class="tooltip">Miscellaneous</span>
         </button>
+      
 
         <button class="colorPickerBtn" on:click={() => openLinksEditModal()}>
           🔗
           <span class="tooltip2">Social Links</span>
         </button>
 
-        <button class="save-edits-btn" on:click={() => sendStoreDataToServer(true)}
-          >Publish</button
-        >
+        <button class="save-edits-btn {loading ? 'loading-border' : ''}" on:click={() => sendStoreDataToServer()}>
+          Publish
+      </button>
         <br />
         <br />
       </div>
       <br />
+      
 
       <div>
         <ColorSchemeModal />
@@ -903,6 +904,20 @@
     transition: 0.1s ease-in-out;
     background-color: #ce8c13;
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Animate border for save-edits-btn to indicate loading */
+  @keyframes loadingBorder {
+    0%   { border-color: rgb(172, 172, 172); }
+    25%  { border-color: rgb(100, 100, 100); }
+    50%  { border-color: rgb(63, 63, 63); }
+    75%  { border-color: rgb(44, 44, 44); }
+    100% { border-color: rgb(172, 172, 172); }
+  }
+
+  .loading-border {
+      border: 3px solid red; 
+      animation: loadingBorder 2s linear infinite;
   }
 
   /* The preview/output body that shows end result starts here */

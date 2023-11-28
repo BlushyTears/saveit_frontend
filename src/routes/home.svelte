@@ -9,6 +9,7 @@
   import Carusel from "../lib/carusel.svelte";
   import LoadingSpinner from "../lib/loadspinner.svelte";
   import SuccessNotif from "../lib/notification.svelte";
+  import FailedNotif from "../lib/notification.svelte";
   import LoggedOutNotif from "../lib/notification.svelte";
   import { savedChanges } from "../lib/builderstore";
   import { backend_url } from "../lib/urls";
@@ -16,13 +17,17 @@
   import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
 
+  let showLoggedOutNotifBar = false;
   let showSuccessBar = false;
+  let showFailedBar = false;
 
   function showSuccessNotification() {
     showSuccessBar = true;
   }
 
-  let showLoggedOutNotifBar = false;
+  function showFailedNotification() {
+    showFailedBar = true;
+  }
 
   function showLoggedOutNotification() {
     showLoggedOutNotifBar = true;
@@ -167,6 +172,7 @@
       encodeURIComponent(token);
 
     if (token) {
+      loading = true;
       try {
         const response = await fetch(verifyUrl, {
           method: "GET",
@@ -185,13 +191,11 @@
           : null;
 
         if (response.ok) {
-          // Assuming the API returns a success message and email verification status
-          console.log(result.message); // Email verified successfully or some message
-          isEmailVerified.set(true); // Update the writable store value
+          showSuccessNotification();
+          isEmailVerified.set(true); 
         } else {
-          // Handle errors, such as invalid or expired token
-          console.error(result.detail);
-          isEmailVerified.set(false); // Set to false or handle as appropriate
+          isEmailVerified.set(false); 
+          showFailedNotification();
         }
       } catch (error) {
         console.error("Error verifying email:", error);
@@ -274,6 +278,13 @@
   message="Login succeeded!"
   color="#2dc23c"
   textShadow="#00ff48"
+/>
+
+<FailedNotif
+  bind:showBar={showFailedBar}
+  message="Error"
+  color="#c22d2d"
+  textShadow="#ff0037"
 />
 
 <LoggedOutNotif
