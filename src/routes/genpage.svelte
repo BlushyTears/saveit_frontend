@@ -407,7 +407,7 @@
       class="center"
     >
       <br />
-      <h1>
+      <h1 style="color: black;">
         {outputMessageH1}
       </h1>
     </div>
