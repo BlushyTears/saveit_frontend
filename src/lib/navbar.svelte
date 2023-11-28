@@ -18,7 +18,7 @@
   import { onMount } from "svelte";
   import { backend_url } from "../lib/urls";
 
-  import FavedisLogo from '../assets/favedis.png';
+  import FavedisLogo from "../assets/favedis.png";
 
   import { linkname, savedChanges } from "../lib/builderstore";
 
@@ -46,54 +46,54 @@
   const token = localStorage.getItem("token");
 
   async function logOutClick(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  // Display a confirmation prompt to the user
-  const shouldLogOut = window.confirm("Are you sure you want to log out?");
-  
-  if (!shouldLogOut) {
-    // The user clicked Cancel, so do not proceed with logout
-    return;
-  }
+    // Display a confirmation prompt to the user
+    const shouldLogOut = window.confirm("Are you sure you want to log out?");
 
-  isLoading = true;
+    if (!shouldLogOut) {
+      // The user clicked Cancel, so do not proceed with logout
+      return;
+    }
 
-  const csrfToken = getCookie("csrftoken");
+    isLoading = true;
 
-  try {
-    const response = await fetch(backend_url + "/api/logout/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
-        Authorization: `Token ${token}`,
-      },
-    });
+    const csrfToken = getCookie("csrftoken");
 
-    if (response.ok) {
-      const data = await response.json();
-      showSuccessNotification(); // If you're showing a notification
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-      navigate("/");
-    } else {
-      const errorData = await response.json();
+    try {
+      const response = await fetch(backend_url + "/api/logout/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        showSuccessNotification(); // If you're showing a notification
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+        navigate("/");
+      } else {
+        const errorData = await response.json();
+        showFailedNotification(); // If you're showing a notification
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500);
+        console.error("Logout failed on server:", errorData);
+      }
+    } catch (error) {
       showFailedNotification(); // If you're showing a notification
       setTimeout(() => {
         window.location.reload();
       }, 3500);
-      console.error("Logout failed on server:", errorData);
+      console.error("Other error during logout:", error);
     }
-  } catch (error) {
-    showFailedNotification(); // If you're showing a notification
-    setTimeout(() => {
-      window.location.reload();
-    }, 3500);
-    console.error("Other error during logout:", error);
+    localStorage.removeItem("token"); // Remove the token from local storage
   }
-  localStorage.removeItem("token"); // Remove the token from local storage
-}
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -102,62 +102,60 @@
   }
 
   async function handleMyPageNavigation(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  // Try to retrieve 'linkname' from localStorage, default to '/genpage' if not found
-  const storedLinkName = localStorage.getItem("linkname");
-  const targetPath = storedLinkName || "/genpage";
+    // Try to retrieve 'linkname' from localStorage, default to '/genpage' if not found
+    const storedLinkName = localStorage.getItem("linkname");
+    const targetPath = storedLinkName || "/genpage";
 
-  // Check if there are unsaved changes
-  if (!$savedChanges) {
-    const userConfirmation = window.confirm(
-      "You have unsaved genpage changes. Are you sure you want to leave?"
-    );
-    if (!userConfirmation) {
-      return;
+    // Check if there are unsaved changes
+    if (!$savedChanges) {
+      const userConfirmation = window.confirm(
+        "You have unsaved genpage changes. Are you sure you want to leave?"
+      );
+      if (!userConfirmation) {
+        return;
+      }
+    }
+
+    try {
+      handleNavigation(targetPath);
+      window.location.reload();
+    } catch (err) {
+      console.error("Error fetching the path:", err);
     }
   }
-
-  try {
-    handleNavigation(targetPath);
-    window.location.reload();
-  } catch (err) {
-    console.error("Error fetching the path:", err);
-  }
-}
-
 
   // Hamburger menu logic
   let showMenu = false;
   let menuElement; // Reference to the menu DOM element
 
   function handleNavigation(path) {
-  // Check if the current path is not one of the specified routes where we want to warn the user
-  const shouldWarnOnExit = ["/personal", "/editor", '/'].includes(path);
+    // Check if the current path is not one of the specified routes where we want to warn the user
+    const shouldWarnOnExit = ["/personal", "/editor", "/"].includes(path);
 
-  // Only trigger the unsaved changes warning if we're on a path that should warn
-  if (shouldWarnOnExit && !$savedChanges) {
-    const userConfirmation = window.confirm(
-      "You have unsaved changes. Are you sure you want to leave?"
-    );
-    if (!userConfirmation) {
-      return; // Prevent navigation if the user cancels
+    // Only trigger the unsaved changes warning if we're on a path that should warn
+    if (shouldWarnOnExit && !$savedChanges) {
+      const userConfirmation = window.confirm(
+        "You have unsaved changes. Are you sure you want to leave?"
+      );
+      if (!userConfirmation) {
+        return; // Prevent navigation if the user cancels
+      }
     }
+
+    // Your existing settings update logic
+    if (path === "/mypage") {
+      currentSetting.set("mypage");
+    } else if (path === "/oauth") {
+      currentSetting.set("oauth");
+    } else {
+      currentSetting.set("navbar");
+    }
+
+    // Proceed with the navigation
+    navigate(path);
   }
-
-  // Your existing settings update logic
-  if (path === "/mypage") {
-    currentSetting.set("mypage");
-  } else if (path === "/oauth") {
-    currentSetting.set("oauth");
-  } else {
-    currentSetting.set("navbar");
-  }
-
-  // Proceed with the navigation
-  navigate(path);
-}
-
 
   onMount(() => {
     let currentUrl = window.location.pathname;
@@ -165,38 +163,32 @@
     // Without these checkers, the user is navigated to /home even if url ends with /personal for instance
 
     if (currentUrl.startsWith("/resetpw/")) {
-    const segments = currentUrl.split('/');
-    if (segments.length >= 4) { // Check if the URL has the required segments
-      const userId = segments[2];
-      const token = segments[3];
-      navigate(`/resetpw/${userId}/${token}`); // Navigate using the full dynamic path
+      const segments = currentUrl.split("/");
+      if (segments.length >= 4) {
+        // Check if the URL has the required segments
+        const userId = segments[2];
+        const token = segments[3];
+        navigate(`/resetpw/${userId}/${token}`); // Navigate using the full dynamic path
+      }
     }
-  }
 
     if (currentUrl.endsWith("/editor")) {
       navigate("/editor");
-    } 
-    else if (currentUrl.endsWith("/personal")) {
+    } else if (currentUrl.endsWith("/personal")) {
       navigate("/personal");
-    } 
-    else if (currentUrl.endsWith("/recoverusername")) {
+    } else if (currentUrl.endsWith("/recoverusername")) {
       navigate("/recoverusername");
-    } 
-    else if (currentUrl.endsWith("/recoverpassword")) {
+    } else if (currentUrl.endsWith("/recoverpassword")) {
       navigate("/recoverpassword");
-    } 
-    else if (currentUrl.endsWith("/login")) {
+    } else if (currentUrl.endsWith("/login")) {
       navigate("/login");
-    } 
-    else if (currentUrl.endsWith("/register")) {
+    } else if (currentUrl.endsWith("/register")) {
       navigate("/register");
-    } 
-    else if (currentUrl.endsWith("/tos")) {
+    } else if (currentUrl.endsWith("/tos")) {
       navigate("/tos");
-    }     
-    else if (currentUrl.endsWith("/policy")) {
+    } else if (currentUrl.endsWith("/policy")) {
       navigate("/policy");
-    } 
+    }
 
     document.addEventListener("navigate", handleNavigation);
 
@@ -208,7 +200,15 @@
 
     // When pressing outside of hamburger menu this code closes it
     document.addEventListener("click", closeMenuOnClickOutside);
-    
+    document.addEventListener("set-color", setColor);
+    window.addEventListener("set-color", setColor);
+
+    return () => {
+      document.removeEventListener("navigate", handleNavigation);
+      document.removeEventListener("click", closeMenuOnClickOutside);
+      document.removeEventListener("set-color", setColor);
+      window.removeEventListener("set-color", setColor);
+    };
   });
 
   function toggleMenu(event) {
@@ -224,8 +224,6 @@
       navbarBgColor = event.detail;
     }
   }
-  document.addEventListener("set-color", setColor);
-  window.addEventListener("set-color", setColor);
 </script>
 
 <SuccessNotif
@@ -256,8 +254,8 @@
             role="button"
             class="nav-link"
           >
-          <img src={FavedisLogo} alt="FaveDis Logo" class="main-logo" />
-        </a>
+            <img src={FavedisLogo} alt="FaveDis Logo" class="main-logo" />
+          </a>
 
           <button
             class="hamburger-menu"
@@ -344,7 +342,7 @@
                 Register
               </a>
 
-                            <!-- svelte-ignore a11y-missing-attribute -->
+              <!-- svelte-ignore a11y-missing-attribute -->
               <a
                 on:click|preventDefault={() => handleNavigation("/login")}
                 on:keydown={(e) => {
@@ -400,7 +398,7 @@
 
   .main-logo {
     margin-top: 0.5rem;
-    width: 9rem;  /* Adjust this value to your preference */
+    width: 9rem; /* Adjust this value to your preference */
     height: auto;
     vertical-align: middle;
   }

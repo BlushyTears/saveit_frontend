@@ -101,7 +101,8 @@
       reader.onload = function (e) {
         imgSrc = e.target.result;
         // This next line will now only run after onMount ensuring the target element is available.
-        if (showImageToCrop) { // Ensure the image-to-crop area is meant to be shown.
+        if (showImageToCrop) {
+          // Ensure the image-to-crop area is meant to be shown.
           initializeCropper(imgSrc);
         }
       };
@@ -115,71 +116,72 @@
   const MAX_WIDTH = 500; // Set your maximum width
   const MAX_HEIGHT = 500; // Set your maximum height
 
-function initializeCropper(imageData: string) {
-  const imageElement = new Image();
-  imageElement.src = imageData;
+  function initializeCropper(imageData: string) {
+    const imageElement = new Image();
+    imageElement.src = imageData;
 
-  imageElement.onload = () => {
-    let width = imageElement.width;
-    let height = imageElement.height;
-    let isImageScaled = false; // Flag to check if scaling is required
+    imageElement.onload = () => {
+      let width = imageElement.width;
+      let height = imageElement.height;
+      let isImageScaled = false; // Flag to check if scaling is required
 
-    // Create a canvas to perform the image resizing
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+      // Create a canvas to perform the image resizing
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-    // Check if the image size exceeds the maximum limits
-    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-      // Calculate the scale to fit the image within max dimensions
-      const scale = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
-      width *= scale;
-      height *= scale;
-      isImageScaled = true; // Set the flag as true since scaling is done
-    }
-
-    // Apply minimum dimension constraints
-    width = Math.max(MIN_WIDTH, width);
-    height = Math.max(MIN_HEIGHT, height);
-
-    // Set the canvas dimensions to the new dimensions
-    canvas.width = width;
-    canvas.height = height;
-
-    // Draw the image to the canvas, scaled as needed
-    if (isImageScaled) {
-      // Only scale the image if needed
-      ctx.drawImage(imageElement, 0, 0, width, height);
-    } else {
-      // If no scaling is required, draw the image as it is
-      ctx.drawImage(imageElement, 0, 0);
-    }
-
-    // Convert the canvas back to an image data URL
-    let scaledImageData = canvas.toDataURL();
-
-    // Set the scaled image data as the source for the image to crop
-    const targetElement = document.querySelector('.image-to-crop') as HTMLImageElement;
-    if (targetElement) {
-      targetElement.src = scaledImageData;
-
-      if (cropper) {
-        cropper.destroy();
+      // Check if the image size exceeds the maximum limits
+      if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+        // Calculate the scale to fit the image within max dimensions
+        const scale = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+        width *= scale;
+        height *= scale;
+        isImageScaled = true; // Set the flag as true since scaling is done
       }
 
-      // Initialize Cropper with the new scaled image data
-      cropper = new Cropper(targetElement, {
-        aspectRatio: 1,
-        viewMode: 1,
-        minCropBoxWidth: MIN_WIDTH,
-        minCropBoxHeight: MIN_HEIGHT,
-      });
-    }
-  };
-}
+      // Apply minimum dimension constraints
+      width = Math.max(MIN_WIDTH, width);
+      height = Math.max(MIN_HEIGHT, height);
 
+      // Set the canvas dimensions to the new dimensions
+      canvas.width = width;
+      canvas.height = height;
+
+      // Draw the image to the canvas, scaled as needed
+      if (isImageScaled) {
+        // Only scale the image if needed
+        ctx.drawImage(imageElement, 0, 0, width, height);
+      } else {
+        // If no scaling is required, draw the image as it is
+        ctx.drawImage(imageElement, 0, 0);
+      }
+
+      // Convert the canvas back to an image data URL
+      let scaledImageData = canvas.toDataURL();
+
+      // Set the scaled image data as the source for the image to crop
+      const targetElement = document.querySelector(
+        ".image-to-crop"
+      ) as HTMLImageElement;
+      if (targetElement) {
+        targetElement.src = scaledImageData;
+
+        if (cropper) {
+          cropper.destroy();
+        }
+
+        // Initialize Cropper with the new scaled image data
+        cropper = new Cropper(targetElement, {
+          aspectRatio: 1,
+          viewMode: 1,
+          minCropBoxWidth: MIN_WIDTH,
+          minCropBoxHeight: MIN_HEIGHT,
+        });
+      }
+    };
+  }
 
   function uploadImageToPreview() {
-    console.log('loading cropper preview: ', Cropper);
+    console.log("loading cropper preview: ", Cropper);
     if (cropper) {
       const modifiedImageData = cropper.getCroppedCanvas().toDataURL();
 
@@ -214,15 +216,14 @@ function initializeCropper(imageData: string) {
     }
   }
 
-  console.log('loading cropper: ', Cropper); // Should log the Cropper function if loaded properly
+  console.log("loading cropper: ", Cropper); // Should log the Cropper function if loaded properly
 
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
   let imgElement;
 
   onMount(() => {
-    imgElement = document.querySelector('.image-to-crop'); 
+    imgElement = document.querySelector(".image-to-crop");
   });
-
 </script>
 
 <SuccessNotif
@@ -240,8 +241,13 @@ function initializeCropper(imageData: string) {
 />
 
 <svelte:head>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css" rel="stylesheet">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js"
+  ></script>
 </svelte:head>
 
 <!-- Button to open the modal -->
@@ -267,9 +273,9 @@ function initializeCropper(imageData: string) {
         <label for="fileInput" class="custom-upload-btn">Choose File</label>
 
         {#if isLoading}
-        <div class='spinner-class'>
-          <Spinner />
-        </div>
+          <div class="spinner-class">
+            <Spinner />
+          </div>
         {/if}
 
         {#if showImageToCrop}
@@ -297,20 +303,21 @@ function initializeCropper(imageData: string) {
           </div>
         {/if}
       </div>
-
     </div>
   </div>
 {/if}
 
 <style>
-
-.spinner-class {
+  .spinner-class {
     position: absolute;
     top: 38%;
     left: 50%;
-    transform: translate(-50%, -50%); /* This ensures the center of the spinner aligns with the center of the modal */
+    transform: translate(
+      -50%,
+      -50%
+    ); /* This ensures the center of the spinner aligns with the center of the modal */
     z-index: 1; /* Optional, only if you want the spinner to appear above other modal content */
-}
+  }
 
   .modal-overlay {
     position: fixed;
@@ -397,7 +404,7 @@ function initializeCropper(imageData: string) {
     border-radius: 0.5rem;
   }
 
-  button{
+  button {
     font-size: 1em;
     cursor: pointer;
     background-color: #293255;
@@ -408,7 +415,7 @@ function initializeCropper(imageData: string) {
     transition: background-color 0.2s;
   }
 
-  button:hover{
+  button:hover {
     background-color: #434e74;
   }
 

@@ -38,6 +38,7 @@
     showEditBgColorModal,
     showEditLinksPickerModal,
     userWallpaper,
+    userImage,
   } from "../lib/builderstore";
   import { navigate } from "svelte-routing";
   
@@ -331,11 +332,10 @@
           "Expected responseData.data to be a string representing a Python dictionary."
         );
       }
+      
       let jsonString = responseData.data;
-
-      if (responseData.wallpaper_data && responseData.wallpaper_data.length > 0) {
-        userWallpaper.set(`data:image/png;base64,${responseData.wallpaper_data}`);
-      }
+      userImage.set(responseData.profile_image_url);
+      userWallpaper.set(responseData.wallpaper_image_url);
 
       if (jsonString.startsWith("b'")) {
         jsonString = jsonString.substring(2, jsonString.length - 1);

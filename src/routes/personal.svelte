@@ -66,6 +66,7 @@
         // If it is 401, remove the token from the local storage
         showLoggedOutNotification();
         localStorage.removeItem("token");
+        localStorage.setItem("linkname", $linkname);
         setTimeout(() => {
           window.location.reload();
         }, 1000);

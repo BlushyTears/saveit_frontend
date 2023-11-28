@@ -54,9 +54,61 @@
     navigate("/tos");
   }
 
+  export async function fetchData() {
+    const token = localStorage.getItem("token");
+    const csrfToken = getCookie(); // Ensure you have a function to get the CSRF token
+    if (token) {
+      loading = true;
+      try {
+        const response = await fetch(backend_url + "/api/getuserdetails/", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken,
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        });
+
+        if (response.status === 401) {
+          showLoggedOutNotification();
+          localStorage.removeItem("token");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+          throw new Error("Invalid or expired token. Token has been removed.");
+        }
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch data: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+
+        if (localStorage.getItem("linkname") != data.first_name) {
+          localStorage.setItem("linkname", data.first_name);
+        }
+
+        userImage.set(data.profile_image_url);
+
+        // Update the email verified store
+        isEmailVerified.set(data.email_verified);
+      } catch (error) {
+        console.error("An error occurred while fetching data:", error);
+      } finally {
+        loading = false;
+      }
+    } else {
+      // Handle scenario when there is no token
+      loading = false;
+    }
+  }
+
   // This onMount checks if the user is logged in upon redirection
   onMount(() => {
     savedChanges.set(true);
+    fetchData();
 
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");

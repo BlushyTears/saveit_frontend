@@ -94,7 +94,6 @@
   let foundPage = false;
 
   onMount(async () => {
-
     try {
       // Extract the last part of the URL (after the last '/')
       const pathParts = window.location.pathname.split("/");
@@ -155,7 +154,6 @@
       }
 
       const responseData = await response.json();
-      console.log("Response data from server: ", responseData);
 
       // Handle JSON data
       if (responseData.data) {
@@ -187,18 +185,13 @@
 
         foundPage = true;
 
+        userImage.set(responseData.profile_image_url);
+        userWallpaper.set(responseData.wallpaper_image_url);
+
         // Initialize stores with local storage or fetched data
         initializeStoresWithLocalStorage();
       }
 
-      // Handle image data
-      if (responseData.image_data && responseData.image_data.length > 0) {
-        userImage.set(`data:image/png;base64,${responseData.image_data}`);
-      }
-
-      if (responseData.wallpaper_data && responseData.wallpaper_data.length > 0) {
-        userWallpaper.set(`data:image/png;base64,${responseData.wallpaper_data}`);
-      }
 
       // Miscellaneous tasks, like dispatching events
       dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
