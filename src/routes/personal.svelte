@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { navigate } from "svelte-routing";
   import { savedChanges, linkname, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
   import { backend_url } from "../lib/urls";
@@ -33,11 +34,9 @@
     showLoggedOutNotifBar = true;
   }
 
-  // Sample function to handle password change
-  function changePassword(event) {
+  function navigateToPwRecovery(event) {
     event.preventDefault();
-    // Implement logic for changing password
-    console.log("Changing password to:", newPassword);
+    navigate('/recoverpassword');
   }
 
   // image upload stuff:
@@ -174,7 +173,7 @@
       </div>
     </div>
     <div class="change-buttons">
-      <button type="submit">Change Password</button>
+      <button on:click={navigateToPwRecovery}>Change Password</button>
       <br>
       {#if !$isEmailVerified}
       <button style="background-color: #7c1e1e;" class='generic-btn' on:click={verifyEmail}>Verify E-mail</button>
