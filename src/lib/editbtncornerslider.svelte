@@ -38,13 +38,14 @@
 
 <style>
   .radius-container {
+    margin-top: 1rem;
     align-items: center;
     display: flex;
   }
 
   .radius-slider {
     background: none;
-    width: calc(1vw + 6rem);
+    width: calc(1vw + 4rem);
     border-radius: 1rem;
     -webkit-appearance: none;
     appearance: none;
@@ -53,16 +54,16 @@
   .radius-slider::-webkit-slider-thumb {
     border-radius: 1rem;
     -webkit-appearance: none;
-    width: 30px;
-    height: 1.5rem;
+    width: 20px;
+    height: 1.2rem;
     background: #f2f2f2;
     cursor: pointer;
   }
 
   .radius-slider::-moz-range-thumb {
     border-radius: 1rem;
-    width: 30px;
-    height: 1.5rem;
+    width: 20px;
+    height: 1.2rem;
     background: #f2f2f2;
     cursor: pointer;
   }
@@ -75,7 +76,7 @@
 
   .radius-slider::-moz-range-track {
     border-radius: 1rem;
-    height: 1rem;
+    height: 1.2rem;
     cursor: pointer;
     background: #394867;
   }

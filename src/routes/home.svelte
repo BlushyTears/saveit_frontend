@@ -92,6 +92,7 @@
         const data = await response.json();
 
         if (localStorage.getItem("linkname") != data.first_name) {
+          localStorage.removeItem("linkname");
           localStorage.setItem("linkname", data.first_name);
         }
 
@@ -162,6 +163,9 @@
 
   onMount(async () => {
     savedChanges.set(true);
+
+    setTimeout(animateHeadline, randomInterval(1000, 5000));
+    setTimeout(animateDescription, randomInterval(1000, 5000));
 
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
@@ -266,10 +270,6 @@
     setTimeout(animateDescription, randomInterval(10000, 15000)); // Random interval
   }
 
-  onMount(() => {
-    setTimeout(animateHeadline, randomInterval(1000, 5000));
-    setTimeout(animateDescription, randomInterval(1000, 5000));
-  });
 
 </script>
 
@@ -328,7 +328,7 @@
       />
 
     </section>
-    <div>
+    <div style="background: #394867;">
       <form on:submit={handleSubmit} class="formBtnClaim">
         <input
           type="text"

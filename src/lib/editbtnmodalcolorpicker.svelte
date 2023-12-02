@@ -74,20 +74,29 @@
     align-items: center;
   }
   .flex-container {
+  margin-top: 1rem;
+    
     display: inline-flex;
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0.3rem;
     border-radius: 0.5rem;
     align-items: center;
     cursor: pointer;
   }
 
+  .flex-container:hover {
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+    transition: 0.1s;
+  }
+
   .colorDisplay {
+    
     width: 1.2rem;
-    height: 2.2rem;
+    height: 1.2rem;
     border-radius: 1rem;
     cursor: pointer;
   }
+
   
   .hidden {
     position: absolute;
@@ -97,9 +106,8 @@
 
   /* Sliders needs a lot of extra specific css code because browser support for them suck */
 .alpha-slider {
-  margin-top: 1rem;
   background: none;
-  width: calc(1vw + 6rem);
+  width: calc(1vw + 4rem);
   border-radius: 1rem;
   -webkit-appearance: none;
   appearance: none;
@@ -108,8 +116,8 @@
 .alpha-slider::-webkit-slider-thumb {
   border-radius: 1rem;
   -webkit-appearance: none;
-  width: 30px;
-  height: 1.5rem;
+  width: 20px;
+  height: 1.2rem;
   background: #F2F2F2;
   cursor: pointer;
 }
@@ -117,7 +125,7 @@
 .alpha-slider::-moz-range-thumb {
   border-radius: 1rem;
   width: 30px;
-  height: 1.5rem;
+  height: 1.2rem;
   background: #F2F2F2;
   cursor: pointer;
 }
@@ -125,12 +133,13 @@
 .alpha-slider::-webkit-slider-runnable-track {
   border-radius: 1rem;
   cursor: pointer;
+  height: 1.2rem;
   background: #394867;
 }
 
 .alpha-slider::-moz-range-track {
   border-radius: 1rem;
-  height: 1rem;
+  height: 1.2rem;
   cursor: pointer;
   background: #394867;
 }

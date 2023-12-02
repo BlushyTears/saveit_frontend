@@ -26,7 +26,7 @@
     padding: 1rem 0;
   }
   .accordion-item {
-    width: 70%;
+    width: calc(60% + 7rem);
     margin: 0 auto;
     background-color: #212a3e;
     border-radius: 0 0 0.5rem 0.5rem;

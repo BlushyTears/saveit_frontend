@@ -9,7 +9,6 @@
     showModal,
     showPreviewModal,
     showEditBtnModal,
-    editedText,
     inputTextList,
     btnCount,
     containerCount,
@@ -17,12 +16,7 @@
     buttonColors,
     borderRadius,
     textThickness,
-    initializeStoresWithLocalStorage,
-    stores,
     savedChanges,
-    bodyBackgroundColor,
-    titleColor,
-    showEditBgColorModal,
   } from "../lib/builderstore";
 
   import { hexToRgba } from "./helpers";
@@ -488,14 +482,13 @@
   .flex-div {
     display: flex;
     justify-content: space-between; /* This pushes the child elements to the extremes */
-    align-items: center;
     width: 97%; 
   }
 
   .colorpicker {
     margin-left: 1rem;
     flex: 0 0 auto; /* Ensures that the Colorpicker doesn't shrink or grow */
-    margin-right: 15rem;
+    margin-right: calc(5vw + 5rem);
   }
 
   .color-pickers {
