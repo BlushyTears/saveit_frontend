@@ -77,6 +77,7 @@
         showSuccessNotification('Linkname updated');
         console.log("Data sent successfully.");
       } else {
+        showFailedNotification();
         console.error("Error sending data:", response.statusText);
       }
     } catch (error) {

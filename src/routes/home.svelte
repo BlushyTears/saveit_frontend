@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { onMount } from "svelte";
-  import Coffee_illustration from "../assets/coffee_illustration.svg";
+  import section1_illustration from "../assets/section1_illustration.svg";
   import Barista_illustration from "../assets/barista_illustration.svg";
   import Cooking_illustration from "../assets/cooking_illustration.svg";
   import Teamwork_illustration from "../assets/teamwork_illustration.svg";
@@ -296,10 +296,7 @@
 
 {#if loading}
   <div class="loading-overlay">
-    <p style="margin-right: 0.8rem; margin-top: -5rem;">Fetching data</p>
-    <div class="load-spinner-div" style="margin-top: -3.5rem;">
-      <LoadingSpinner />
-    </div>
+    <p></p> <!-- Don't remove this p tag, or else the loading screen doesn't appear --> 
   </div>
 {:else}
   <main>
@@ -320,9 +317,9 @@
       </div>
       <img
         class="section1-illustration"
-        src={Coffee_illustration}
+        src={section1_illustration}
         alt="Coffee Illustration"
-        style="width: calc(15vw + 15rem); height: calc(15vw + 15rem);"
+        style="width: calc(23vw + 15rem); height: calc(23vw + 15rem);"
         width="500"
         height="500"
       />
@@ -400,7 +397,7 @@
         style=" background-color: #3f537c; margin-left: 10vw; margin-right: 10vw; margin-top: calc(5vw + 15rem); border-radius: 3rem 0 3rem 0; box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.1); text-align: center;"
       >
         <h1
-          style="font-weight: 300; font-size: calc(2.5em + 2vw); color: #F2F2F2; padding: 0.4rem;"
+          style="font-weight: 300; font-size: calc(3em + 2vw); color: #F2F2F2; padding: 0.5rem 1rem;"
         >
           Examples
         </h1>
@@ -477,11 +474,52 @@
     height: 100%;
     background: #394867;
     z-index: 1000;
-    font-size: 3em;
+    font-size: 2.5em;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+  }
+
+  .loading-overlay p {
+  position: relative;
+  margin: 0;
+  padding: 10px;
+  width: fit-content;
+  color: white;
+  background: transparent;
+  border-radius: 1px;
+  overflow: hidden;
+  display: flex; /* Add flex display */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
+.loading-overlay p::before {
+  content: "";
+  position: absolute;
+  top: -100%; left: -100%; /* Adjust position */
+  width: 300%; height: 300%; /* Adjust size */
+  background-image: conic-gradient(rgb(248, 248, 248) 20deg, transparent 120deg);
+  border-radius: 5px;
+  animation: rotate 1.5s linear infinite;
+  z-index: -1;
+}
+
+  .loading-overlay p::after {
+    content: 'Fetching data';
+    width: 90%;
+    height: 5rem;
+    padding: 2rem;
+    background-color: #394867;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   /* Section 1: */
@@ -614,7 +652,7 @@
     margin-right: 5vw;
     padding-top: 5rem;
     max-width: 30%;
-    margin-top: 15rem;
+    margin-top: 9rem;
   }
 
   .section3 p {
@@ -625,9 +663,9 @@
 
   /* Only image contents within the main container */
   .section3-illustration {
-    margin-top: 15rem;
-    width: calc(20vw + 20rem);
-    height: calc(20vw + 20rem);
+    margin-top: 5rem;
+    width: calc(50rem);
+    height: calc(50rem);
   }
 
   /* Section 3 END */
@@ -813,13 +851,11 @@
   .section2-illustration {
     margin-top: 2rem;
     margin-left: 0;
-    width: 80%;
   }
 
   .text-chunk-section2 {
-    margin-top: 2rem;
-    margin-left: 0;
     max-width: 80%;
+    margin-top: 0;
   }
 }
 
@@ -853,7 +889,8 @@
 
 @media screen and (max-width: 900px) {
   .section1::after {
-    margin-left: 10vw;
+    padding-right: 1rem;
+    padding-left: 1rem;
     margin-top: -5rem; 
     width: 80%; 
     height: 63%; 
@@ -872,7 +909,8 @@
   .section1 {
       flex-direction: column;
       justify-content: flex-start;
-      margin-top: 4rem;
+      margin-top: 10rem; 
+
       height: 65rem;
     }
   .section1-illustration {
@@ -885,7 +923,7 @@
 
   .text-chunk-section3 {
     font-size: calc(1em + 1vw);
-    margin-top: 2rem;
+    margin-top: -12rem;
   }
 
   .section2-main {

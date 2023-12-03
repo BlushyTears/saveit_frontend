@@ -62,11 +62,11 @@
 
   .kl_img {
     max-width: 35rem;
-    width: 70vw;
+    width: calc(60vw + 7rem);
   }
 
   .bd-best-list {
-    animation-duration: 600s;
+    animation-duration: 700s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
     display: flex;
@@ -104,25 +104,6 @@
   .footer {
     padding: 0 0 0 !important;
     background: none;
-  }
-
-  @media (min-width: 3700px) {
-    .bd-best {
-      min-height: 400px;
-    }
-
-    .bd-best-item {
-      width: 200px;
-      height: 100px;
-    }
-
-    .bd-best-list {
-      animation-duration: 80s;
-    }
-
-    .kl_img {
-      width: 300px;
-    }
   }
 
 </style>
