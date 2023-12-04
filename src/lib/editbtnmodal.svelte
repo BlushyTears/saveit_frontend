@@ -116,12 +116,14 @@
   let txtColor = "";
   let btnColor = "";
   let btnBorderRadius = "";
+  let btcTextThickness = "";
   let btnHover = "";
   let btnBorder = "";
   let btnShadow = "";
 
   $: {
     btnBorderRadius = $borderRadius[index];
+    btcTextThickness = $textThickness[index];
     txtColor = hexToRgba(
       $buttonColors[index][0].text.color,
       $buttonColors[index][0].text.alpha
@@ -198,6 +200,7 @@
               color: {txtColor};
               border-radius: {btnBorderRadius}px;
               box-shadow: 0px 0px 5px 2px {btnShadow};
+              font-weight: {btcTextThickness};
             "
               />
             {:else}
@@ -215,6 +218,7 @@
               color: {txtColor};
               border-radius: {btnBorderRadius}px;
               box-shadow: 0px 0px 5px 2px {btnShadow};
+              font-weight: {btcTextThickness};
             "
               >
                 {$buttonNames[index]}
@@ -238,7 +242,7 @@
 
         <button class="accordation-btn" on:click={toggleAccordion}>
           {#if !showBtnDesigner}
-            <p style="color: white;">Button designer</p>
+            <p style="color: white;">Button Settings</p>
           {:else}
             <p style="color: white;">Close</p>
           {/if}
@@ -435,8 +439,8 @@
 
   .accordation-btn {
     border: none;
-    padding: 1.5rem;
-    font-size: calc(0.8em + 0.5vw);
+    padding: 1.3rem;
+    font-size: calc(1.3em + 0.2vw);
     border-radius: 0.8rem;
     background: none;
     background-color: #3a4769d5;

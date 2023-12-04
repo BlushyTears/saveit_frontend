@@ -66,6 +66,7 @@
       });
 
       if (response.ok) {
+        userWallpaper.set(selectedFile);
         console.log("Image uploaded successfully.");
         showSuccessNotification();
       } else {
@@ -96,6 +97,7 @@
       });
 
       if (response.ok) {
+        userWallpaper.set("");
         console.log("Image deleted successfully.");
         showSuccessNotification();
       } else {

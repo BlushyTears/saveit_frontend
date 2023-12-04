@@ -16,7 +16,6 @@
   import LinksPickerModal from "../lib/editlinkspickermodal.svelte";
   import LoadingSpinner from "../lib/loadspinner.svelte";
 
-
   import { getCookie } from "../lib/helpers";
 
   import {
@@ -43,7 +42,7 @@
     userImage,
   } from "../lib/builderstore";
   import { navigate } from "svelte-routing";
-  
+
   // Mischelaneous
   let hoveredIndex = null;
   let loading = false;
@@ -109,7 +108,7 @@
           text: { color: "#F2F2F2", alpha: 1.0 },
           button: { color: "#373a70", alpha: 1.0 },
           hover: { color: "#4c5091", alpha: 1.0 },
-          border: { color: "#000330", alpha: 0.5 },
+          border: { color: "#383B5C", alpha: 0.5 },
           shadow: { color: "#000000", alpha: 0.1 },
         },
       ]); // Add a new color set in a nested array
@@ -254,11 +253,11 @@
       // Here's where you'd establish default keys if necessary
       // For instance, if buttonNames included 'home', 'twitter', 'youtube', you'd ensure defaults
       // Loop over your expected keys (in this case 'home', 'twitter', 'youtube') to ensure they exist
-    $buttonNames.forEach((name) => {
+      $buttonNames.forEach((name) => {
         if (!(name in links)) {
-          links[name] = ''; // Use existing or fallback to empty string
+          links[name] = ""; // Use existing or fallback to empty string
         }
-    });
+      });
 
       return { ...links }; // Return combined default and existing links
     });
@@ -272,7 +271,7 @@
     $inputTextList = [...$inputTextList];
     $buttonColors = [...$buttonColors];
     $borderRadius = [...$borderRadius]; // Make a copy of borderRadius
-    $textThickness = [...$textThickness]; 
+    $textThickness = [...$textThickness];
 
     // Swap function for readability and reusability
     function swapArrayElements(array, i, j) {
@@ -291,7 +290,7 @@
     inputTextList.set($inputTextList);
     buttonColors.set($buttonColors);
     borderRadius.set($borderRadius); // Update the borderRadius store
-    textThickness.set($textThickness); 
+    textThickness.set($textThickness);
   }
 
   // Generic modal stuff below
@@ -343,7 +342,7 @@
         // If it is 401, remove the token from the local storage
         showLoggedOutNotification();
         localStorage.removeItem("token");
-        navigate('/');
+        navigate("/");
         throw new Error("Invalid or expired token. Token has been removed.");
       }
 
@@ -399,7 +398,7 @@
     savedChanges.set(true);
 
     // Get the current values from the stores
-    const titleColorValue = get(titleColor)
+    const titleColorValue = get(titleColor);
     const buttonColorsValue = get(buttonColors);
     const borderRadiusValue = get(borderRadius);
     const textThicknessValue = get(textThickness);
@@ -470,23 +469,22 @@
 
   $: {
     $titleColor,
-    $buttonColors,
-    $borderRadius,
-    $textThickness,
-    $buttonNames,
-    $showModal,
-    $showPreviewModal,
-    $showEditBtnModal,
-    $editedText,
-    $inputTextList,
-    $socialLinksList,
-    $btnCount,
-    $containerCount,
-    $bodyBackgroundColor,
-    $showEditBgColorModal,
-    $showEditLinksPickerModal;
+      $buttonColors,
+      $borderRadius,
+      $textThickness,
+      $buttonNames,
+      $showModal,
+      $showPreviewModal,
+      $showEditBtnModal,
+      $editedText,
+      $inputTextList,
+      $socialLinksList,
+      $btnCount,
+      $containerCount,
+      $bodyBackgroundColor,
+      $showEditBgColorModal,
+      $showEditLinksPickerModal;
   }
-
 </script>
 
 <svelte:head>
@@ -522,9 +520,7 @@
     <!-- <p style="">Followers: 1276</p> -->
   </div>
   <div class="parrent-body">
-
     <div class="body">
-      
       <div class="body-container">
         <h1 class="tabbar" style="font-size: calc(2em + 0.2vw);">Editor</h1>
         <br />
@@ -533,11 +529,11 @@
         <div class="title-component">
           <div>
             <!-- Add margin-left because buttons are not truly centered because of its layout forcing the buttons to the right -->
-            <h1 style="width: 90%; margin-left: calc(3vw + 1rem);">
+            <h1 style="width: 90%; margin: 0 auto;">
               <input bind:value={$editedText} class="editing-text" />
             </h1>
           </div>
-          
+
           {#each $buttonNames as name, index (index)}
             <div
               class="btn-container {hoveredIndex === index
@@ -576,36 +572,41 @@
         </div>
         <!-- The right amount of linebreaks is needed in order to make the button stay inside the container at the bottom
             (secret trick), that makes us of the foundational pushing that is html (margin-bottom doesn't work obviously) -->
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        <button style="margin-left: 0.6rem;" class="colorPickerBtn" on:click={() => openColorEditModal()}>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <button
+          style="margin-left: 0.6rem;"
+          class="colorPickerBtn"
+          on:click={() => openColorEditModal()}
+        >
           🎨
           <span class="tooltip">Miscellaneous</span>
         </button>
-      
 
         <button class="colorPickerBtn" on:click={() => openLinksEditModal()}>
           🔗
           <span class="tooltip2">Social Links</span>
         </button>
 
-        <button class="save-edits-btn {loading ? 'loading-border' : ''}" on:click={() => sendStoreDataToServer()}>
+        <button
+          class="save-edits-btn {loading ? 'loading-border' : ''}"
+          on:click={() => sendStoreDataToServer()}
+        >
           Publish
-      </button>
+        </button>
         <br />
         <br />
       </div>
       <br />
-      
 
       <div>
         <ColorSchemeModal />
@@ -824,7 +825,8 @@
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.35);
   }
 
-  .colorPickerBtn:hover .tooltip, .colorPickerBtn:hover .tooltip2 {
+  .colorPickerBtn:hover .tooltip,
+  .colorPickerBtn:hover .tooltip2 {
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
     visibility: visible;
     opacity: 1;
@@ -851,7 +853,7 @@
   .tooltip::after {
     content: "";
     position: absolute;
-    top: 100%; 
+    top: 100%;
     left: 20%;
     border-width: 5px;
     border-style: solid;
@@ -868,9 +870,9 @@
     padding: 0.6rem;
     border-radius: 0.3rem;
     z-index: 1;
-    bottom: 125%; 
+    bottom: 125%;
     left: 50%;
-    margin-left: -1.5rem; 
+    margin-left: -1.5rem;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -878,7 +880,7 @@
   .tooltip2::after {
     content: "";
     position: absolute;
-    top: 100%; 
+    top: 100%;
     left: 30%;
     border-width: 5px;
     border-style: solid;
@@ -892,7 +894,7 @@
     border-radius: 1rem;
     color: rgb(240, 240, 240);
     background-color: #d69d32;
-    border: 1px solid rgb(148, 92, 7); 
+    border: 1px solid rgb(148, 92, 7);
     margin-bottom: 0.5rem;
     margin-right: 0.5rem;
     margin-top: 3rem;
@@ -908,16 +910,26 @@
 
   /* Animate border for save-edits-btn to indicate loading */
   @keyframes loadingBorder {
-    0%   { border-color: rgb(172, 172, 172); }
-    25%  { border-color: rgb(100, 100, 100); }
-    50%  { border-color: rgb(63, 63, 63); }
-    75%  { border-color: rgb(44, 44, 44); }
-    100% { border-color: rgb(172, 172, 172); }
+    0% {
+      border-color: rgb(172, 172, 172);
+    }
+    25% {
+      border-color: rgb(100, 100, 100);
+    }
+    50% {
+      border-color: rgb(63, 63, 63);
+    }
+    75% {
+      border-color: rgb(44, 44, 44);
+    }
+    100% {
+      border-color: rgb(172, 172, 172);
+    }
   }
 
   .loading-border {
-      border: 3px solid red; 
-      animation: loadingBorder 2s linear infinite;
+    border: 3px solid red;
+    animation: loadingBorder 2s linear infinite;
   }
 
   /* The preview/output body that shows end result starts here */
@@ -930,17 +942,22 @@
       min-height: 0;
       height: auto;
     }
-    
+
     .body-container {
       width: 90%;
     }
 
     .parrent-body {
       display: block;
-  }
+    }
 
     .body-container {
       margin: 0 auto;
+    }
+
+    .tabbar {
+      border: none;
+      border-bottom: 1px solid rgba(99, 99, 99, 0.5);
     }
   }
 </style>

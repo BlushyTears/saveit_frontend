@@ -499,7 +499,7 @@
   position: absolute;
   top: -100%; left: -100%; /* Adjust position */
   width: 300%; height: 300%; /* Adjust size */
-  background-image: conic-gradient(rgb(248, 248, 248) 20deg, transparent 120deg);
+  background-image: conic-gradient(rgb(196, 196, 196) 20deg, transparent 120deg);
   border-radius: 5px;
   animation: rotate 1.5s linear infinite;
   z-index: -1;
@@ -632,7 +632,6 @@
   max-width: 30%;
   margin-top: 15rem;
 }
-
 
   /* Section 2 END */
 

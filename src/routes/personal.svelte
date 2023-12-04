@@ -168,7 +168,7 @@
     </form>
     <div class="image-section">
       {#if $userImage !== ""}
-        <img src={$userImage} alt="User Image" />
+        <img src={$userImage} alt=" " />
       {/if}
       <div class="profile-edit-button">
         <EditProfileModal/>

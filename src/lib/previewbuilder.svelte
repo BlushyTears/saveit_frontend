@@ -86,12 +86,14 @@
   <br />
 
   <div class="header-component">
+    {#if $userImage}
     <img
-      style="margin-bottom: -5rem; margin-top: 4rem;"
+      style="margin-bottom: -5rem; margin-top: 8rem;"
       class="profile-img"
       src={$userImage}
-      alt="Unable to load profile image"
-    />
+      alt=" "
+      />
+    {/if}
 
     <div class="social-icons" style="margin-top: 6rem;">
       {#if $socialLinksList.home}
@@ -178,7 +180,6 @@
           style="color: {buttonStyles[index].txtColor};           
           --textThickness: {buttonStyles[index].textThickness};
           "
-          
         >
           {$buttonNames[index]}
         </h2>

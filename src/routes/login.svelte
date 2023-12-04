@@ -120,11 +120,12 @@
 
       <div class="centered-content">
         <button type="submit" style="font-size: 2em;">Login</button>
-        <h2 style="color: white;">Or</h2>
+        <!-- Temporarly remove google btn since verification is pending -->
+        <!-- <h2 style="color: white;">Or</h2>
         <br />
         <button class="google-login-btn" on:click={loginWithGoogle}>
           <img src={GLogo} alt="Google Icon" class="google-icon" />
-        </button>
+        </button> -->
         <div class="centered-content">
           <!-- Adding the Forgot password link -->
           <Link to="/recoverpassword" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Password?</Link>

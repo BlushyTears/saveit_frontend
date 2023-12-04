@@ -281,12 +281,14 @@
       <br />
 
       <div class="header-component">
+        {#if $userImage}
         <img
           style="margin-bottom: -5rem; margin-top: 8rem;"
           class="profile-img"
           src={$userImage}
-          alt="Unable to load profile image"
+          alt=" "
         />
+      {/if}
 
         <div style="margin-top: 6rem;" >
           {#if $socialLinksList.home}
@@ -378,6 +380,12 @@
         </div>
       {/each}
       <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
 
       <!-- ... -->
     </div>
@@ -421,7 +429,9 @@
 {/if}
 
 <style lang="scss">
+
   .output-body {
+    min-height: 50rem;
     flex: 1;
   }
 
@@ -543,11 +553,9 @@
     font-size: calc(1em + 1vw);
   }
 
-  // There's some white space generated for no reason, so we override that with a ducktaped footer div
-  // Can try to change this and go to a generated page and look at bottom to see what happens if confusing
-  .footer {
-    background-color: var(--body-bg-color);
-    height: 6vh;
-    width: 100%;
+
+  @media screen and (max-width: 900px) {
+
   }
+
 </style>
