@@ -160,12 +160,7 @@
         <p
           style="text-align:center; background-color: #41414136; padding: 0.5rem; border-radius: 0.2rem 0.2rem 0rem 0rem;"
         >
-          Note: Only .jpg and .jpeg files are accepted.
-        </p>
-        <p
-          style="text-align:center; background-color: #41414136; padding: 0.5rem; border-radius: 0rem 0rem 0.2rem 0.2rem;"
-        >
-          Note 2: There's also a 10mb file upload limit
+          Note: We suggest .jpg files because there's a 10mb limit. You also need to be verified to upload wallpaper (to combat spam)
         </p>
 
         <br />
