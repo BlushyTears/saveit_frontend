@@ -18,11 +18,14 @@
   $: if (dialog && showModal) dialog.showModal();
 
   function updateStoresAndClose() {
-    // Update the store with the tempText value and then reset tempText
-    $inputTextList[index] = tempText;
+    // Remove all backslashes from tempText
+    let cleanedText = tempText.replace(/\\/g, "");
+
+    // Update the store with the cleaned text value and then reset tempText
+    $inputTextList[index] = cleanedText;
     savedChanges.set(false);
     dialog.close();
-  }
+}
 
   function handleImageInstructions() {
     // Toggle the instructions display
