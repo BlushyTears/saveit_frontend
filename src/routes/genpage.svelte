@@ -497,7 +497,7 @@
 
   .btn-container {
     margin: 0 auto;
-    width: calc(70% + 5vw);
+    width: calc(60% + 5rem);
     display: flex;
   }
 
@@ -512,8 +512,8 @@
     display: flex;
     align-items: center;
     padding: 1.5rem;
-    width: calc(50% + 10rem);
-    font-size: calc(0.8em + 0.4vw);
+    width: calc(60% + 7rem);
+    font-size: calc(0.7em + 0.5vw);
     margin-top: 1rem;
   }
 
@@ -530,11 +530,7 @@
 
   .modal-btn-text {
     color: var(--text-color);
-  }
-
-  .modal-btn-text {
     font-weight: var(--textThickness);
-    color: white;
     flex: 1;
     text-align: center;
   }
@@ -551,11 +547,6 @@
     padding: 20px; /* optional padding */
     margin-top: 10rem;
     font-size: calc(1em + 1vw);
-  }
-
-
-  @media screen and (max-width: 900px) {
-
   }
 
 </style>
