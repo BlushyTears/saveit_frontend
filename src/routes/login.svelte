@@ -128,9 +128,9 @@
         </button> -->
         <div class="centered-content">
           <!-- Adding the Forgot password link -->
-          <Link to="/recoverpassword" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Password?</Link>
-          <Link to="/recoverusername" style="color: white; text-decoration: none; margin-top: 1rem;">Forgot Username?</Link>
-          <Link to="/register" style="color: white; text-decoration: none; margin-top: 1rem; text-align: center;">Don't have an account? Register here</Link>
+          <Link to="/recoverpassword" style="text-decoration: none;" > <p class="redirect-link">Forgot Password?</p></Link>
+          <Link to="/recoverusername" style="text-decoration: none;"><p class="redirect-link">Forgot Username?</p></Link>
+          <Link to="/register" style="text-decoration: none; text-align: center;"><p class="redirect-link">Don't have an account? Register here</p></Link>
       </div>
       </div>
     </form>
@@ -138,6 +138,16 @@
 </div>
 
 <style>
+  .redirect-link {
+    color: white;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+
+  .redirect-link:hover {
+    color: rgb(212, 212, 212);
+  }
+
 .all-login-form {
     margin-top: -9rem;
     margin-right: 40vw;

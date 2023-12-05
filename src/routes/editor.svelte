@@ -142,7 +142,16 @@
   }
 
   function removeLastBtn() {
+
+    let shouldProceed = true;
+    if ($inputTextList.length > 0 && $inputTextList[$inputTextList.length - 1].trim() !== '') {
+      // Ask the user for confirmation
+      shouldProceed = confirm('The last button seems to have content within it. Are you sure you want to remove it?');
+    }
+
+    if (shouldProceed) {
     savedChanges.set(false);
+
     const names = [...$buttonNames];
     if (names.length > 0) {
       names.pop();
@@ -202,6 +211,7 @@
     btnCount.update((n) => (n > 0 ? n - 1 : 0));
     // Update to make sure consistency between stores (important for removal)
     updateAllStores();
+    }
   }
 
   // Vital function for making sure the store variables are all reset upon refreshing site

@@ -235,7 +235,7 @@
 
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Error"
+  message="Error, make sure your e-mail is verified"
   color="#9e9e9e"
   textShadow="#828282"
 />
