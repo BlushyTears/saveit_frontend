@@ -435,6 +435,8 @@
       showEditBgColorModal: showPreviewBtnModalValue,
     };
 
+    console.log('This is causing me to get angry ', dataToSend.inputTextList);
+
     const csrfToken = getCookie("csrftoken");
 
     const token = localStorage.getItem("token");

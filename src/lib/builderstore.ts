@@ -114,11 +114,6 @@ export function initializeStoresWithLocalStorage() {
       if (storedData) {
         const parsedData = JSON.parse(storedData);
 
-        // If data is malformed or missing fields, fall back to default
-        if (!isValidData(parsedData, key)) {
-          throw new Error("Data is malformed or missing fields");
-        }
-
         stores[key].set(parsedData);
       } else {
         throw new Error("No stored data found");
@@ -133,29 +128,6 @@ export function initializeStoresWithLocalStorage() {
       localStorage.setItem(key, JSON.stringify(value));
     });
   });
-}
-
-function isValidData(data: any, key: string) {
-  // We use the default values as a template to check if our stored data has all necessary fields
-  const template = DEFAULT_VALUES[key];
-
-  // Check recursively if all properties in the template are present in the data
-  function checkProperties(template: any, data: any): boolean {
-    for (const prop in template) {
-      if (!(prop in data)) {
-        return false;
-      }
-
-      if (
-        typeof template[prop] === "object" &&
-        !checkProperties(template[prop], data[prop])
-      ) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return checkProperties(template, data);
 }
 
 // Miscs (probably needs its own file if it gets too big):

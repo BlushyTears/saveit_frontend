@@ -16,6 +16,7 @@
   import { fade, fly } from 'svelte/transition';
   import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
+  import TwitterLogo from "../assets/twitter_logo.png";
 
   let showLoggedOutNotifBar = false;
   let showSuccessBar = false;
@@ -447,6 +448,14 @@
       <div>
         <button class="hrefBtn" on:click={navigateToTOS}>Terms of Service</button>
      </div>
+     <br />
+
+     <p>Follow us:</p>
+     <br />
+
+     <a href="https://twitter.com/favedis1" target="_blank" rel="noopener noreferrer">
+      <img src={TwitterLogo} style="height: 2rem; width; auto;" alt="Twitter" />
+    </a>
 
     </section>
   </main>
