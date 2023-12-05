@@ -185,8 +185,9 @@
 
         foundPage = true;
 
-        userImage.set(responseData.profile_image_url);
-        userWallpaper.set(responseData.wallpaper_image_url);
+        userImage.set(responseData.profile_image_url + "?timestamp=" + new Date().getTime());
+        userWallpaper.set(responseData.wallpaper_image_url + "?timestamp=" + new Date().getTime());
+
 
         // Initialize stores with local storage or fetched data
         initializeStoresWithLocalStorage();
