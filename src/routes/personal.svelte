@@ -149,6 +149,7 @@
   />
 
   <section class="body-section">
+    <h2>Add your linkname here:</h2>
     <form on:submit={submitInfo} class="login-form">
       <div class="input-group">
         <input

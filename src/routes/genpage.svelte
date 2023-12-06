@@ -251,6 +251,9 @@
 
 </script>
 
+<svelte:head>
+  <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Culinary, Beverages, Recipes, Food Creators, Food Platform, {$editedText}" />
+</svelte:head>
 
 {#if !isGenpage}
   {#if foundPage}

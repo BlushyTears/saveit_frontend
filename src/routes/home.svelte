@@ -450,18 +450,23 @@
      </div>
      <br />
 
-     <p>Follow us:</p>
-     <br />
+     <div class="socials-div">
+      <p>Follow us:</p>
+      <a href="https://twitter.com/favedis1" target="_blank" rel="noopener noreferrer">
+          <img src={TwitterLogo} style="height: 1.8rem; width: auto;" alt="Twitter" />
+      </a>
+  </div>
 
-     <a href="https://twitter.com/favedis1" target="_blank" rel="noopener noreferrer">
-      <img src={TwitterLogo} style="height: 2rem; width; auto;" alt="Twitter" />
-    </a>
+    <br />
+
+    <p>Contact: support@favedis.com</p>
 
     </section>
   </main>
 {/if}
 
 <style>
+  
   @font-face {
     font-family: "Monofonto";
     src: url("../assets/monofontorg.otf") format("opentype");
@@ -797,6 +802,17 @@
 
   .hrefBtn:hover {
     color: rgb(201, 201, 201);
+  }
+
+  .socials-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Adjust the height as needed */
+  }
+
+  .socials-div p {
+      margin-right: 10px; /* Adjust the space between the text and the logo as needed */
   }
 
   /* FOOTER END */
