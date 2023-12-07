@@ -44,6 +44,7 @@
   import { navigate } from "svelte-routing";
 
   // Mischelaneous
+  let draggedIndex = null;
   let hoveredIndex = null;
   let loading = false;
   let showSuccessBar = false;
@@ -69,8 +70,6 @@
   function openLinksEditModal() {
     showEditLinksPickerModal.set(true);
   }
-
-  let draggedIndex = null; // New variable
 
   function onDragStart(event, index) {
     event.dataTransfer.setData("text/plain", index.toString());
@@ -369,8 +368,8 @@
       }
 
       let jsonString = responseData.data;
-      userImage.set(responseData.profile_image_url + "?timestamp=" + new Date().getTime());
-      userWallpaper.set(responseData.wallpaper_image_url + "?timestamp=" + new Date().getTime());
+      userImage.set(responseData.profile_image_url);
+      userWallpaper.set(responseData.wallpaper_image_url);
 
       if (jsonString.startsWith("b'")) {
         jsonString = jsonString.substring(2, jsonString.length - 1);

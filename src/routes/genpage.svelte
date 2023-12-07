@@ -254,6 +254,7 @@
 </script>
 
 <svelte:head>
+  <meta name="google-adsense-account" content="ca-pub-6968233517223463">
   <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Culinary, Beverages, Recipes, Food Creators, Food Platform, {$editedText}" />
 </svelte:head>
 
@@ -517,8 +518,8 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 1.5rem;
-    width: calc(60% + 7rem);
+    padding: 1.2rem;
+    width: calc(50% + 7rem);
     font-size: calc(0.7em + 0.5vw);
     margin-top: 1rem;
   }
