@@ -160,13 +160,13 @@
         <p
           style="text-align:center; background-color: #41414136; padding: 0.5rem; border-radius: 0.2rem 0.2rem 0rem 0rem;"
         >
-          Note: We suggest .jpg files because there's a 10mb limit.
+          Note: We suggest .jpg files because there's a 5mb limit.
         </p>
 
         <p
         style="text-align:center; background-color: #41414136; padding: 0.5rem; border-radius: 0.2rem 0.2rem 0rem 0rem;"
       >
-      You also need to be verified to upload wallpaper (to combat spam)
+      You also need to verify your e-mail to upload wallpaper (to combat spam)
       </p>
 
         <br />

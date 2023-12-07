@@ -148,6 +148,8 @@
         body: JSON.stringify({ first_name: firstNameFromURL }),
       });
 
+      console.log(JSON.stringify({ first_name: firstNameFromURL }));
+
       if (!response.ok) {
         foundPage = false;
         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -155,7 +157,7 @@
 
       const responseData = await response.json();
 
-      // Handle JSON data
+      // Handle JSON data {"first_name":"coffee"}
       if (responseData.data) {
         // Ensure responseData.data is a string and valid JSON before processing
         if (typeof responseData.data !== "string") {

@@ -282,7 +282,7 @@
         <p
           style="text-align:center; background-color: #41414136; color: black; padding: 0.5rem; border-radius: 0.2rem 0.2rem 0rem 0rem;"
         >
-          You need to be verified to upload wallpaper (to combat spam)
+          You need to verify your e-mail to upload wallpaper (to combat spam)
         </p>
 
         {#if showImageToCrop}
