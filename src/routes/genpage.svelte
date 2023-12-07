@@ -245,13 +245,9 @@
     };
 });
 
-
-
 </script>
 
 <svelte:head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6968233517223463"
-     crossorigin="anonymous"></script>
   <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Culinary, Beverages, Recipes, Food Creators, Food Platform, {$editedText}" />
 </svelte:head>
 

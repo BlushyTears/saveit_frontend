@@ -49,7 +49,6 @@ onMount(() => {
   });
 });
 
-    console.log(tempText);
     quill.root.innerHTML = tempText;
 
     quill.on("text-change", () => {
