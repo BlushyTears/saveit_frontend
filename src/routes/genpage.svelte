@@ -135,10 +135,6 @@
         isGenpage = true;
       }
 
-      console.log("foundPage status ", foundPage);
-
-      console.log("Name from URL:", firstNameFromURL);
-
       const response = await fetch(backend_url + "/api/getdatapublic/", {
         method: "POST",
         headers: {
@@ -147,8 +143,6 @@
         },
         body: JSON.stringify({ first_name: firstNameFromURL }),
       });
-
-      console.log(JSON.stringify({ first_name: firstNameFromURL }));
 
       if (!response.ok) {
         foundPage = false;
@@ -251,10 +245,13 @@
     };
 });
 
+
+
 </script>
 
 <svelte:head>
-  <meta name="google-adsense-account" content="ca-pub-6968233517223463">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6968233517223463"
+     crossorigin="anonymous"></script>
   <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Culinary, Beverages, Recipes, Food Creators, Food Platform, {$editedText}" />
 </svelte:head>
 
