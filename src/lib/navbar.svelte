@@ -6,6 +6,8 @@
   import Register from "../routes/register.svelte";
   import Recoverpw from "../routes/recoverpw.svelte";
   import Recoverusername from "../routes/recoverusername.svelte";
+  import Blog from "../routes/blog.svelte";
+  import BlogPosts from "./blogposts.svelte";
   import TOS from "../routes/tos.svelte";
   import PrivacyPolicy from "../routes/policy.svelte";
   import SubmitPwReset from "../routes/submitpwreset.svelte";
@@ -20,7 +22,7 @@
 
   import FavedisLogo from "../assets/favedis.png";
 
-  import { linkname, savedChanges } from "../lib/builderstore";
+  import { savedChanges } from "../lib/builderstore";
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
@@ -189,6 +191,14 @@
     } else if (currentUrl.endsWith("/policy")) {
       navigate("/policy");
     }
+    else if (currentUrl.endsWith("/blog")) {
+      navigate("/blog");
+    }
+    else if (currentUrl.startsWith("/blog/")) {
+      const postId = currentUrl.split("/").pop(); // Extracts the ID from the URL
+      navigate(`/blog/${postId}`);
+    }
+
 
     document.addEventListener("navigate", handleNavigation);
 
@@ -274,7 +284,21 @@
             class="nav-links-right {showMenu ? 'show' : ''}"
             bind:this={menuElement}
           >
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a
+              on:click|preventDefault={() => handleNavigation("/blog")}
+              on:keydown={(e) => {
+                if (e.key === "Enter") handleNavigation("/blog");
+              }}
+              tabindex="0"
+              role="button"
+              class="nav-link"
+            >
+              Blog
+            </a>
+                  
             {#if isLoggedIn}
+
               <!-- svelte-ignore a11y-missing-attribute -->
               <a
                 on:click|preventDefault={() => handleNavigation("/personal")}
@@ -339,7 +363,7 @@
                 role="button"
                 class="nav-link"
               >
-                Free Sign up
+                Free sign up
               </a>
 
               <!-- svelte-ignore a11y-missing-attribute -->
@@ -371,6 +395,8 @@
         <Route path="/" component={Home} />
         <Route path="/personal" component={Personal} />
         <Route path="/editor" component={Editor} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:postId/" let:params><BlogPosts postId={params.postId} /></Route>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/recoverusername" component={Recoverusername} />

@@ -21,16 +21,25 @@
     "/login": "home",
     "/policy": "home",
     "/tos": "home",
+    "/blog": "home",
     "/": "home",
   };
 
+  // Dynamically check if /blog ends with a valid blogpost aka a number in this case
   let current;
   $: {
     let currentUrl = window.location.pathname;
-    let matchedPath = Object.keys(pathToCurrent).find((path) =>
-      currentUrl.endsWith(path)
-    );
-    current = matchedPath ? pathToCurrent[matchedPath] : "genpage";
+    // Updated regex to match both '/blog/' and '/blogpost/' followed by a number
+    const blogPostRegex = /^\/(blog|blogpost)\/\d+$/;
+
+    if (blogPostRegex.test(currentUrl)) {
+      current = "home"; // Set to "home" for individual blog posts
+    } else {
+      let matchedPath = Object.keys(pathToCurrent).find((path) =>
+        currentUrl.endsWith(path)
+      );
+      current = matchedPath ? pathToCurrent[matchedPath] : "genpage";
+    }
   }
 
   let showLoggedOutNotifBar = false;

@@ -151,6 +151,15 @@
 
       const responseData = await response.json();
 
+      if (responseData.linkname_available) {
+      foundPage = true;
+      outputMessageH1 = "Page is available";
+
+    } else {
+      foundPage = false;
+      outputMessageH1 = "Name available";
+    }
+
       // Handle JSON data {"first_name":"coffee"}
       if (responseData.data) {
         // Ensure responseData.data is a string and valid JSON before processing
@@ -248,7 +257,7 @@
 </script>
 
 <svelte:head>
-  <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Culinary, Beverages, Recipes, Food Creators, Food Platform, {$editedText}" />
+  <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Beverages, Recipes, Food, Creator, Platform, {$editedText}" />
 </svelte:head>
 
 {#if !isGenpage}
@@ -414,18 +423,6 @@
       </h1>
     </div>
   {/if}
-{:else}
-
-  <div
-    style="background-color: {hexToRgba(
-      $titleColor.body.color,
-      $titleColor.body.alpha
-    )};"
-    class="center"
-  >
-    <br />
-    <h1>Failed to load</h1>
-  </div>
 {/if}
 
 <style lang="scss">

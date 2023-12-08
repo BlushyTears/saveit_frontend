@@ -81,6 +81,7 @@ onMount(() => {
 
     quill.on("text-change", () => {
       tempText = quill.root.innerHTML;
+      console.log(tempText)
     });
   });
 </script>

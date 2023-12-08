@@ -345,7 +345,7 @@
         <div class="text-chunk-section2">
           <h2 style="color: white; font-size: calc(3em + 2vw);">Master the Art of Cooking</h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Ever wanted to learn cooking? Follow your favorite creators and get more personal recipes tailored to your liking.
+            Whether it's ground beef, banana bread or chicken you want for dinner: There's always a talented creator waiting for you.
           </p>
       <br>
       <button class="getStartedBtn" on:click={handleSubmit}>Get started for free</button>
@@ -360,7 +360,7 @@
         <div class="text-chunk-section3">
           <h2 style="color: white; font-size: calc(3em + 2vw);">Join our Community</h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Favedis is not just for food and drinks: You can share virtually any information with a single link.
+            Favedis is not just for food and drinks. You can share virtually any information with a single link: A first of a kind platform.
           </p>
           <br>
           <button class="getStartedBtn" on:click={handleSubmit}>Sign up now</button>
