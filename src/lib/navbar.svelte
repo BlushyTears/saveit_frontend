@@ -339,7 +339,7 @@
                 role="button"
                 class="nav-link"
               >
-                Register
+                Sign up Free
               </a>
 
               <!-- svelte-ignore a11y-missing-attribute -->

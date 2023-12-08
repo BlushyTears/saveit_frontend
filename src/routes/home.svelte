@@ -311,8 +311,8 @@
         <p
           style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
         >
-          Amplify your brand and expand your reach through the power of sharing
-          your cherished recipes. Cultivate your passion while simultaneously
+          Amplify your brand and expand your reach through the power of 1 link.
+          Cultivate your passion while simultaneously
           building a thriving audience for the days ahead.
         </p>
       </div>
@@ -345,7 +345,7 @@
         <div class="text-chunk-section2">
           <h2 style="color: white; font-size: calc(3em + 2vw);">Master the Art of Cooking</h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Elevate your culinary skills with our easy-to-follow recipes and expert tips. Perfect for cooks of all levels!
+            Ever wanted to learn cooking? Follow your favorite creators and get more personal recipes tailored to your liking.
           </p>
       <br>
       <button class="getStartedBtn" on:click={handleSubmit}>Get started for free</button>
@@ -358,9 +358,9 @@
     <section class="section3">
       <div class="section3-main">
         <div class="text-chunk-section3">
-          <h2 style="color: white; font-size: calc(3em + 2vw);">Join Our Foodie Community</h2>
+          <h2 style="color: white; font-size: calc(3em + 2vw);">Join our Community</h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Connect with fellow food enthusiasts, share your culinary adventures, and get inspired!
+            Favedis is not just for food and drinks: You can share virtually any information with a single link.
           </p>
           <br>
           <button class="getStartedBtn" on:click={handleSubmit}>Sign up now</button>
