@@ -368,8 +368,8 @@
       }
 
       let jsonString = responseData.data;
-      userImage.set(responseData.profile_image_url);
-      userWallpaper.set(responseData.wallpaper_image_url);
+      userImage.set(responseData.profile_image_url + "?timestamp=" + new Date().getTime());
+      userWallpaper.set(responseData.wallpaper_image_url + "?timestamp=" + new Date().getTime());
 
       if (jsonString.startsWith("b'")) {
         jsonString = jsonString.substring(2, jsonString.length - 1);

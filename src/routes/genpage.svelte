@@ -153,11 +153,11 @@
 
       if (responseData.linkname_available) {
       foundPage = true;
-      outputMessageH1 = "Page is available";
+      // outputMessageH1 = "Congrats! This linkname is available. Claim it quickly before someone else does!"; Pretty sure i can remove this entirely
 
     } else {
       foundPage = false;
-      outputMessageH1 = "Name available";
+      outputMessageH1 = "Congrats! This linkname is available. Claim it quickly before someone else does!";
     }
 
       // Handle JSON data {"first_name":"coffee"}

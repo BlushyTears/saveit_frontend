@@ -135,6 +135,7 @@ onMount(() => {
 
   dialog {
     margin-top: 8%;
+    overflow-y: hidden;
     width: 80%;
     border-radius: 1rem;
     border: none;
@@ -185,6 +186,12 @@ onMount(() => {
 
   .close-modal-btn:hover {
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.18);
+  }
+
+  @media screen and (max-width: 800px) {
+    dialog {
+    width: 100%;
+    }
   }
 
 </style>
