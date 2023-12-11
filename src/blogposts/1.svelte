@@ -7,7 +7,7 @@
 
 {#if previewMode}
   <BlogPostLayout>
-    <h2>Favedis: Share Your Recipes with Just One Link</h2>
+    <h2>Favedis born: Share Your Recipes with Just One Link</h2>
 
     <p>
       Imagine having a single, easily accessible link that leads to a treasure
@@ -16,7 +16,7 @@
   </BlogPostLayout>
 {:else}
   <BlogPostLayout>
-    <h2>Introduction to Favedis</h2>
+    <h2>What is Favedis?</h2>
 
     <p>
       Imagine having a single, easily accessible link that leads to a treasure

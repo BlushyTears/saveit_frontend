@@ -149,7 +149,8 @@
   />
 
   <section class="body-section">
-    <h2 style="color: white;">Add your linkname here:</h2>
+    <h2 style="color: white;">Select your linkname here:</h2>
+    <h3 style="color: white;">favedis.com/YourLinkName</h3>
     <form on:submit={submitInfo} class="login-form">
       <div class="input-group">
         <input

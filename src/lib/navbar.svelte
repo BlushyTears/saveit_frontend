@@ -190,15 +190,14 @@
       navigate("/tos");
     } else if (currentUrl.endsWith("/policy")) {
       navigate("/policy");
-    }
-    else if (currentUrl.endsWith("/blog")) {
+    } else if (currentUrl.endsWith("/blog")) {
       navigate("/blog");
-    }
-    else if (currentUrl.startsWith("/blog/")) {
+    } else if (currentUrl.endsWith("/home")) {
+      navigate("/home");
+    } else if (currentUrl.startsWith("/blog/")) {
       const postId = currentUrl.split("/").pop(); // Extracts the ID from the URL
       navigate(`/blog/${postId}`);
     }
-
 
     document.addEventListener("navigate", handleNavigation);
 
@@ -255,7 +254,7 @@
       <div class="navbar-wrapper">
         <nav class="navbar">
           <a
-            href="javascript:void(0);"
+            href="favedis.com/"
             on:click|preventDefault={() => handleNavigation("/")}
             on:keydown={(e) => {
               if (e.key === "Enter") handleNavigation("/");
@@ -284,8 +283,8 @@
             class="nav-links-right {showMenu ? 'show' : ''}"
             bind:this={menuElement}
           >
-              <!-- svelte-ignore a11y-missing-attribute -->
-              <a
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <a
               on:click|preventDefault={() => handleNavigation("/blog")}
               on:keydown={(e) => {
                 if (e.key === "Enter") handleNavigation("/blog");
@@ -296,9 +295,8 @@
             >
               Blog
             </a>
-                  
-            {#if isLoggedIn}
 
+            {#if isLoggedIn}
               <!-- svelte-ignore a11y-missing-attribute -->
               <a
                 on:click|preventDefault={() => handleNavigation("/personal")}
@@ -361,7 +359,7 @@
                 }}
                 tabindex="0"
                 role="button"
-                class="nav-link"
+                class="signup-link highlight"
               >
                 Free sign up
               </a>
@@ -396,7 +394,9 @@
         <Route path="/personal" component={Personal} />
         <Route path="/editor" component={Editor} />
         <Route path="/blog" component={Blog} />
-        <Route path="/blog/:postId/" let:params><BlogPosts postId={params.postId} /></Route>
+        <Route path="/blog/:postId/" let:params
+          ><BlogPosts postId={params.postId} /></Route
+        >
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/recoverusername" component={Recoverusername} />
@@ -464,6 +464,20 @@
 
   a:hover {
     color: #a9a9a9;
+  }
+
+  .signup-link.highlight {
+    background-color: #384569;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition: background-color 0.1s;
+  }
+
+  .signup-link.highlight:hover {
+    background-color: #47598b;
+    transform: scale(1.05);
   }
 
   .hamburger-menu {

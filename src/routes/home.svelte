@@ -437,6 +437,10 @@
           title="What benefits does Faveit offer to users who are not aspiring food influencers?"
           content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
         />
+        <Accordion
+        title="How would Favedis compare to other similar link-based sites"
+        content="Favedis is unique in that we are the first ever information-based linksharing site. Other sites like linktree are more for sharing social media links, whilst we tapped into information sharing. You can still put your social media links on our site if you want."
+      />
       </div>
     </section>
 

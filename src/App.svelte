@@ -21,6 +21,7 @@
     "/login": "home",
     "/policy": "home",
     "/tos": "home",
+    "/home": "home",
     "/blog": "home",
     "/": "home",
   };

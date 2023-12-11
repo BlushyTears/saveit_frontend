@@ -157,7 +157,7 @@
 
     } else {
       foundPage = false;
-      outputMessageH1 = "Congrats! This linkname is available. Claim it quickly before someone else does!";
+      outputMessageH1 = "Couln't load page";
     }
 
       // Handle JSON data {"first_name":"coffee"}
