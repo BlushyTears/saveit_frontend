@@ -10,23 +10,26 @@
   let showSuccessBar = false;
   let showFailedBar = false;
   let isLoading = false;
-    
-  function showSuccessNotification() {
+  let notificationMsg = ""
+
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
-  
-  function showFailedNotification() {
+
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     showFailedBar = true;
   }
 
   function navigateToLogin() {
-    navigate('/login');
+    navigate("/login");
   }
 
   async function submitEmail(event) {
     event.preventDefault(); // prevent form from doing a default submission (page refresh)
     isLoading = true;
-    console.log('email: ', email);
+    console.log("email: ", email);
     const response = await fetch(backend_url + "/api/passwordresetrequest/", {
       method: "POST",
       headers: {
@@ -35,7 +38,7 @@
       body: JSON.stringify({ email }),
     });
     if (response.ok) {
-      showSuccessNotification();
+      showSuccessNotification("Recovery E-mail sent, remember to check junk folder");
     } else {
       showFailedNotification();
       alert("There was an error submitting your email.");
@@ -44,8 +47,18 @@
   }
 </script>
 
-<SuccessNotif bind:showBar={showSuccessBar} message="Password recovery sent" color="#2dc23c" textShadow="#00ff48" />
-<FailedNotif bind:showBar={showFailedBar} message="Error" color="#9e9e9e" textShadow="#828282" />
+<SuccessNotif
+  bind:showBar={showSuccessBar}
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
+/>
+<FailedNotif
+  bind:showBar={showFailedBar}
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
+/>
 
 <div class="recover-container">
   <p class="info-text" style="color: white;">
@@ -62,8 +75,8 @@
     />
     <button type="submit">Send Reset Link</button>
     {#if isLoading}
-    <div class='spinner-class'><Spinner /></div>
-  {/if}
+      <div class="spinner-class"><Spinner /></div>
+    {/if}
   </form>
 
   <div class="back-to-login">
@@ -141,5 +154,4 @@
   p {
     color: white;
   }
-
 </style>

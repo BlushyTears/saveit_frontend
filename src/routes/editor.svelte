@@ -50,12 +50,15 @@
   let showSuccessBar = false;
   let ShowFailedBar = false;
   let showLoggedOutNotifBar = false;
+  let notificationMsg = ""
 
-  function showSuccessNotification() {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     ShowFailedBar = true;
   }
 
@@ -465,14 +468,14 @@
 
       // Check if the request was successful
       if (!response.ok) {
-        showFailedNotification();
+        showFailedNotification("Fail");
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      showSuccessNotification();
+      showSuccessNotification("Page Updated!");
     } catch (error) {
       console.error("Failed to send data:", error);
-      showFailedNotification();
+      showFailedNotification("Failed to upload, try again in a few seconds");
     }
     loading = false;
   }
@@ -504,22 +507,22 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Saved!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Error"
-  color="#c22d2d"
-  textShadow="#ff0037"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 <LoggedOutNotif
   bind:showBar={showLoggedOutNotifBar}
-  message="Session expired, please log in again"
-  color="#9e9e9e"
-  textShadow="#828282"
+  message="Session expired"
+  color="#a0a0a0b9"
+  textShadow="#4f4f4f"
 />
 
 <br />
@@ -658,6 +661,7 @@
   @font-face {
     font-family: "Monofonto";
     src: url("../assets/monofontorg.otf") format("opentype");
+    color: #a0a0a0b9;
   }
 
   input,

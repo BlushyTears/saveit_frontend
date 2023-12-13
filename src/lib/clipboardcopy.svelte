@@ -4,7 +4,14 @@
   import { linkname } from "./builderstore";
 
   let linkName = localStorage.getItem("linkname");
-  
+  let copyNotificationStatus = false;
+  let notificationMsg = "";
+
+  function copyNotification(_msg) {
+    notificationMsg = _msg;
+    copyNotificationStatus = true;
+  }
+
   const maxLinkLength = 20; // Maximum length of the displayed link
   let fullLink = `favedis.com/${linkName}`;
   let truncatedLink = fullLink;
@@ -19,21 +26,20 @@
   async function copyToClipboard() {
     try {
       await navigator.clipboard.writeText(fullLink); // Copy the full link, not the truncated one
-      copyNotification();
+      copyNotification("Link copied");
     } catch (err) {
       // Too lazy to add custom notification for fail since it'll probably never occur
       alert(`Could not copy text: ${err}`);
     }
   }
-
-  let copyNotificationStatus = false;
-  
-  function copyNotification() {
-    copyNotificationStatus = true;
-  }
 </script>
 
-<Notification bind:showBar={copyNotificationStatus} message="Link copied!" color="#2dc23c" textShadow="#00ff48"/>
+<Notification
+  bind:showBar={copyNotificationStatus}
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
+/>
 
 <div class="container">
   <input bind:value={link} type="text" readonly />

@@ -10,17 +10,20 @@
   let showSuccessBar = false;
   let showFailedBar = false;
   let isLoading = false;
-    
-  function showSuccessNotification() {
+  let notificationMsg = ""
+
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
-  
-  function showFailedNotification() {
+
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     showFailedBar = true;
   }
 
   function navigateToLogin() {
-    navigate('/login');
+    navigate("/login");
   }
 
   async function handleSubmit(event) {
@@ -38,18 +41,26 @@
     });
 
     if (response.ok) {
-      showSuccessNotification();
+      showSuccessNotification("E-mail sent, remember to check junk folder");
     } else {
-      showFailedNotification();
+      showFailedNotification("Error");
     }
     isLoading = false;
-
   }
 </script>
 
-  
-<SuccessNotif bind:showBar={showSuccessBar} message="Username sent" color="#2dc23c" textShadow="#00ff48" />
-<FailedNotif bind:showBar={showFailedBar} message="Error" color="#9e9e9e" textShadow="#828282" />
+<SuccessNotif
+  bind:showBar={showSuccessBar}
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
+/>
+<FailedNotif
+  bind:showBar={showFailedBar}
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
+/>
 
 <div class="forgot-container">
   <p class="info-text">
@@ -66,10 +77,9 @@
     />
     <button type="submit">Send Username</button>
     {#if isLoading}
-      <div class='spinner-class'><Spinner /></div>
+      <div class="spinner-class"><Spinner /></div>
     {/if}
   </form>
-  
 
   <div class="back-to-login">
     <button on:click={navigateToLogin}>Back to Login</button>
@@ -146,6 +156,4 @@
   p {
     color: white;
   }
-  
-
 </style>

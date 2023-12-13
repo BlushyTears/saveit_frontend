@@ -49,9 +49,9 @@
 
 <LoggedOutNotif
   bind:showBar={showLoggedOutNotifBar}
-  message="Session expired, please log in again"
-  color="#9e9e9e"
-  textShadow="#828282"
+  message="Session expired"
+  color="#a0a0a0b9"
+  textShadow="#4f4f4f"
 />
 
 <svelte:head>

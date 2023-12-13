@@ -15,6 +15,17 @@
   let imgSrc;
   let imgName;
   let selectedFile;
+  let notificationMsg = ""
+
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
+    showFailedBar = true;
+  }
 
   function toggleModal() {
     isModalOpen = !isModalOpen;
@@ -32,14 +43,6 @@
       toggleModal();
     }
     mouseDownInsideModal = false;
-  }
-
-  function showSuccessNotification() {
-    showSuccessBar = true;
-  }
-
-  function showFailedNotification() {
-    showFailedBar = true;
   }
 
   async function removeWallpaper() {
@@ -68,14 +71,13 @@
       if (response.ok) {
         userWallpaper.set(selectedFile);
         console.log("Image uploaded successfully.");
-        showSuccessNotification();
+        showSuccessNotification("Image uploaded");
       } else {
-        console.error("Error uploading image:", response.statusText);
-        showFailedNotification();
+        showFailedNotification("Failed to upload: " + response.statusText);
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      showFailedNotification();
+      showFailedNotification("Other error");
     }
 
     isLoading = false;
@@ -98,15 +100,12 @@
 
       if (response.ok) {
         userWallpaper.set("");
-        console.log("Image deleted successfully.");
-        showSuccessNotification();
+        showSuccessNotification("Image deleted successfully.");
       } else {
-        console.error("Error clearing image:", response.statusText);
-        showFailedNotification();
+        showFailedNotification("Error clearing image:" + response.statusText);
       }
     } catch (error) {
-      console.error("Error clearing image:", error);
-      showFailedNotification();
+      showFailedNotification("Error clearing image:" + error);
     }
 
     isLoading = false;
@@ -123,15 +122,15 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Success!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
 <FailedNotif
   bind:showBar={showFailedBar}
-  message="Error"
-  color="#c22d2d"
-  textShadow="#ff0037"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 <button on:click={toggleModal}>Change Wallpaper</button>

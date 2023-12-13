@@ -26,12 +26,15 @@
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
+  let notificationMsg = ""
 
-  function showSuccessNotification() {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     ShowFailedBar = true;
   }
 
@@ -73,26 +76,23 @@
       });
 
       if (response.ok) {
-        const data = await response.json();
-        showSuccessNotification(); // If you're showing a notification
+        showSuccessNotification("Success");
         setTimeout(() => {
           window.location.reload();
         }, 1500);
         navigate("/");
       } else {
         const errorData = await response.json();
-        showFailedNotification(); // If you're showing a notification
+        showFailedNotification("Error occured during logout " + errorData);
         setTimeout(() => {
           window.location.reload();
         }, 3500);
-        console.error("Logout failed on server:", errorData);
       }
     } catch (error) {
-      showFailedNotification(); // If you're showing a notification
+      showFailedNotification("Error: " + error);
       setTimeout(() => {
         window.location.reload();
       }, 3500);
-      console.error("Other error during logout:", error);
     }
     localStorage.removeItem("token"); // Remove the token from local storage
   }
@@ -237,15 +237,15 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Success!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Error"
-  color="#c22d2d"
-  textShadow="#ff0037"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 {#if current === "navbar"}

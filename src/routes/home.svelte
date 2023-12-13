@@ -21,16 +21,20 @@
   let showLoggedOutNotifBar = false;
   let showSuccessBar = false;
   let showFailedBar = false;
+  let notificationMsg = ""
 
-  function showSuccessNotification() {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     showFailedBar = true;
   }
 
-  function showLoggedOutNotification() {
+  function showLoggedOutNotification(_msg) {
+    notificationMsg = _msg;
     showLoggedOutNotifBar = true;
   }
 
@@ -76,7 +80,7 @@
         });
 
         if (response.status === 401) {
-          showLoggedOutNotification();
+          showLoggedOutNotification("Session expired");
           localStorage.removeItem("token");
           setTimeout(() => {
             window.location.reload();
@@ -145,7 +149,7 @@
           return res.json();
         })
         .then((data) => {
-          showSuccessNotification();
+          showSuccessNotification("Logged in");
           localStorage.setItem("token", data); // Make sure to store the token correctly
           setTimeout(() => {
             window.location.reload();
@@ -196,11 +200,11 @@
           : null;
 
         if (response.ok) {
-          showSuccessNotification();
+          showSuccessNotification("E-mail verified");
           isEmailVerified.set(true); 
         } else {
           isEmailVerified.set(false); 
-          showFailedNotification();
+          showFailedNotification("Error");
         }
       } catch (error) {
         console.error("Error verifying email:", error);
@@ -276,24 +280,24 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Login succeeded!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
-
 <FailedNotif
   bind:showBar={showFailedBar}
-  message="Error"
-  color="#c22d2d"
-  textShadow="#ff0037"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 <LoggedOutNotif
   bind:showBar={showLoggedOutNotifBar}
-  message="Session expired, please log in again"
-  color="#9e9e9e"
-  textShadow="#828282"
+  message={notificationMsg}
+  color="#a0a0a0b9"
+  textShadow="#4f4f4f"
 />
+
 
 {#if loading}
   <div class="loading-overlay">

@@ -12,16 +12,19 @@
   let showSuccessBar = false;
   let showFailedBar = false;
   let isLoading = false;
+  let notificationMsg = "";
 
   let password = "";
   let confirmPassword = "";
   let resetToken, uid;
 
-  function showSuccessNotification() {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     showFailedBar = true;
   }
 
@@ -58,17 +61,17 @@
     );
 
     if (response.ok) {
-      showSuccessNotification();
+      showSuccessNotification("Password recovery link sent, remember to check junk folder");
       navigate("/login"); // Navigate to login route after successful password reset
     } else {
-      showFailedNotification();
+      showFailedNotification("Error, our e-mail service seems to be down");
     }
     isLoading = false;
   }
 </script>
 
-<SuccessNotif bind:showBar={showSuccessBar} message="Password recovery sent" color="#2dc23c" textShadow="#00ff48" />
-<FailedNotif bind:showBar={showFailedBar} message="Error" color="#c22d2d" textShadow="#ff0037" />
+<SuccessNotif bind:showBar={showSuccessBar} message={notificationMsg} color="#1daa2bcc" textShadow="#3ddb6a" />
+<FailedNotif bind:showBar={showFailedBar} message={notificationMsg} color="#b42727ce" textShadow="#e0113e" />
 
 
 <div class="reset-container">

@@ -14,12 +14,15 @@
 
   let showSuccessBar = false;
   let ShowFailedBar = false;
+  let notificationMsg = ""
 
-  function showSuccessNotification() {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     ShowFailedBar = true;
   }
 
@@ -58,19 +61,16 @@
 
       if (response.ok) {
         const data = await response.json();
-        console.log("User registered successfully");
-        showSuccessNotification();
+        showSuccessNotification("Registered!");
         setTimeout(() => {
           window.location.reload();
         }, 1500);
       } else {
         const errorData = await response.json();
-        showFailedNotification();
-        console.error("Registration failed:", errorData);
+        showFailedNotification("Failed, make sure your passwords match");
       }
     } catch (error) {
-      showFailedNotification();
-      console.error("Error during registration:", error);
+      showFailedNotification("Error");
     }
     isLoading = false;
   }
@@ -88,15 +88,15 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Registered!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Error."
-  color="#c22d2d"
-  textShadow="#ff0037"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 <div class="all-register-form">

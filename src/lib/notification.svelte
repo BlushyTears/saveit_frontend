@@ -25,7 +25,7 @@
 
 
 {#if showBar}
-<div class={sinking ? 'notification-bar sinking' : 'notification-bar'} style="background-color: {color}; box-shadow: 0px 0px 4px 2px {textShadow};">
+<div class={sinking ? 'notification-bar sinking' : 'notification-bar'} style="background-color: {color}; box-shadow: 0px 0px 1px 1px {textShadow};">
 <span>{message}</span>
 </div>
 {/if}
@@ -39,7 +39,7 @@
   width: calc(10% + 10rem);
   color: white;
   text-align: center;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0.1rem 0.1rem 0.1rem 0.1rem;
   padding: 2rem;
   font-size: 2.5em;
   z-index: 1000;

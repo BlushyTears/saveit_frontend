@@ -8,14 +8,25 @@
   import Cropper from "cropperjs";
 
   let isModalOpen = false;
-  let showSuccessBar = false;
-  let ShowFailedBar = false;
   let mouseDownInsideModal = false;
   let isLoading = false;
   let showImageToCrop = true;
   let showPreview = false;
   let cropper;
   let imgSrc;
+  let showSuccessBar = false;
+  let ShowFailedBar = false;
+  let notificationMsg = ""
+
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
+    showSuccessBar = true;
+  }
+
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
+    ShowFailedBar = true;
+  }
 
   function toggleModal() {
     isModalOpen = !isModalOpen;
@@ -34,14 +45,6 @@
     }
     // Reset the flag for the next sequence of events
     mouseDownInsideModal = false;
-  }
-
-  function showSuccessNotification() {
-    showSuccessBar = true;
-  }
-
-  function showFailedNotification() {
-    ShowFailedBar = true;
   }
 
   async function uploadImageToServer() {
@@ -81,15 +84,12 @@
       });
 
       if (response.ok) {
-        console.log("Image uploaded successfully.");
-        showSuccessNotification();
+        showSuccessNotification("Image uploaded successfully");
       } else {
-        console.error("Error uploading image:", response.statusText);
-        showFailedNotification();
+        showFailedNotification("Error uploading image:" + response.statusText);
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
-      showFailedNotification();
+      showFailedNotification("Error:" + error);
     }
     isLoading = false;
   }
@@ -228,16 +228,16 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Profile changed!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
 
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Error, make sure your e-mail is verified"
-  color="#9e9e9e"
-  textShadow="#828282"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 <svelte:head>

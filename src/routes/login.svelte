@@ -14,15 +14,18 @@
   const googleClientId = "620668731459-uog676i4dtjvrllhar4tcmqpon6a74pj.apps.googleusercontent.com";
   let showSuccessBar = false;
   let ShowFailedBar = false;
+  let notificationMsg = "";
   let isLoading = false;
   let username = "";
   let password = "";
 
-  function showSuccessNotification() {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     ShowFailedBar = true;
   }
 
@@ -50,10 +53,10 @@
 
       if (response.ok) {
         const data = await response.json();
-        const token = data.token; // Assuming the response returns the token
+        const token = data.token;
         localStorage.setItem("token", token);
         console.log("Login successful:", data);
-        showSuccessNotification(); // If you're showing a notification
+        showSuccessNotification("Logged in");
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -61,7 +64,7 @@
       } else {
         const errorData = await response.json();
         console.error("Login failed:", errorData);
-        showFailedNotification();
+        showFailedNotification("Invalid details");
         console.error("Error:", response);
       }
     } catch (error) {
@@ -70,6 +73,7 @@
     isLoading = false;
   }
 
+  // Dont remove this function just because its unused, because its only temp removed until we get oauth prod approval
   function loginWithGoogle() {
     isLoading = true;
     // Redirect to Google's OAuth 2.0 login
@@ -81,15 +85,15 @@
 
 <SuccessNotif
   bind:showBar={showSuccessBar}
-  message="Login success!"
-  color="#2dc23c"
-  textShadow="#00ff48"
+  message={notificationMsg}
+  color="#1daa2bcc"
+  textShadow="#3ddb6a"
 />
 <FailedNotif
   bind:showBar={ShowFailedBar}
-  message="Login fail."
-  color="#c22d2d"
-  textShadow="#ff0037"
+  message={notificationMsg}
+  color="#b42727ce"
+  textShadow="#e0113e"
 />
 
 <div class="all-login-form">

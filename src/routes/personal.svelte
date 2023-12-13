@@ -18,25 +18,26 @@
   let newPassword = "";
   let isLoading = false;
   let linkName = localStorage.getItem("linkname");
+  let notificationMsg = ""
 
-  let message = 'Success!';
-
-  function showSuccessNotification(_message) {
+  function showSuccessNotification(_msg) {
+    notificationMsg = _msg;
     showSuccessBar = true;
-    message = _message;
   }
 
-  function showFailedNotification() {
+  function showFailedNotification(_msg) {
+    notificationMsg = _msg;
     ShowFailedBar = true;
   }
 
-  function showLoggedOutNotification() {
+  function showLoggedOutNotification(_msg) {
+    notificationMsg = _msg;
     showLoggedOutNotifBar = true;
   }
 
   function navigateToPwRecovery(event) {
     event.preventDefault();
-    navigate('/recoverpassword');
+    navigate("/recoverpassword");
   }
 
   // image upload stuff:
@@ -64,7 +65,7 @@
 
       if (response.status === 401) {
         // If it is 401, remove the token from the local storage
-        showLoggedOutNotification();
+        showLoggedOutNotification("Session expired");
         localStorage.removeItem("token");
         setTimeout(() => {
           window.location.reload();
@@ -74,16 +75,16 @@
 
       if (response.ok) {
         localStorage.setItem("linkname", $linkname);
-        showSuccessNotification('Linkname updated');
+        showSuccessNotification("Linkname updated");
         console.log("Data sent successfully.");
       } else {
-        showFailedNotification();
+        showFailedNotification("Error");
         console.error("Error sending data:", response.statusText);
       }
     } catch (error) {
       console.error("Error sending data:", error);
     }
-    isLoading = false; 
+    isLoading = false;
   }
 
   async function verifyEmail(event) {
@@ -95,61 +96,75 @@
     isLoading = true;
 
     try {
-        const response = await fetch(backend_url + "/api/verifyemail/", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrfToken,
-                "Content-Type": "application/json",
-                Authorization: `Token ${token}`,
-            },
-        });
+      const response = await fetch(backend_url + "/api/verifyemail/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      });
 
-        if (response.status === 401) {
-            // showLoggedOutNotification(); // Assuming this function shows some UI feedback
-            localStorage.removeItem("token");
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-            throw new Error("Invalid or expired token. Token has been removed.");
-        }
+      if (response.status === 401) {
+        // showLoggedOutNotification(); // Assuming this function shows some UI feedback
+        localStorage.removeItem("token");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        throw new Error("Invalid or expired token. Token has been removed.");
+      }
 
-        const responseData = await response.json();
-        if (response.ok) {
-            console.log("Data sent successfully.");
-            // Provide some feedback to the user
-            showSuccessNotification('Email verified');
-            alert(responseData.detail || "Email verification initiated successfully.");
-        } else {
-            console.error("Error sending data:", response.statusText);
-            // Provide some feedback to the user
-            alert(responseData.detail || "There was an error verifying the email.");
-        }
+      const responseData = await response.json();
+      if (response.ok) {
+        console.log("Data sent successfully.");
+        // Provide some feedback to the user
+        showSuccessNotification("Email verified");
+        alert(
+          responseData.detail || "Email verification initiated successfully."
+        );
+      } else {
+        console.error("Error sending data:", response.statusText);
+        // Provide some feedback to the user
+        alert(responseData.detail || "There was an error verifying the email.");
+      }
     } catch (error) {
-        console.error("Error sending data:", error);
-        alert("An error occurred. Please try again later.");
+      console.error("Error sending data:", error);
+      alert("An error occurred. Please try again later.");
     } finally {
-        isLoading = false;  // Ensure you set this to false after the request completes
+      isLoading = false; // Ensure you set this to false after the request completes
     }
-}
+  }
 
-    onMount( () => {
+  onMount(() => {
     savedChanges.set(true);
   });
 </script>
 
-<br>
+<br />
 <main class="content">
-  <SuccessNotif bind:showBar={showSuccessBar} color="#2dc23c" textShadow="#00ff48" message="Success" />
-  <FailedNotif bind:showBar={ShowFailedBar} message="Fail." />
+  <SuccessNotif
+    bind:showBar={showSuccessBar}
+    color="#1daa2bcc"
+    textShadow="#3ddb6a"
+    message={notificationMsg}
+  />
+  <FailedNotif
+    bind:showBar={ShowFailedBar}
+    color="#b42727ce"
+    textShadow="#e0113e"
+    message={notificationMsg}
+  />
   <LoggedOutNotif
     bind:showBar={showLoggedOutNotifBar}
-    color="#c22d2d"
-    textShadow="#ff0037"
-    message="Session expired, please log in again"
+    color="#a0a0a0b9"
+    textShadow="#4f4f4f"
+    message={notificationMsg}
   />
 
   <section class="body-section">
-    <h2 style="color: white;">Select your linkname here:</h2>
+    <h2 style="color: white; font-size: 2em;">Select your linkname here:</h2>
+    <br>
+
     <h3 style="color: white;">favedis.com/YourLinkName</h3>
     <form on:submit={submitInfo} class="login-form">
       <div class="input-group">
@@ -160,146 +175,180 @@
           required
           placeholder={linkName}
         />
-        <button class='generic-btn' type="submit">Update</button>
+        <button class="generic-btn" type="submit">Update</button>
         {#if isLoading}
-        <div style="margin-top: 1.3rem;">
-          <LoadingSpinner />
-        </div>
-      {/if}
+          <div style="margin-top: 1.3rem;">
+            <LoadingSpinner />
+          </div>
+        {/if}
       </div>
     </form>
+
+  </section>
+  <section class="body-section-2">
+    <h2 style="color: white; margin: 0 auto; font-size: 2em;">Miscellaneous</h2>
+    <br>
     <div class="image-section">
       {#if $userImage !== ""}
         <img src={$userImage} alt=" " />
       {/if}
       <div class="profile-edit-button">
-        <EditProfileModal/>
+        <EditProfileModal />
       </div>
     </div>
+    <br>
     <div class="change-buttons">
-      <button on:click={navigateToPwRecovery}>Change Password</button>
-      <br>
-      {#if !$isEmailVerified}
-      <button style="background-color: #7c1e1e;" class='generic-btn' on:click={verifyEmail}>Verify E-mail</button>
+    <br />
+      {#if $isEmailVerified}
+        <button
+          class="verify-btn"
+          on:click={verifyEmail}>Verify E-mail</button
+        >
       {/if}
+      <button class="generic-btn" on:click={navigateToPwRecovery}>Change Password</button>
+
       <!--
         For future use if needed by users
         <button type="submit">Change E-mail</button> -->
     </div>
   </section>
+
 </main>
 
 <style>
+@font-face {
+  font-family: "Monofonto";
+  src: url("../assets/monofontorg.otf") format("opentype");
+}
 
-  @font-face {
-    font-family: "Monofonto";
-    src: url("../assets/monofontorg.otf") format("opentype");
+main {
+  height: 90vh;
+  color: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 90%;
+  max-width: calc(20rem + 30vw);
+}
+
+.body-section, .body-section-2 {
+  background-color: #2e3757; /* Original blue shade */
+  border-radius: 8px;
+  padding: 2rem;
+  width: 90%;
+  max-width: calc(20rem + 30vw);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+h2, h3 {
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+input[type="text"] {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  font-size: 1.2em;
+  border-radius: 4px;
+  border: none;
+  background-color: #3f4868; /* Original input background color */
+  color: white;
+}
+
+button.generic-btn {
+  font-size: 1.3em;
+  background-color: #293255;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.generic-btn:hover {
+  background-color: #434e74;
+}
+
+button.verify-btn {
+  font-size: 1.3em;
+  background-color: #922929;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button.verify-btn:hover {
+  background-color: #b62a2a;
+}
+
+.image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 auto; 
+}
+
+.image-section img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: block; /* Ensures the image is treated as a block-level element */
+}
+
+.profile-edit-button {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  width: 100%; /* Ensures the flex container takes full width */
+}
+
+
+.change-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .input-group, .login-form, .body-section, .body-section-2 {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  /* Padding causes a bit of misalignment between input and the below button, so we ducktape a solution here */
+  input[type="text"] {
+    width: 99%;
   }
 
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    height: 95vh;
-    color: white;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 1rem;
   }
 
-  .body-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    background-color: #2e3757;
-    border-radius: 5px;
-    padding: 2rem;
-    width: 86%;
-  }
+}
 
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .image-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .profile-edit-button {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .input-group {
-    display: flex;
-    gap: 0.5rem;
-    max-width: 70%;
-  }
-
-  input {
-    font-size: calc(1em + 0.3vw);
-    min-height: 3rem; 
-    padding-left: 10px;
-    border-radius: 1rem;
-    border: none;
-    flex: 1;
-    background-color: #3f4868;
-    color: white;
-  }
-
-  button {
-    font-size: calc(1em + 0.3vw);
-    border-radius: 2rem;
-    cursor: pointer;
-    margin: 0 auto;
-    border: none;
-    padding: 1rem 2rem;
-    background-color: #293255;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    color: white;
-    transition: background-color 0.2s;
-  }
-
-  button:hover {
-    background-color: #434e74;
-  }
-
-  .image-section img {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-  }
-
-  .change-buttons {
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (max-width: 768px) {
-    .input-group {
-      width: 1rem;
-    }
-
-    #link{
-      width: 35vw;
-    }
-
-    .body-section {
-      flex-direction: column;
-    }
-
-    .content {
-      padding: 1rem;
-    }
-
-    .change-buttons {
-      gap: 0.5rem;
-    }
-  }
 </style>
