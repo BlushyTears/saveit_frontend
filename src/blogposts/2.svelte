@@ -57,7 +57,6 @@
 
 <style>
   .post {
-    height: 120vh;
   }
 
   h1{
