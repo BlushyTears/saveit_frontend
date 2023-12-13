@@ -199,7 +199,7 @@
     <br>
     <div class="change-buttons">
     <br />
-      {#if $isEmailVerified}
+      {#if !$isEmailVerified}
         <button
           class="verify-btn"
           on:click={verifyEmail}>Verify E-mail</button
