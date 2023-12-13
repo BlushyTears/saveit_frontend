@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   // IMPORTANT: We have to manually add the prefix of each post here since svelte/js refuses to dynamically load posts
-  const postFilenames = ["1"]; 
+  const postFilenames = ["2", "1"]; 
 
   let posts = [];
   let error = false;
@@ -44,7 +44,7 @@
 <style>
   body {
     background-color: #394867;
-    height: 100vh;
+    height: 120vh;
   }
 
   section {

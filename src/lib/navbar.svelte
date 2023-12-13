@@ -467,17 +467,19 @@
   }
 
   .signup-link.highlight {
-    background-color: #384569;
+    background-color: #42517a;
     color: white;
     padding: 10px 15px;
-    border-radius: 1rem;
+    border-radius: 2rem;
+    margin-left: 3px;
+    margin-right: 3px;
     text-decoration: none;
-    transition: background-color 0.1s;
+    transition: background-color 0.05s;
   }
 
   .signup-link.highlight:hover {
-    background-color: #47598b;
-    transform: scale(1.05);
+    background-color: #445da1;
+    transform: scale(1.01);
   }
 
   .hamburger-menu {

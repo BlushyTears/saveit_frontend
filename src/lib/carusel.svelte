@@ -49,8 +49,6 @@
   </footer>
 </body>
 
-
-
 <style>
   /* CSS for the best list and other styles */
   .bd-best {
