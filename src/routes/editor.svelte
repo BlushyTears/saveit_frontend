@@ -216,7 +216,7 @@
   }
 
   // Vital function for making sure the store variables are all reset upon refreshing site
-  // Without this, buttons cannot be opened because browser gets confused if a modal is open or not for instance
+  // Without this, buttons cannot be opened because browser gets confused on the state of each button
   function updateAllStores() {
     // Ensure showModal and showEditBtnModal have the correct number of elements
     const length = $buttonNames.length;
@@ -281,7 +281,7 @@
     $buttonNames = [...$buttonNames];
     $inputTextList = [...$inputTextList];
     $buttonColors = [...$buttonColors];
-    $borderRadius = [...$borderRadius]; // Make a copy of borderRadius
+    $borderRadius = [...$borderRadius];
     $textThickness = [...$textThickness];
 
     // Swap function for readability and reusability
@@ -293,14 +293,14 @@
     swapArrayElements($buttonNames, dragIndex, dropIndex);
     swapArrayElements($inputTextList, dragIndex, dropIndex);
     swapArrayElements($buttonColors, dragIndex, dropIndex);
-    swapArrayElements($borderRadius, dragIndex, dropIndex); // Swap borderRadius as well
-    swapArrayElements($textThickness, dragIndex, dropIndex); // Swap borderRadius as well
+    swapArrayElements($borderRadius, dragIndex, dropIndex);
+    swapArrayElements($textThickness, dragIndex, dropIndex);
 
     // Update the stores
     buttonNames.set($buttonNames);
     inputTextList.set($inputTextList);
     buttonColors.set($buttonColors);
-    borderRadius.set($borderRadius); // Update the borderRadius store
+    borderRadius.set($borderRadius);
     textThickness.set($textThickness);
   }
 

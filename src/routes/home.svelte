@@ -347,9 +347,9 @@
       <div class="section2-main">
         <img class="section2-illustration" src={Cooking_illustration} alt="Cooking Illustration" />
         <div class="text-chunk-section2">
-          <h2 style="color: white; font-size: calc(3em + 2vw);">Master the Art of Cooking</h2>
+          <h2 style="color: white; font-size: calc(3em + 2vw);">Favedis recipe and share it</h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Whether it's ground beef, banana bread or chicken you want for dinner: There's always a talented creator waiting for you.
+            Whether it's ground beef, banana bread or chicken you want for dinner: There's always a talented creator waiting for you. Sign up for Favedis today.
           </p>
       <br>
       <button class="getStartedBtn" on:click={handleSubmit}>Get started for free</button>
@@ -427,7 +427,7 @@
         </h3>
         <Accordion
           title="What is the core concept behind Faveit?"
-          content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space."
+          content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space. In some ways it can be seen as a Linktree alternative."
         />
         <Accordion
           title="Is there an opportunity for creators to monetize their content?"
@@ -443,7 +443,7 @@
         />
         <Accordion
         title="How would Favedis compare to other similar link-based sites"
-        content="Favedis is unique in that we are the first ever information-based linksharing site. Other sites like linktree are more for sharing social media links, whilst we tapped into information sharing. You can still put your social media links on our site if you want."
+        content="Favedis is unique in that we are the first ever information-based linksharing site. Other sites like linktree are more for sharing social media links, whilst we tapped into information sharing. You can still put your social media links such as Tiktok, Twitter and more on our site if you want."
       />
       </div>
     </section>

@@ -5,11 +5,11 @@
   import { backend_url, frontend_url } from "../lib/urls";
   import { hexToRgba, getCookie } from "../lib/helpers.js";
   import GenModal from "../lib/genmodalview.svelte";
-  import HomeLogo from '../assets/home_logo.png'
-  import YoutubeLogo from '../assets/youtube_logo.png'
-  import InstagramLogo from '../assets/instagram_logo.png'
-  import FacebookLogo from '../assets/facebook_logo.png'
-  import TwitterLogo from '../assets/twitter_logo.png'
+  import HomeLogo from "../assets/home_logo.png";
+  import YoutubeLogo from "../assets/youtube_logo.png";
+  import InstagramLogo from "../assets/instagram_logo.png";
+  import FacebookLogo from "../assets/facebook_logo.png";
+  import TwitterLogo from "../assets/twitter_logo.png";
 
   import {
     showPreviewModal,
@@ -50,10 +50,9 @@
   }
 
   function navigateToEditor() {
-      navigate("/editor");
-      window.location.reload();
+    navigate("/editor");
+    window.location.reload();
   }
-
 
   function updateAllStores() {
     // Ensure showModal and showEditBtnModal have the correct number of elements
@@ -102,36 +101,34 @@
       let isLoggedIn = localStorage.getItem("token") !== null;
 
       if (firstNameFromURL == "genpage") {
-        if(isLoggedIn) {
+        if (isLoggedIn) {
           try {
             const response = await fetch(backend_url + "/api/getuserdetails/", {
-            method: "POST",
-            headers: {
-              "X-CSRFToken": csrfToken,
-              "Content-Type": "application/json",
-              Authorization: `Token ${token}`,
-            },
-          });
+              method: "POST",
+              headers: {
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`,
+              },
+            });
 
-          const data = await response.json();
+            const data = await response.json();
 
-          if (localStorage.getItem("linkname") != data.first_name) {
-            localStorage.setItem("linkname", data.first_name);
-          }
+            if (localStorage.getItem("linkname") != data.first_name) {
+              localStorage.setItem("linkname", data.first_name);
+            }
 
-          if(data.first_name != null) {
-            navigate('/' + data.first_name);
-          }
-          else {
-            navigate('/' + localStorage.getItem("linkname"));
-          }
-          window.location.reload();
-
+            if (data.first_name != null) {
+              navigate("/" + data.first_name);
+            } else {
+              navigate("/" + localStorage.getItem("linkname"));
+            }
+            window.location.reload();
           } catch (error) {
             console.error("An error occurred while fetching data:", error);
-          } 
+          }
         }
-        
+
         isGenpage = true;
       }
 
@@ -144,21 +141,31 @@
         body: JSON.stringify({ first_name: firstNameFromURL }),
       });
 
-      if (!response.ok) {
-        foundPage = false;
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-
       const responseData = await response.json();
 
-      if (responseData.linkname_available) {
-      foundPage = true;
-      // outputMessageH1 = "Congrats! This linkname is available. Claim it quickly before someone else does!"; Pretty sure i can remove this entirely
+      try {
+        if (!response.ok) {
+          const errorData = await response.json();
+          foundPage = false;
+          outputMessageH1 = `Error: ${errorData.message}`;
+        } else {
 
-    } else {
-      foundPage = false;
-      outputMessageH1 = "Couln't load page";
-    }
+          if (responseData.linknameTaken === false) {
+            foundPage = true;
+            outputMessageH1 =
+              "Congrats! This linkname is available. Claim it quickly before someone else does!";
+          } else {
+            foundPage = false;
+            outputMessageH1 =
+              "Sorry, this linkname is already taken. Please try another one.";
+          }
+        }
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+        foundPage = false;
+        outputMessageH1 =
+          "An unexpected error occurred. Please try again later.";
+      }
 
       // Handle JSON data {"first_name":"coffee"}
       if (responseData.data) {
@@ -190,14 +197,18 @@
 
         foundPage = true;
 
-        userImage.set(responseData.profile_image_url + "?timestamp=" + new Date().getTime());
-        userWallpaper.set(responseData.wallpaper_image_url + "?timestamp=" + new Date().getTime());
-
+        userImage.set(
+          responseData.profile_image_url + "?timestamp=" + new Date().getTime()
+        );
+        userWallpaper.set(
+          responseData.wallpaper_image_url +
+            "?timestamp=" +
+            new Date().getTime()
+        );
 
         // Initialize stores with local storage or fetched data
         initializeStoresWithLocalStorage();
       }
-
 
       // Miscellaneous tasks, like dispatching events
       dispatchEvent(new CustomEvent("set-color", { detail: "#596b91" }));
@@ -241,23 +252,29 @@
   // Automatically re-route when url changes, otherwise it requires manual reload
   onMount(() => {
     const handlePopState = (event) => {
-        // Check if the current URL path is on of the navbar routes from logged in state:
-        if (window.location.pathname === '/editor' || window.location.pathname === '/' || window.location.pathname === '/personal') {
-            window.location.reload();
-        }
+      // Check if the current URL path is on of the navbar routes from logged in state:
+      if (
+        window.location.pathname === "/editor" ||
+        window.location.pathname === "/" ||
+        window.location.pathname === "/personal"
+      ) {
+        window.location.reload();
+      }
     };
 
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
 
     return () => {
-        window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener("popstate", handlePopState);
     };
-});
-
+  });
 </script>
 
 <svelte:head>
-  <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Beverages, Recipes, Food, Creator, Platform, {$editedText}" />
+  <meta
+    name="keywords"
+    content="Favedis, Fave, this, Favethis, Fave, dis, Beverages, Recipes, Food, Creator, Platform, {$editedText}"
+  />
 </svelte:head>
 
 {#if !isGenpage}
@@ -268,86 +285,90 @@
         $bodyBackgroundColor.body.color,
         $bodyBackgroundColor.body.alpha
       )};
-      {$userWallpaper ? `background-image: url(${$userWallpaper}); background-size: cover; background-position: center;` : ''}"
+      {$userWallpaper
+        ? `background-image: url(${$userWallpaper}); background-size: cover; background-position: center;`
+        : ''}"
     >
-
-    {#if token}
-    <a
-      on:click={navigateToEditor}
-      class="logo-container"
-    >
-      <img src={Logo} alt="Logo" class="site-logo" />
-    </a>
-  {:else}
-    <a
-      href="{frontend_url}"
-      class="logo-container"
-    >
-      <img src={Logo} alt="Logo" class="site-logo" />
-    </a>
-  {/if}
+      {#if token}
+        <a on:click={navigateToEditor} class="logo-container">
+          <img src={Logo} alt="Logo" class="site-logo" />
+        </a>
+      {:else}
+        <a href={frontend_url} class="logo-container">
+          <img src={Logo} alt="Logo" class="site-logo" />
+        </a>
+      {/if}
 
       <br />
 
       <div class="header-component">
         {#if $userImage}
-        <img
-          style="margin-bottom: -5rem; margin-top: 8rem;"
-          class="profile-img"
-          src={$userImage}
-          alt=" "
-        />
-      {/if}
+          <img
+            style="margin-bottom: -5rem; margin-top: 8rem;"
+            class="profile-img"
+            src={$userImage}
+            alt=" "
+          />
+        {/if}
 
-        <div style="margin-top: 6rem;" >
+        <div style="margin-top: 6rem;">
           {#if $socialLinksList.home}
-          <a href="{$socialLinksList.home}" class='social-icon' target="_blank" rel="noopener noreferrer">
-            <img
-              class="social-icon-image"
-              src={HomeLogo}
-              alt="Home"
-            />
-          </a>
+            <a
+              href={$socialLinksList.home}
+              class="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="social-icon-image" src={HomeLogo} alt="Home" />
+            </a>
           {/if}
-          
+
           {#if $socialLinksList.twitter}
-          <a href="{$socialLinksList.twitter}" class='social-icon' target="_blank" rel="noopener noreferrer">
-            <img
-              class="social-icon-image"
-              src={TwitterLogo}
-              alt="Twitter"
-            />
-          </a>
+            <a
+              href={$socialLinksList.twitter}
+              class="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="social-icon-image" src={TwitterLogo} alt="Twitter" />
+            </a>
           {/if}
 
           {#if $socialLinksList.instagram}
-          <a href="{$socialLinksList.instagram}" class='social-icon' target="_blank" rel="noopener noreferrer">
-            <img
-              class="social-icon-image"
-              src={InstagramLogo}
-              alt="Twitter"
-            />
-          </a>
+            <a
+              href={$socialLinksList.instagram}
+              class="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                class="social-icon-image"
+                src={InstagramLogo}
+                alt="Twitter"
+              />
+            </a>
           {/if}
 
           {#if $socialLinksList.facebook}
-          <a href="{$socialLinksList.facebook}" class='social-icon' target="_blank" rel="noopener noreferrer">
-            <img
-              class="social-icon-image"
-              src={FacebookLogo}
-              alt="Twitter"
-            />
-          </a>
+            <a
+              href={$socialLinksList.facebook}
+              class="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="social-icon-image" src={FacebookLogo} alt="Twitter" />
+            </a>
           {/if}
-          
+
           {#if $socialLinksList.youtube}
-          <a href="{$socialLinksList.youtube}" class='social-icon' target="_blank" rel="noopener noreferrer">
-            <img
-              class="social-icon-image"
-              src={YoutubeLogo}
-              alt="YouTube"
-            />
-          </a>
+            <a
+              href={$socialLinksList.youtube}
+              class="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="social-icon-image" src={YoutubeLogo} alt="YouTube" />
+            </a>
           {/if}
         </div>
 
@@ -408,7 +429,6 @@
         />
       </div>
     {/each}
-
   {:else}
     <div
       style="background-color: {hexToRgba(
@@ -426,7 +446,6 @@
 {/if}
 
 <style lang="scss">
-
   .output-body {
     min-height: 50rem;
     flex: 1;
@@ -465,7 +484,7 @@
   }
 
   .social-icon {
-    border-radius: 15%; 
+    border-radius: 15%;
     padding: 0.4rem;
   }
 
@@ -474,14 +493,14 @@
   }
 
   .social-icon-image {
-  width: 30px; 
-  height: 30px;
-  transition: transform 0.15s; /* Apply the transition to the transform property */
-}
+    width: 30px;
+    height: 30px;
+    transition: transform 0.15s; /* Apply the transition to the transform property */
+  }
 
-.social-icon-image:hover {
-  transform: scale(1.1); /* Scale up the icon by 10% */
-}
+  .social-icon-image:hover {
+    transform: scale(1.1); /* Scale up the icon by 10% */
+  }
 
   .editing-text {
     text-align: center;
@@ -545,5 +564,4 @@
     margin-top: 10rem;
     font-size: calc(1em + 1vw);
   }
-
 </style>
