@@ -157,7 +157,7 @@
 
     } else {
       foundPage = false;
-      outputMessageH1 = "Looks like this page hasn't been published yet";
+      outputMessageH1 = "Congrats! This linkname is available. Claim it quickly before someone else does!";
     }
 
       // Handle JSON data {"first_name":"coffee"}
