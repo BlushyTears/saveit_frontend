@@ -219,7 +219,7 @@
   let newHeadline = "Build your own customized creator page";
   let headline = originalHeadline;
 
-  let originalDescription = "Faveit is a linksharing site for sharing information such as cooking, drinks and more.";
+  let originalDescription = "Favedis is a linksharing site for sharing information such as cooking, drinks and more.";
   let newDescription = "Using our powerful editor you can customize your own page to your liking and express your creativity";
   let description = originalDescription;
 
@@ -426,24 +426,28 @@
           Q&A
         </h3>
         <Accordion
-          title="What is the core concept behind Faveit?"
-          content="Faveit serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space. In some ways it can be seen as a Linktree alternative."
+          title="What is the core concept behind Favedis?"
+          content="Favedis serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space. In some ways it can be seen as a Linktree alternative."
         />
         <Accordion
           title="Is there an opportunity for creators to monetize their content?"
-          content="Absolutely. Faveit is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
+          content="Absolutely. Favedis is engineered to provide creators with the tools to establish and grow their personal brands. With a strong brand presence, opportunities for monetization become significantly more achievable."
         />
         <Accordion
-          title="How can I begin my journey on Faveit?"
+          title="How can I begin my journey on Favedis?"
           content="To get started, you will need to create an account to ensure the security and accessibility of your recipes. Once registered, you can personalize your profile page and begin crafting content using our user-friendly site builder."
         />
         <Accordion
-          title="What benefits does Faveit offer to users who are not aspiring food influencers?"
-          content="Faveit provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
+          title="What benefits does Favedis offer to users who are not aspiring food influencers?"
+          content="Favedis provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
         />
         <Accordion
         title="How would Favedis compare to other similar link-based sites"
         content="Favedis is unique in that we are the first ever information-based linksharing site. Other sites like linktree are more for sharing social media links, whilst we tapped into information sharing. You can still put your social media links such as Tiktok, Twitter and more on our site if you want."
+      />
+      <Accordion
+      title="Where does Favedis originate from?"
+      content="Favedis, originally was Saveit, then Faveit or Fave it, then it transformed gradually from Fave dis to Favedis. Mostly it's because a bit more playful but the domain name was also cheaper."
       />
       </div>
     </section>
