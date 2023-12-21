@@ -13,7 +13,7 @@
   import LoggedOutNotif from "../lib/notification.svelte";
   import { savedChanges } from "../lib/builderstore";
   import { backend_url } from "../lib/urls";
-  import { fade, fly } from 'svelte/transition';
+  import { fade, fly } from "svelte/transition";
   import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
   import TwitterLogo from "../assets/twitter_logo.png";
@@ -21,7 +21,7 @@
   let showLoggedOutNotifBar = false;
   let showSuccessBar = false;
   let showFailedBar = false;
-  let notificationMsg = ""
+  let notificationMsg = "";
 
   function showSuccessNotification(_msg) {
     notificationMsg = _msg;
@@ -201,9 +201,9 @@
 
         if (response.ok) {
           showSuccessNotification("E-mail verified");
-          isEmailVerified.set(true); 
+          isEmailVerified.set(true);
         } else {
-          isEmailVerified.set(false); 
+          isEmailVerified.set(false);
           showFailedNotification("Error");
         }
       } catch (error) {
@@ -213,14 +213,16 @@
   });
 
   let loading = false;
-  
+
   // Animations section 2
   let originalHeadline = "Minutes Away from Getting Started.";
   let newHeadline = "Build your own customized creator page";
   let headline = originalHeadline;
 
-  let originalDescription = "Favedis is a linksharing site for sharing information such as cooking, drinks and more.";
-  let newDescription = "Using our powerful editor you can customize your own page to your liking and express your creativity";
+  let originalDescription =
+    "Favedis is a linksharing site for sharing information such as cooking, drinks and more.";
+  let newDescription =
+    "Using our powerful editor you can customize your own page to your liking and express your creativity";
   let description = originalDescription;
 
   let animateHeadlineOut = false;
@@ -250,7 +252,9 @@
     animateDescriptionOut = true;
 
     setTimeout(() => {
-      description = isOriginalDescription ? newDescription : originalDescription;
+      description = isOriginalDescription
+        ? newDescription
+        : originalDescription;
       isOriginalDescription = !isOriginalDescription;
       animateDescriptionOut = false;
       animateDescriptionIn = true;
@@ -274,8 +278,6 @@
     updateDescription();
     setTimeout(animateDescription, randomInterval(10000, 15000)); // Random interval
   }
-
-
 </script>
 
 <SuccessNotif
@@ -298,10 +300,10 @@
   textShadow="#4f4f4f"
 />
 
-
 {#if loading}
   <div class="loading-overlay">
-    <p></p> <!-- Don't remove this p tag, or else the loading screen doesn't appear --> 
+    <p></p>
+    <!-- Don't remove this p tag, or else the loading screen doesn't appear -->
   </div>
 {:else}
   <main>
@@ -316,8 +318,8 @@
           style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
         >
           Amplify your brand and expand your reach through the power of 1 link.
-          Cultivate your passion while simultaneously
-          building a thriving audience for the days ahead.
+          Cultivate your passion while simultaneously building a thriving
+          audience for the days ahead.
         </p>
       </div>
       <img
@@ -328,7 +330,6 @@
         width="500"
         height="500"
       />
-
     </section>
     <div style="background: #394867;">
       <form on:submit={handleSubmit} class="formBtnClaim">
@@ -345,57 +346,85 @@
 
     <section class="section2">
       <div class="section2-main">
-        <img class="section2-illustration" src={Cooking_illustration} alt="Cooking Illustration" />
+        <img
+          class="section2-illustration"
+          src={Cooking_illustration}
+          alt="Cooking Illustration"
+        />
         <div class="text-chunk-section2">
-          <h2 style="color: white; font-size: calc(3em + 2vw);">Favedis recipe and share it</h2>
+          <h2 style="color: white; font-size: calc(3em + 2vw);">
+            Favedis recipe and share it
+          </h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Whether it's ground beef, banana bread or chicken you want for dinner: There's always a talented creator waiting for you. Sign up for Favedis today.
+            Whether it's ground beef, banana bread or chicken you want for
+            dinner: There's always a talented creator waiting for you. Sign up
+            for Favedis today.
           </p>
-      <br>
-      <button class="getStartedBtn" on:click={handleSubmit}>Get started for free</button>
+          <br />
+          <button class="getStartedBtn" on:click={handleSubmit}
+            >Get started for free</button
+          >
         </div>
       </div>
-      <br>
+      <br />
     </section>
 
-    
     <section class="section3">
       <div class="section3-main">
         <div class="text-chunk-section3">
-          <h2 style="color: white; font-size: calc(3em + 2vw);">Join our Community</h2>
+          <h2 style="color: white; font-size: calc(3em + 2vw);">
+            Join our Community
+          </h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Favedis is not just for food and drinks. You can share virtually any information with a single link: A first of a kind platform.
+            Favedis is not just for food and drinks. You can share virtually any
+            information with a single link: A first of a kind platform.
           </p>
-          <br>
-          <button class="getStartedBtn" on:click={handleSubmit}>Sign up now</button>
+          <br />
+          <button class="getStartedBtn" on:click={handleSubmit}
+            >Sign up now</button
+          >
         </div>
-        <img class="section3-illustration" src={Teamwork_illustration} alt="Teamwork Illustration" />
+        <img
+          class="section3-illustration"
+          src={Teamwork_illustration}
+          alt="Teamwork Illustration"
+        />
       </div>
     </section>
 
-<section class="section4">
-  <div class="section4-main">
-    <br />
-    <img
-      class="section4-illustration"
-      src={Barista_illustration}
-      alt="Coffee Illustration"
-    />
-    <div class="text-chunk-section4">
-      <h2 class:animateOut={animateHeadlineOut} class:animateIn={animateHeadlineIn} style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;">
-        {headline}
-      </h2>
-      <p class:animateOut={animateDescriptionOut} class:animateIn={animateDescriptionIn} style="font-size: calc(1.4em + 0.5vw); color: white;">
-        {description}
-      </p>
-      <br>
-      <button class="getStartedBtn" on:click={handleSubmit}>Register here</button>
-    </div>
-  </div>
-</section>
+    <section class="section4">
+      <div class="section4-main">
+        <br />
+        <img
+          class="section4-illustration"
+          src={Barista_illustration}
+          alt="Coffee Illustration"
+        />
+        <div class="text-chunk-section4">
+          <h2
+            class:animateOut={animateHeadlineOut}
+            class:animateIn={animateHeadlineIn}
+            style="color: #F2F2F2; font-size: calc(3em + 2vw); font-weight: bold;"
+          >
+            {headline}
+          </h2>
+          <p
+            class:animateOut={animateDescriptionOut}
+            class:animateIn={animateDescriptionIn}
+            style="font-size: calc(1.4em + 0.5vw); color: white;"
+          >
+            {description}
+          </p>
+          <br />
+          <button class="getStartedBtn" on:click={handleSubmit}
+            >Register here</button
+          >
+        </div>
+      </div>
+    </section>
 
     <section class="section5">
-      <!-- Don't remove this "<br>" blindly lol -->
+      <!-- Don't remove this "<br>" blindly -->
       <br />
 
       <div
@@ -442,43 +471,53 @@
           content="Favedis provides unparalleled convenience for users interested in discovering new culinary delights. Instead of actively searching for recipes or drinks, you can receive notifications when your favorite creators publish new content. This tailored experience allows you to enjoy new dishes and beverages that align with your taste preferences, all with minimal effort. The platform is designed for today’s fast-paced lifestyle, encapsulating what we refer to as the 'TikTokification era.'"
         />
         <Accordion
-        title="How would Favedis compare to other similar link-based sites"
-        content="Favedis is unique in that we are the first ever information-based linksharing site. Other sites like linktree are more for sharing social media links, whilst we tapped into information sharing. You can still put your social media links such as Tiktok, Twitter and more on our site if you want."
-      />
-      <Accordion
-      title="Where does Favedis originate from?"
-      content="Favedis, originally was Saveit, then Faveit or Fave it, then it transformed gradually from Fave dis to Favedis. Mostly it's because a bit more playful but the domain name was also cheaper."
-      />
+          title="How would Favedis compare to other similar link-based sites"
+          content="Favedis is unique in that we are the first ever information-based linksharing site. Other sites like linktree are more for sharing social media links, whilst we tapped into information sharing. You can still put your social media links such as Tiktok, Twitter and more on our site if you want."
+        />
+        <Accordion
+          title="Where does Favedis originate from?"
+          content="Favedis, originally was Saveit, then Faveit or Fave it, then it transformed gradually from Fave dis to Favedis. Mostly it's because a bit more playful but the domain name was also cheaper."
+        />
       </div>
     </section>
 
     <section class="footer">
       <br />
       <div>
-        <button class="hrefBtn" on:click={navigateToPrivacyPolicy}>Privacy Policy</button>
+        <button class="hrefBtn" on:click={navigateToPrivacyPolicy}
+          >Privacy Policy</button
+        >
       </div>
       <div>
-        <button class="hrefBtn" on:click={navigateToTOS}>Terms of Service</button>
-     </div>
-     <br />
+        <button class="hrefBtn" on:click={navigateToTOS}
+          >Terms of Service</button
+        >
+      </div>
+      <br />
 
-     <div class="socials-div">
-      <p>Follow us:</p>
-      <a href="https://twitter.com/favedis1" target="_blank" rel="noopener noreferrer">
-          <img src={TwitterLogo} style="height: 1.8rem; width: auto;" alt="Twitter" />
-      </a>
-  </div>
+      <div class="socials-div">
+        <p>Follow us:</p>
+        <a
+          href="https://twitter.com/favedis1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={TwitterLogo}
+            style="height: 1.8rem; width: auto;"
+            alt="Twitter"
+          />
+        </a>
+      </div>
 
-    <br />
+      <br />
 
-    <p>Contact: support@favedis.com</p>
-
+      <p>Contact: support@favedis.com</p>
     </section>
   </main>
 {/if}
 
 <style>
-  
   @font-face {
     font-family: "Monofonto";
     src: url("../assets/monofontorg.otf") format("opentype");
@@ -508,31 +547,36 @@
   }
 
   .loading-overlay p {
-  position: relative;
-  margin: 0;
-  padding: 10px;
-  width: fit-content;
-  color: white;
-  background: transparent;
-  border-radius: 1px;
-  overflow: hidden;
-  display: flex; /* Add flex display */
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
-}
-.loading-overlay p::before {
-  content: "";
-  position: absolute;
-  top: -100%; left: -100%; /* Adjust position */
-  width: 300%; height: 300%; /* Adjust size */
-  background-image: conic-gradient(rgb(196, 196, 196) 20deg, transparent 120deg);
-  border-radius: 5px;
-  animation: rotate 1.5s linear infinite;
-  z-index: -1;
-}
+    position: relative;
+    margin: 0;
+    padding: 10px;
+    width: fit-content;
+    color: white;
+    background: transparent;
+    border-radius: 1px;
+    overflow: hidden;
+    display: flex; /* Add flex display */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+  }
+  .loading-overlay p::before {
+    content: "";
+    position: absolute;
+    top: -99%;
+    left: -99%; /* Adjust position */
+    width: 300%;
+    height: 300%; /* Adjust size */
+    background-image: conic-gradient(
+      rgb(196, 196, 196) 20deg,
+      transparent 120deg
+    );
+    border-radius: 5px;
+    animation: rotate 1.5s linear infinite;
+    z-index: -1;
+  }
 
   .loading-overlay p::after {
-    content: 'Fetching data';
+    content: "Fetching data";
     width: 90%;
     height: 5rem;
     padding: 2rem;
@@ -549,31 +593,31 @@
   }
 
   /* Section 1: */
-/* Section 1 Modified: */
-.section1 {
-  position: relative;
-  flex-direction: row;
-  justify-content: space-around;
-  display: flex;
-  align-items: center;
-  height: 80rem;
-  background: #394867;
-}
+  /* Section 1 Modified: */
+  .section1 {
+    position: relative;
+    flex-direction: row;
+    justify-content: space-around;
+    display: flex;
+    align-items: center;
+    height: 80rem;
+    background: #394867;
+  }
 
-/* New ::after element for Section 1 */
-.section1::after {
-  content: "";
-  position: absolute;
-  margin-left: 7vw;
-  margin-top: 4rem;
-  left: 0; /* Starts from the left */
-  top: 0;
-  width: 40%; /* Adjust the width as needed */
-  height: 65%; /* Full height of the section */
-  background: #39486700; /* Semi-transparent black cover */
-  box-shadow: 14px 14px 14px 14px rgba(0, 0, 0, 0.2);
-  z-index: 0; /* To ensure it's above the text */
-}
+  /* New ::after element for Section 1 */
+  .section1::after {
+    content: "";
+    position: absolute;
+    margin-left: 7vw;
+    margin-top: 4rem;
+    left: 0; /* Starts from the left */
+    top: 0;
+    width: 40%; /* Adjust the width as needed */
+    height: 65%; /* Full height of the section */
+    background: #39486700; /* Semi-transparent black cover */
+    box-shadow: 14px 14px 14px 14px rgba(0, 0, 0, 0.2);
+    z-index: 0; /* To ensure it's above the text */
+  }
 
   .section1-illustration {
     margin-top: -20rem;
@@ -616,7 +660,6 @@
     transition: 0.1s ease-in-out;
   }
 
-
   /* Section 1 END */
 
   /* Section 2 START */
@@ -650,14 +693,14 @@
 
   /* Only text contents within the main container */
   .text-chunk-section2 {
-  height: 27rem;
-  padding: 5rem;
-  margin-right: 10vw;
-  margin-left: 5vw;
-  padding-top: 5rem;
-  max-width: 30%;
-  margin-top: 15rem;
-}
+    height: 27rem;
+    padding: 5rem;
+    margin-right: 10vw;
+    margin-left: 5vw;
+    padding-top: 5rem;
+    max-width: 30%;
+    margin-top: 15rem;
+  }
 
   /* Section 2 END */
 
@@ -806,7 +849,8 @@
 
   .hrefBtn {
     color: white;
-    font-size: 1.2em;
+    font-size: 1.4em;
+    padding: 0.3rem;
     border: none;
     background: none;
     cursor: pointer;
@@ -824,11 +868,10 @@
   }
 
   .socials-div p {
-      margin-right: 10px; /* Adjust the space between the text and the logo as needed */
+    margin-right: 10px; /* Adjust the space between the text and the logo as needed */
   }
 
   /* FOOTER END */
-
 
   /* Misc START */
 
@@ -879,117 +922,116 @@
   }
 
   @media screen and (max-width: 1200px) {
-  .section2-main {
-    flex-direction: column;
-    align-items: center;
+    .section2-main {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section2-illustration {
+      margin-top: 2rem;
+      margin-left: 0;
+    }
+
+    .text-chunk-section2 {
+      max-width: 80%;
+      margin-top: 0;
+    }
   }
 
-  .section2-illustration {
-    margin-top: 2rem;
-    margin-left: 0;
+  @media screen and (max-width: 1200px) {
+    .section3-main {
+      min-height: auto;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+
+    .section3-illustration {
+      margin-left: 0;
+      width: 80%;
+    }
+
+    .text-chunk-section3 {
+      margin-left: 0;
+      max-width: 80%;
+    }
+  }
+  @media screen and (max-width: 1200px) {
+    .section6 {
+      padding: 2rem;
+    }
+
+    .section-4-container {
+      min-height: auto;
+      padding: 2rem 1rem;
+    }
   }
 
-  .text-chunk-section2 {
-    max-width: 80%;
-    margin-top: 0;
-  }
-}
+  @media screen and (max-width: 900px) {
+    .section1::after {
+      padding-right: 1rem;
+      padding-left: 1rem;
+      margin-top: -5rem;
+      width: 80%;
+      height: 63%;
+      box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+    }
 
-@media screen and (max-width: 1200px) {
-  .section3-main {
-    min-height: auto;
-    flex-direction: column-reverse;
-    align-items: center;
-  }
+    .section3 {
+      height: auto;
+    }
 
-  .section3-illustration {
-    margin-left: 0;
-    width: 80%;
-  }
+    .section1-illustration {
+      padding-top: 5rem;
+      width: 90%;
+    }
 
-  .text-chunk-section3 {
-    margin-left: 0;
-    max-width: 80%;
-  }
-}
-@media screen and (max-width: 1200px) {
-  .section6 {
-    padding: 2rem;
-  }
-
-  .section-4-container {
-    min-height: auto;
-    padding: 2rem 1rem;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .section1::after {
-    padding-right: 1rem;
-    padding-left: 1rem;
-    margin-top: -5rem; 
-    width: 80%; 
-    height: 63%; 
-    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .section3 {
-    height: auto;
-  }
-
-  .section1-illustration {
-    padding-top: 5rem;
-    width: 90%;
-  }
-
-  .section1 {
+    .section1 {
       flex-direction: column;
       justify-content: flex-start;
-      margin-top: 10rem; 
+      margin-top: 10rem;
 
       height: 65rem;
     }
-  .section1-illustration {
-    margin: 0 auto;
-    margin-top: 2rem;
-  }
-  .text-chunk-section1 {
-    margin-top: 0;
-  }
+    .section1-illustration {
+      margin: 0 auto;
+      margin-top: 2rem;
+    }
+    .text-chunk-section1 {
+      margin-top: 0;
+    }
 
-  .text-chunk-section3 {
-    font-size: calc(1em + 1vw);
-    margin-top: -12rem;
-  }
+    .text-chunk-section3 {
+      font-size: calc(1em + 1vw);
+      margin-top: -12rem;
+    }
 
-  .section2-main {
-    min-height: 85rem;
-  }
+    .section2-main {
+      min-height: 85rem;
+    }
 
-  .section3-main {
-    min-height: 65rem;
-  }
+    .section3-main {
+      min-height: 65rem;
+    }
 
-  .section2 {
-    height: auto;
-  }
+    .section2 {
+      height: auto;
+    }
 
-  .section2-illustration {
-    width: 90%;
-  }
+    .section2-illustration {
+      width: 90%;
+    }
 
-  .text-chunk-section2 {
-    font-size: calc(1em + 1vw);
-  }
+    .text-chunk-section2 {
+      font-size: calc(1em + 1vw);
+    }
 
-  .section5::after {
-    border-top: 10rem solid transparent;
-    transform: translate(-15%, -5rem);
-  }
+    .section5::after {
+      border-top: 10rem solid transparent;
+      transform: translate(-15%, -5rem);
+    }
 
-  .section6 h3 {
-    font-size: 2em;
+    .section6 h3 {
+      font-size: 2em;
+    }
   }
-}
-
 </style>

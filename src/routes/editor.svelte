@@ -95,7 +95,7 @@
   // Core stuff starts here
   function addBtn() {
     savedChanges.set(false);
-    const newNames = [...$buttonNames, `New recipe`];
+    const newNames = [...$buttonNames, `New Link`];
     buttonNames.set(newNames);
 
     showModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'
@@ -365,6 +365,8 @@
 
       // Ensure responseData.data is a string and valid JSON before processing
       if (typeof responseData.data !== "string") {
+        // If page doesn't exist we initialize one
+        sendStoreDataToServer();
         throw new Error(
           "Expected responseData.data to be a string representing a Python dictionary."
         );

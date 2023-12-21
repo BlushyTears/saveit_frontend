@@ -274,9 +274,9 @@
             }}
           >
             <!-- Empty divs needed for hamburger menu to appear when scaling down screen -->
-            <div />
-            <div />
-            <div />
+            <div class='hamburger-item-1' />
+            <div class='hamburger-item-2' />
+            <div class='hamburger-item-3' />
           </button>
 
           <div

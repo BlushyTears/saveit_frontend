@@ -39,7 +39,7 @@ export const showPreviewModal = writable([false]);
 export const showEditBtnModal = writable([false]);
 export const showEditBgColorModal = writable(false);
 export const showEditLinksPickerModal = writable(false);
-export const editedText = writable("My recipes");
+export const editedText = writable("My page");
 export const inputTextList = writable([""]); // should have the same initial length as buttonNames
 export const socialLinksList = writable<{[key: string]: string }>({}); // Initially we hard code these keys and values, but in the future the 
 // user will do that according to their preferences (maybe you want it ordered a specific way etc), that's why hashmap works well now and in future

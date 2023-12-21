@@ -9,7 +9,7 @@
 <div style="max-width: 70%; margin: 0 auto;">
   <p style="font-size: 1em;">
     1. Acceptance of Terms<br />
-    By accessing and using this website, users agree to comply with and be
+    By accessing, registering and using this website, users agree to comply with and be
     bound by these terms and conditions.
   </p>
   <br />
