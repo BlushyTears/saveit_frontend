@@ -1,17 +1,17 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-  import Example_Page1 from "../assets/examplepage1.webp"; // Ensure this is a different image
-  import Example_Page2 from "../assets/examplepage2.webp"; // Ensure this is a different image
-  import Example_Page3 from "../assets/examplepage3.webp"; // Ensure this is a different image
-  import Example_Page4 from "../assets/examplepage4.webp"; // Ensure this is a different image
-  import Example_Page5 from "../assets/examplepage5.webp"; // Ensure this is a different image
-  import Example_Page6 from "../assets/examplepage6.webp"; // Ensure this is a different image
-  import Example_Page7 from "../assets/examplepage7.webp"; // Ensure this is a different image
-  import Example_Page8 from "../assets/examplepage8.webp"; // Ensure this is a different image
-  import Example_Page9 from "../assets/examplepage9.webp"; // Ensure this is a different image
-  import Example_Page10 from "../assets/examplepage10.webp"; // Ensure this is a different image
-  import Example_Page11 from "../assets/examplepage11.webp"; // Ensure this is a different image
-  import Example_Page12 from "../assets/examplepage12.webp"; // Ensure this is a different image
+  import Example_Page1 from "../assets/examplepage1.webp";
+  import Example_Page2 from "../assets/examplepage2.webp";
+  import Example_Page3 from "../assets/examplepage3.webp";
+  import Example_Page4 from "../assets/examplepage4.webp";
+  import Example_Page5 from "../assets/examplepage5.webp";
+  import Example_Page6 from "../assets/examplepage6.webp";
+  import Example_Page7 from "../assets/examplepage7.webp";
+  import Example_Page8 from "../assets/examplepage8.webp";
+  import Example_Page9 from "../assets/examplepage9.webp";
+  import Example_Page10 from "../assets/examplepage10.webp";
+  import Example_Page11 from "../assets/examplepage11.webp";
+  import Example_Page12 from "../assets/examplepage12.webp";
 
   const images = [
     { src: Example_Page1, alt: "Carousel image 1" },
@@ -34,20 +34,22 @@
 
   onMount(() => {
     const checkEnd = () => {
-      if (carousel.scrollLeft > (carousel.scrollWidth - window.innerWidth - 200)) {
+      if (
+        carousel.scrollLeft >
+        carousel.scrollWidth - window.innerWidth - 200
+      ) {
         // Append the first few images to the end
         images.push(...images.slice(0, 4));
       }
     };
 
-    carousel = document.querySelector('.bd-best-list');
-    carousel.addEventListener('scroll', checkEnd);
+    carousel = document.querySelector(".bd-best-list");
+    carousel.addEventListener("scroll", checkEnd);
 
     return () => {
-      carousel.removeEventListener('scroll', checkEnd);
+      carousel.removeEventListener("scroll", checkEnd);
     };
   });
-
 </script>
 
 <body>
@@ -57,10 +59,9 @@
         <!-- First set of images -->
         {#each images as image}
           <figure class="bd-best-item">
-            <img class="kl_img" src={image.src} alt={image.alt}>
+            <img class="kl_img" src={image.src} alt={image.alt} />
           </figure>
         {/each}
-
       </div>
     </div>
   </footer>
@@ -70,7 +71,7 @@
   /* CSS for the best list and other styles */
   .bd-best {
     height: calc(35rem);
-    padding: 0.5rem 0;
+    padding: 0rem 0rem;
     overflow: hidden;
     position: relative;
   }
@@ -86,6 +87,7 @@
     animation-iteration-count: infinite;
     animation-timing-function: linear;
     display: flex;
+    
     left: 0;
     position: absolute;
     top: 1rem;
@@ -94,8 +96,8 @@
   }
 
   .bd-best-item {
-    box-shadow: 0.3em 0.3em 0.3em 0.3em rgba(0,0,0,.05);
-    padding: 0.5em;
+    margin-bottom: 0;
+    border: 1px solid black;
     flex-grow: 0;
     flex-shrink: 0;
     margin-right: 16px;
@@ -104,15 +106,13 @@
   }
 
   .bd-best-item:hover {
-    transform: translateY(-.1em);
+    transform: translateY(-0.2em);
   }
 
   .bd-best-list:hover {
     -webkit-animation-play-state: paused;
     animation-play-state: paused;
   }
-
-  
 
   @keyframes bdBestCarousel {
     100% {
@@ -125,4 +125,13 @@
     background: none;
   }
 
+  @media screen and (max-width: 1400px) {
+    .bd-best {
+      height: calc(22rem);
+    }
+
+    .kl_img {
+      max-width: 25rem;
+    }
+  }
 </style>

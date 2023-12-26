@@ -257,7 +257,7 @@
 </script>
 
 <svelte:head>
-  <meta name="keywords" content="Favedis, Fave, this, Favethis, Fave, dis, Beverages, Recipes, Food, Creator, Platform, {$editedText}" />
+  <meta name="keywords" content="Favedis, {$editedText}, Fave, this, Favethis, Fave, Creator, Platform," />
 </svelte:head>
 
 {#if !isGenpage}

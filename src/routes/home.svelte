@@ -5,6 +5,11 @@
   import Barista_illustration from "../assets/barista_illustration.svg";
   import Cooking_illustration from "../assets/cooking_illustration.svg";
   import Teamwork_illustration from "../assets/teamwork_illustration.svg";
+
+  import Example_Page1 from "../assets/examplepage3.webp";
+  import Example_Page3 from "../assets/examplepage2.webp";
+  import Example_Page2 from "../assets/examplepage11.webp";
+
   import Accordion from "../lib/accordation.svelte";
   import Carusel from "../lib/carusel.svelte";
   import LoadingSpinner from "../lib/loadspinner.svelte";
@@ -57,6 +62,11 @@
   function navigateToPrivacyPolicy(event) {
     event.preventDefault();
     navigate("/policy");
+  }
+
+  function navigateToGuestEditor(event) {
+    event.preventDefault();
+    navigate("/guesteditor");
   }
 
   function navigateToTOS(event) {
@@ -312,25 +322,39 @@
         <h2
           style="color: #FFD700; font-size: calc(2vw + 3em); margin-bottom: 1rem; line-height: calc(2.2vw + 2.6rem);"
         >
-          Share All Your Delicious Dishes with a Single Link.
+          Share Your Amazing Content With A Single Link.
         </h2>
         <p
-          style="color: #F2F2F2; font-size: calc(1em + 0.5vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
+          style="color: #F2F2F2; font-size: calc(1em + 0.3vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
         >
-          Amplify your brand and expand your reach through the power of 1 link.
-          Cultivate your passion while simultaneously building a thriving
-          audience for the days ahead.
+          Build your following and expand your reach with 1 link. Pursue your
+          passion online amongst other creators and monetize your recipes,
+          routines, guides and so on..
         </p>
       </div>
-      <img
-        class="section1-illustration"
-        src={section1_illustration}
-        alt="Coffee Illustration"
-        style="width: calc(23vw + 15rem); height: calc(23vw + 15rem);"
-        width="500"
-        height="500"
-      />
+
+      <div class="section1-illustration">
+      <button class="guestEditorBtn" on:click={navigateToGuestEditor}>Try Our Guest Editor</button>
+      <br>
+      <br>
+
+        <div class="image-container">
+          <a href="https://www.favedis.com/user_1646315931">
+            <img class="image1" src={Example_Page1} alt="Image 1" />
+          </a>
+          <a href="https://www.favedis.com/jake">
+            <img class="image2" src={Example_Page2} alt="Image 2" />
+          </a>
+          <a href="https://www.favedis.com/worldtravel">
+            <img class="image3" src={Example_Page3} alt="Image 3" />
+          </a>
+        </div>
+      </div>
+      
+
     </section>
+
+
     <div style="background: #394867;">
       <form on:submit={handleSubmit} class="formBtnClaim">
         <input
@@ -620,13 +644,49 @@
   }
 
   .section1-illustration {
-    margin-top: -20rem;
-    margin-left: -10vw;
+    margin-top: -30rem;
+    margin-left: -5vw;
   }
 
   .text-chunk-section1 {
     margin-top: -20rem;
     width: calc(18vw + 13rem);
+  }
+
+  .image-container {
+    position: relative;
+    margin: 0 auto;
+    height: calc(10vw + 10rem); /* Adjust as needed */
+    width: calc(33vw + 5rem); /* Adjust based on your image sizes */
+  }
+
+  .image-container img {
+    border: 1px solid black;
+    box-shadow: 14px 14px 14px 14px rgba(0, 0, 0, 0.03);
+    position: absolute;
+    max-width: 80%;
+    height: auto;
+    cursor: pointer;
+    transition: 0.1s;
+  }
+
+  .image-container img:hover {
+    transform: translateY(-0.5rem);
+  }
+
+  .image1 {
+    left: 0;
+    z-index: 1;
+  }
+
+  .image2 {
+    left: calc(1vw + 4rem);
+    z-index: 2;
+  }
+
+  .image3 {
+    left: calc(2vw + 8rem);
+    z-index: 3;
   }
 
   /* Claim link button css */
@@ -657,6 +717,22 @@
 
   .claimButton:hover {
     background-color: #2fb966;
+    transition: 0.1s ease-in-out;
+  }
+
+  .guestEditorBtn {
+    margin-left: calc(9vw + 3rem);
+    padding: 1rem 2rem;
+    font-size: calc(1.2em + 0.5vw);
+    background-color: #8f8f8f;
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+  }
+
+  .guestEditorBtn:hover {
+    background-color: #7a7a7a;
     transition: 0.1s ease-in-out;
   }
 
@@ -938,7 +1014,7 @@
     }
   }
 
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1400px) {
     .section3-main {
       min-height: auto;
       flex-direction: column-reverse;
@@ -955,7 +1031,7 @@
       max-width: 80%;
     }
   }
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1400px) {
     .section6 {
       padding: 2rem;
     }
@@ -966,7 +1042,7 @@
     }
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1200px) {
     .section1::after {
       padding-right: 1rem;
       padding-left: 1rem;
@@ -981,21 +1057,24 @@
     }
 
     .section1-illustration {
-      padding-top: 5rem;
+      padding-top: 10rem;
       width: 90%;
+      margin: 0 auto;
+      margin-top: 2rem;
+    }
+
+    .image-container {
+      /* We use a hard-coded centering solution due to image overlaps otherwise causing misalignment */
+      margin-right: calc(5.5rem + 8vw);
     }
 
     .section1 {
       flex-direction: column;
       justify-content: flex-start;
       margin-top: 10rem;
-
       height: 65rem;
     }
-    .section1-illustration {
-      margin: 0 auto;
-      margin-top: 2rem;
-    }
+
     .text-chunk-section1 {
       margin-top: 0;
     }
@@ -1009,11 +1088,8 @@
       min-height: 85rem;
     }
 
-    .section3-main {
-      min-height: 65rem;
-    }
-
     .section2 {
+      min-height: 95rem;
       height: auto;
     }
 
@@ -1025,6 +1101,18 @@
       font-size: calc(1em + 1vw);
     }
 
+    .section3-main {
+      min-height: 65rem;
+    }
+
+    .section3-illustration {
+      margin-top: -10rem;
+    }
+
+    .text-chunk-section3 {
+      margin-top: -15rem;
+    }
+
     .section5::after {
       border-top: 10rem solid transparent;
       transform: translate(-15%, -5rem);
@@ -1032,6 +1120,16 @@
 
     .section6 h3 {
       font-size: 2em;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .section-4-container {
+      min-height: auto;
+      padding: 2rem 1rem;
+    }
+    .section6 {
+      padding: 2rem;
     }
   }
 </style>

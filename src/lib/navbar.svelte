@@ -3,6 +3,7 @@
   import Home from "../routes/home.svelte";
   import Editor from "../routes/editor.svelte";
   import Login from "../routes/login.svelte";
+  import GuestEditor from "../routes/guesteditor.svelte";
   import Register from "../routes/register.svelte";
   import Recoverpw from "../routes/recoverpw.svelte";
   import Recoverusername from "../routes/recoverusername.svelte";
@@ -186,6 +187,8 @@
       navigate("/login");
     } else if (currentUrl.endsWith("/register")) {
       navigate("/register");
+    } else if (currentUrl.endsWith("/guesteditor")) {
+      navigate("/guesteditor");
     } else if (currentUrl.endsWith("/tos")) {
       navigate("/tos");
     } else if (currentUrl.endsWith("/policy")) {
@@ -351,6 +354,18 @@
             {/if}
 
             {#if !isLoggedIn}
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <a
+                on:click|preventDefault={() => handleNavigation("/guesteditor")}
+                on:keydown={(e) => {
+                  if (e.key === "Enter") handleNavigation("/guesteditor");
+                }}
+                tabindex="0"
+                role="button"
+                class="nav-link"
+              >
+                Guest Editor
+              </a>
               <!-- svelte-ignore a11y-missing-attribute -->
               <a
                 on:click|preventDefault={() => handleNavigation("/register")}
@@ -397,6 +412,7 @@
         <Route path="/blog/:postId/" let:params
           ><BlogPosts postId={params.postId} /></Route
         >
+        <Route path="/guesteditor" component={GuestEditor} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/recoverusername" component={Recoverusername} />

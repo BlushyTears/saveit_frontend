@@ -101,7 +101,7 @@ $: if (quill_instance && $inputTextList[index] !== quill_instance.root.innerHTML
       >
         X
       </button>
-      <div style="font-size: 2em; width: calc(10vw + 10rem);">
+      <div style="font-size: 2em; width: calc(20vw + 7rem);">
         <h3
           style="margin: 0; color: black;"
           contenteditable="false"

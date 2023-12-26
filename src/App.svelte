@@ -17,6 +17,7 @@
     "/recoverpassword": "home",
     "/resetpw": "home",
     "/editor": "home",
+    "/guesteditor": "home",
     "/register": "home",
     "/login": "home",
     "/policy": "home",

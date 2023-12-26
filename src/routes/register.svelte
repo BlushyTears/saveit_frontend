@@ -2,6 +2,7 @@
   import GLogo from "../assets/glogo.png";
   import Spinner from "../lib/loadspinner.svelte";
   import { backend_url, frontend_url } from "../lib/urls";
+  import { Link, navigate } from "svelte-routing";
   import SuccessNotif from "../lib/notification.svelte";
   import FailedNotif from "../lib/notification.svelte";
 
@@ -144,6 +145,7 @@
 
       <div class="centered-content">
         <button type="submit" style="font-size: 2em;">Register</button>
+        <Link to="/login" style="text-decoration: none;" > <p class="redirect-link">Already have an account? Login here</p></Link>
         <!-- Temporarly remove google btn since verification is pending -->
         <!-- <h2 style="color: white;">Or</h2>
         <br />
@@ -224,6 +226,15 @@
     border-radius: 2rem;
     cursor: pointer;
 }
+
+.redirect-link {
+    color: white;
+    text-decoration: none;
+  }
+
+  .redirect-link:hover {
+    color: rgb(212, 212, 212);
+  }
 
 @media (max-width: 600px) {
     .all-register-form {

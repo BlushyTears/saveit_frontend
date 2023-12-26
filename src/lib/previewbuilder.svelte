@@ -72,6 +72,11 @@
     }));
   }
 
+  let wallpaperUrl;
+
+  $: wallpaperUrl = $userWallpaper;
+
+
 </script>
 
 <div
@@ -80,7 +85,7 @@
     $bodyBackgroundColor.body.color,
     $bodyBackgroundColor.body.alpha
   )};
-    {$userWallpaper ? `background-image: url(${$userWallpaper}); background-size: cover; background-position: center;` : ''}"
+    {wallpaperUrl ? `background-image: url(${wallpaperUrl}); background-size: cover; background-position: center;` : ''}"
 >
   <h1 class="tabbar" style="font-size: calc(2em + 0.2vw);">Preview</h1>
   <br />

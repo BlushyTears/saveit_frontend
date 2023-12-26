@@ -96,8 +96,26 @@
 
 </script>
 
+<!-- Title Color Picker -->
+<div class="color-container">
+  <p style="margin-right: 2.45rem;">Title Color</p>
+  <div class="flex-container"
+    on:click={triggerTitleColorPicker}
+    on:keydown={handleKeyDown}
+    tabindex="0"
+    role="button"
+    aria-label="Open title color picker">
+    <div bind:this={titleColorDisplay} class="colorDisplay"></div>
+  </div>
+  <input type="range" min="0" max="1" step="0.01" bind:value={$titleColor.body.alpha} class="alpha-slider" on:input={handleTitleAlphaChange} />
+  <input bind:this={hiddenTitleInput} type="color" class="colorPicker hidden" on:input={handleTitleChange} />
+</div>
+
+<br>
+
 <!-- Body Background Color Picker -->
 <div class="color-container">
+  <p>Background Color</p>
   <div class="flex-container"
     on:click={triggerBodyColorPicker}
     on:keydown={handleKeyDown}
@@ -111,20 +129,6 @@
 </div>
 
 <br>
-<!-- Title Color Picker -->
-<div class="color-container">
-  <div class="flex-container"
-    on:click={triggerTitleColorPicker}
-    on:keydown={handleKeyDown}
-    tabindex="0"
-    role="button"
-    aria-label="Open title color picker">
-    <div bind:this={titleColorDisplay} class="colorDisplay"></div>
-  </div>
-  <input type="range" min="0" max="1" step="0.01" bind:value={$titleColor.body.alpha} class="alpha-slider" on:input={handleTitleAlphaChange} />
-  <input bind:this={hiddenTitleInput} type="color" class="colorPicker hidden" on:input={handleTitleChange} />
-</div>
-
 <br>
 
 <EditWallPaperModal />

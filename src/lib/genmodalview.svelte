@@ -96,7 +96,7 @@ onMount(() => {
       >
         X
       </button>
-      <div style="font-size: 2em; width: calc(10vw + 10rem);">
+      <div style="font-size: 2em; width: calc(20vw + 7rem);">
         <h3
           style="margin: 0; color: black;"
           contenteditable="false"
