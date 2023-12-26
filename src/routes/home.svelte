@@ -334,9 +334,11 @@
       </div>
 
       <div class="section1-illustration">
-      <button class="guestEditorBtn" on:click={navigateToGuestEditor}>Try Our Guest Editor</button>
-      <br>
-      <br>
+        <button class="guestEditorBtn" on:click={navigateToGuestEditor}
+          >Try Our Guest Editor</button
+        >
+        <br />
+        <br />
 
         <div class="image-container">
           <a href="https://www.favedis.com/user_1646315931">
@@ -350,10 +352,7 @@
           </a>
         </div>
       </div>
-      
-
     </section>
-
 
     <div style="background: #394867;">
       <form on:submit={handleSubmit} class="formBtnClaim">
@@ -1064,10 +1063,10 @@
     }
 
     .guestEditorBtn {
-      margin-left: calc(9vw + 1rem);
-      padding: 1rem 2rem;
+      margin-left: calc(9vw);
+      padding: 1rem 1.5rem;
       font-size: calc(1.2em + 0.5vw);
-  }
+    }
 
     .image-container {
       /* We use a hard-coded centering solution due to image overlaps otherwise causing misalignment */
