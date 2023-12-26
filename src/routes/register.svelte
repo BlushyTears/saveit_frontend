@@ -160,8 +160,7 @@
 
 <style>
 .all-register-form {
-    margin-top: -9rem;
-    margin-right: 40vw;
+    margin-top: -10rem;
     display: flex;
     align-items: center;
     justify-content: center;
