@@ -1063,6 +1063,12 @@
       margin-top: 2rem;
     }
 
+    .guestEditorBtn {
+      margin-left: calc(9vw + 1rem);
+      padding: 1rem 2rem;
+      font-size: calc(1.2em + 0.5vw);
+  }
+
     .image-container {
       /* We use a hard-coded centering solution due to image overlaps otherwise causing misalignment */
       margin-right: calc(5.5rem + 8vw);
