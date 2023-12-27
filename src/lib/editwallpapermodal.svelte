@@ -69,7 +69,9 @@
       });
 
       if (response.ok) {
-        showSuccessNotification("Image uploaded, please refresh site");
+        userWallpaper.set(selectedFile);
+        console.log("Image uploaded successfully.");
+        showSuccessNotification("Image uploaded");
       } else {
         showFailedNotification("Failed to upload: " + response.statusText);
       }
@@ -114,7 +116,6 @@
     if (file) {
       imgName = file.name;
       selectedFile = file;
-      console.log(selectedFile);
     }
   }
 </script>
