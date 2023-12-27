@@ -71,7 +71,7 @@
       if (response.ok) {
         userWallpaper.set(selectedFile);
         console.log("Image uploaded successfully.");
-        showSuccessNotification("Image uploaded");
+        showSuccessNotification("Image uploaded, please refresh site to see changes");
       } else {
         showFailedNotification("Failed to upload: " + response.statusText);
       }
