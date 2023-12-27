@@ -44,7 +44,7 @@
 <style>
   body {
     background-color: #394867;
-    height: 120vh;
+    height: 250vh;
   }
 
   section {
