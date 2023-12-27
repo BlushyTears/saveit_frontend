@@ -6,8 +6,8 @@
   import Cooking_illustration from "../assets/cooking_illustration.svg";
   import Teamwork_illustration from "../assets/teamwork_illustration.svg";
 
-  import Example_Page1 from "../assets/examplepage3.webp";
-  import Example_Page3 from "../assets/examplepage2.webp";
+  import Example_Page1 from "../assets/examplepage2.webp";
+  import Example_Page3 from "../assets/examplepage5.webp";
   import Example_Page2 from "../assets/examplepage11.webp";
 
   import Accordion from "../lib/accordation.svelte";
@@ -334,38 +334,28 @@
       </div>
 
       <div class="section1-illustration">
-        <button class="guestEditorBtn" on:click={navigateToGuestEditor}
-          >Try Our Guest Editor</button
-        >
+
         <br />
         <br />
 
         <div class="image-container">
           <a href="https://www.favedis.com/user_1646315931">
-            <img class="image1" src={Example_Page1} alt="Image 1" />
+            <img class="image1" src={Example_Page1} alt="user_1646315931's Favedis page" />
           </a>
           <a href="https://www.favedis.com/jake">
-            <img class="image2" src={Example_Page2} alt="Image 2" />
+            <img class="image2" src={Example_Page2} alt="Jake's Favedis page" />
           </a>
           <a href="https://www.favedis.com/worldtravel">
-            <img class="image3" src={Example_Page3} alt="Image 3" />
+            <img class="image3" src={Example_Page3} alt="Worldtravel's Favedis page" />
           </a>
         </div>
       </div>
     </section>
 
-    <div style="background: #394867;">
-      <form on:submit={handleSubmit} class="formBtnClaim">
-        <input
-          type="text"
-          class="claimInput"
-          bind:value={claimLink}
-          required
-          placeholder="favedis.com/YourLinkHere"
-        />
-        <button class="claimButton">Claim</button>
-      </form>
-    </div>
+  <div style="background: #394867; margin-left: 0;" class="formBtnClaim">
+      <button class="guestEditorBtn" on:click={navigateToGuestEditor}
+      >Try Our Guest Editor</button>
+  </div>
 
     <section class="section2">
       <div class="section2-main">
@@ -384,9 +374,19 @@
             for Favedis today.
           </p>
           <br />
-          <button class="getStartedBtn" on:click={handleSubmit}
-            >Get started for free</button
-          >
+          <div>
+            <form on:submit={handleSubmit} class="formBtnClaim">
+              <input
+                type="text"
+                class="claimInput"
+                bind:value={claimLink}
+                required
+                placeholder="favedis.com/YourLinkHere"
+              />
+              <br />
+              <button class="claimButton">Claim</button>
+            </form>
+          </div>
         </div>
       </div>
       <br />
@@ -704,7 +704,6 @@
   }
 
   .claimButton {
-    margin-left: 0.2rem;
     padding: 1rem 2rem;
     font-size: calc(1.2em + 0.5vw);
     background-color: #3c9961;
@@ -720,9 +719,8 @@
   }
 
   .guestEditorBtn {
-    margin-left: calc(9vw + 3rem);
     padding: 1rem 2rem;
-    font-size: calc(1.2em + 0.5vw);
+    font-size: calc(1.5em + 0.7vw);
     background-color: #8f8f8f;
     color: white;
     border: none;
@@ -1063,7 +1061,6 @@
     }
 
     .guestEditorBtn {
-      margin-left: calc(9vw);
       padding: 1rem 1.5rem;
       font-size: calc(1.2em + 0.5vw);
     }

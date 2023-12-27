@@ -14,7 +14,6 @@
   import Example_Page12 from "../assets/examplepage12.webp";
 
   const images = [
-    { src: Example_Page1, alt: "Carousel image 1" },
     { src: Example_Page2, alt: "Carousel image 2" },
     { src: Example_Page3, alt: "Carousel image 3" },
     { src: Example_Page4, alt: "Carousel image 4" },
@@ -25,6 +24,7 @@
     { src: Example_Page9, alt: "Carousel image 9" },
     { src: Example_Page10, alt: "Carousel image 10" },
     { src: Example_Page11, alt: "Carousel image 11" },
+    { src: Example_Page1, alt: "Carousel image 1" },
     { src: Example_Page12, alt: "Carousel image 12" },
     // Add more images as needed
   ];
