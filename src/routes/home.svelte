@@ -660,7 +660,7 @@
   }
 
   .image-container img {
-    border: 1px solid black;
+    border: 1px solid rgb(92, 92, 92);
     box-shadow: 14px 14px 14px 14px rgba(0, 0, 0, 0.03);
     position: absolute;
     max-width: 80%;

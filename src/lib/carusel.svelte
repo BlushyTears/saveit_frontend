@@ -70,7 +70,7 @@
 <style>
   /* CSS for the best list and other styles */
   .bd-best {
-    height: calc(35rem);
+    height: calc(30rem);
     padding: 0rem 0rem;
     overflow: hidden;
     position: relative;
