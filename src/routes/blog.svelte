@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   // IMPORTANT: We have to manually add the prefix of each post here since svelte/js refuses to dynamically load posts
-  const postFilenames = ["3", "2", "1"]; 
+  const postFilenames = ["4", "3", "2", "1"]; 
 
   let posts = [];
   let error = false;
