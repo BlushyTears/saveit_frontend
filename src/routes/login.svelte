@@ -143,13 +143,12 @@
 
 <style>
 
-
 .all-login-form {
     margin-top: -10rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100vh + 5.6rem);
+    min-height: calc(95vh + 5.6rem);
     padding: 2rem;
     flex-wrap: wrap;
 }
@@ -166,7 +165,6 @@
     background: #212a3e3a;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-right: 2rem;
   }
 
   .login-title {
@@ -223,29 +221,22 @@
   }
 
   @media (max-width: 600px) {
-    .all-login-form {
-        margin-top: 0;
-        margin-right: 0;
-    }
 
     .login-form {
-        flex: 0 0 100%; /* Full width on small screens */
-        margin-right: 0;
+        flex: 0 0 100%;
         padding: 1rem;
     }
 
     .login-form input,
     .login-form button {
-        font-size: 1em; /* Smaller font size */
+        font-size: 1em;
         margin: 0 auto;
         margin-bottom: 1rem;
     }
 
     .login-title h2 {
-        font-size: 1.5em; /* Smaller title */
+        font-size: 1.5em;
     }
-
-    /* Adjust other elements as needed for smaller screens */
 }
 
 </style>
