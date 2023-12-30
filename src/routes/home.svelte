@@ -339,14 +339,14 @@
         <br />
 
         <div class="image-container">
-          <a href="https://www.favedis.com/user_1646315931">
-            <img class="image1" src={Example_Page1} alt="user_1646315931's Favedis page" />
+          <a href="https://www.favedis.com/worldtravel">
+            <img class="image1" src={Example_Page1} alt="Worldtravel's Favedis page" />
           </a>
           <a href="https://www.favedis.com/jake">
             <img class="image2" src={Example_Page2} alt="Jake's Favedis page" />
           </a>
-          <a href="https://www.favedis.com/worldtravel">
-            <img class="image3" src={Example_Page3} alt="Worldtravel's Favedis page" />
+          <a href="https://www.favedis.com/masterchef">
+            <img class="image3" src={Example_Page3} alt="Masterchef's Favedis page" />
           </a>
         </div>
       </div>

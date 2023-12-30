@@ -19,7 +19,12 @@
       twitter: ensureHttps(get(socialLinksList).twitter),
       instagram: ensureHttps(get(socialLinksList).instagram),
       facebook: ensureHttps(get(socialLinksList).facebook),
-      youtube: ensureHttps(get(socialLinksList).youtube)
+      youtube: ensureHttps(get(socialLinksList).youtube),
+      reddit: ensureHttps(get(socialLinksList).reddit),
+      tiktok: ensureHttps(get(socialLinksList).tiktok),
+      linkedin: ensureHttps(get(socialLinksList).linkedin),
+      medium: ensureHttps(get(socialLinksList).medium),
+      discord: ensureHttps(get(socialLinksList).discord)
     };
     
     socialLinksList.set(updatedLinks);
@@ -125,6 +130,56 @@
           placeholder="Leave this empty to not display on page"
         />
       </div>
+
+      <div class="input-container">
+        <label for="redditLink">Reddit link:</label>
+        <input
+          bind:value={$socialLinksList.reddit}
+          type="text"
+          id="redditLink"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
+
+      <div class="input-container">
+        <label for="linkedIn">LinkedIn link:</label>
+        <input
+          bind:value={$socialLinksList.linkedin}
+          type="text"
+          id="linkedIn"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
+
+      <div class="input-container">
+        <label for="tiktokLink">Tiktok link:</label>
+        <input
+          bind:value={$socialLinksList.tiktok}
+          type="text"
+          id="tiktokLink"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
+
+      <div class="input-container">
+        <label for="mediumLink">Medium link:</label>
+        <input
+          bind:value={$socialLinksList.medium}
+          type="text"
+          id="mediumLink"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
+
+      <div class="input-container">
+        <label for="discordLink">Discord link:</label>
+        <input
+          bind:value={$socialLinksList.discord}
+          type="text"
+          id="discordLink"
+          placeholder="Leave this empty to not display on page"
+        />
+      </div>
       <br>
     </div>
   </div>
@@ -147,7 +202,8 @@
 
   dialog {
     margin-top: 8%;
-    width: calc(20rem + 5vw);
+    width: calc(20rem + 6vw);
+    max-height: 50rem;
     border-radius: 1rem;
     border: none;
   }

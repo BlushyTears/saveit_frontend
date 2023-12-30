@@ -19,11 +19,16 @@
     userWallpaper,
   } from "../lib/builderstore";
 
-  import HomeLogo from '../assets/home_logo.png'
-  import YoutubeLogo from '../assets/youtube_logo.png'
-  import InstagramLogo from '../assets/instagram_logo.png'
-  import TwitterLogo from '../assets/twitter_logo.png'
-  import FacebookLogo from '../assets/facebook_logo.png'
+  import HomeLogo from "../assets/home_logo.png";
+  import YoutubeLogo from "../assets/youtube_logo.png";
+  import InstagramLogo from "../assets/instagram_logo.png";
+  import TwitterLogo from "../assets/twitter_logo.png";
+  import FacebookLogo from "../assets/facebook_logo.png";
+  import RedditLogo from "../assets/reddit_logo.png";
+  import LinkedInLogo from "../assets/linkedin_logo.png";
+  import MediumLogo from "../assets/medium_logo.png";
+  import DiscordLogo from "../assets/discord_logo.png";
+  import TiktokLogo from "../assets/tiktok_logo.png";
   import Previewmodal from "./previewmodal.svelte";
   import { hexToRgba } from "./helpers";
 
@@ -49,10 +54,7 @@
     buttonStyles = $buttonColors.map((buttonColor, index) => ({
       btnBorderRadius: $borderRadius[index],
       textThickness: $textThickness[index],
-      txtColor: hexToRgba(
-        buttonColor[0].text.color, 
-        buttonColor[0].text.alpha
-      ),
+      txtColor: hexToRgba(buttonColor[0].text.color, buttonColor[0].text.alpha),
       btnColor: hexToRgba(
         buttonColor[0].button.color,
         buttonColor[0].button.alpha
@@ -75,8 +77,6 @@
   let wallpaperUrl;
 
   $: wallpaperUrl = $userWallpaper;
-
-
 </script>
 
 <div
@@ -85,73 +85,184 @@
     $bodyBackgroundColor.body.color,
     $bodyBackgroundColor.body.alpha
   )};
-    {wallpaperUrl ? `background-image: url(${wallpaperUrl}); background-size: cover; background-position: center;` : ''}"
+    {wallpaperUrl
+    ? `background-image: url(${wallpaperUrl}); background-size: cover; background-position: center;`
+    : ''}"
 >
   <h1 class="tabbar" style="font-size: calc(2em + 0.2vw);">Preview</h1>
   <br />
 
   <div class="header-component">
     {#if $userImage}
-    <img
-      style="margin-bottom: -5rem; margin-top: 8rem;"
-      class="profile-img"
-      src={$userImage}
-      alt=" "
+      <img
+        style="margin-bottom: -5rem; margin-top: 8rem;"
+        class="profile-img"
+        src={$userImage}
+        alt=" "
       />
     {/if}
 
     <div class="social-icons" style="margin-top: 6rem;">
       {#if $socialLinksList.home}
-      <a href="{$socialLinksList.home}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
-        <img
-          src={HomeLogo}
-          alt="Home"
-          style="width: 30px; height: 30px;"
-        />
-      </a>
+        <a
+          href={$socialLinksList.home}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={HomeLogo}
+            alt="Home"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
       {/if}
-      
+
       {#if $socialLinksList.twitter}
-      <a href="{$socialLinksList.twitter}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
-        <img
-          src={TwitterLogo}
-          alt="Twitter"
-          style="width: 30px; height: 30px;"
-        />
-      </a>
+        <a
+          href={$socialLinksList.twitter}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={TwitterLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
       {/if}
 
       {#if $socialLinksList.instagram}
-      <a href="{$socialLinksList.instagram}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
-        <img
-          src={InstagramLogo}
-          alt="Twitter"
-          style="width: 30px; height: 30px;"
-        />
-      </a>
+        <a
+          href={$socialLinksList.instagram}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={InstagramLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
       {/if}
 
       {#if $socialLinksList.facebook}
-      <a href="{$socialLinksList.facebook}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
-        <img
-          src={FacebookLogo}
-          alt="Twitter"
-          style="width: 30px; height: 30px;"
-        />
-      </a>
+        <a
+          href={$socialLinksList.facebook}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={FacebookLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
       {/if}
-      
+
       {#if $socialLinksList.youtube}
-      <a href="{$socialLinksList.youtube}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
-        <img
-          src={YoutubeLogo}
-          alt="YouTube"
-          style="width: 30px; height: 30px;"
-        />
-      </a>
+        <a
+          href={$socialLinksList.youtube}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={YoutubeLogo}
+            alt="YouTube"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
+      {/if}
+
+      {#if $socialLinksList.reddit}
+        <a
+          href={$socialLinksList.reddit}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={RedditLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
+      {/if}
+
+      {#if $socialLinksList.linkedin}
+        <a
+          href={$socialLinksList.linkedin}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={LinkedInLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
+      {/if}
+
+      {#if $socialLinksList.tiktok}
+        <a
+          href={$socialLinksList.tiktok}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={TiktokLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
+      {/if}
+
+      {#if $socialLinksList.medium}
+        <a
+          href={$socialLinksList.medium}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={MediumLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
+      {/if}
+
+      {#if $socialLinksList.discord}
+        <a
+          href={$socialLinksList.discord}
+          style="border-radius: 50%; padding: 5px;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="social-icon-image"
+            src={DiscordLogo}
+            alt="Twitter"
+            style="width: 30px; height: 30px;"
+          />
+        </a>
       {/if}
     </div>
-    
 
     <h1
       class="editing-text"
@@ -163,7 +274,6 @@
       {$editedText}
     </h1>
   </div>
-
 
   {#each $buttonNames as name, index (index)}
     <div class="btn-container">
@@ -253,6 +363,16 @@
   }
 
 
+  .social-icon-image {
+  width: 30px; 
+  height: 30px;
+  transition: transform 0.15s; /* Apply the transition to the transform property */
+}
+
+.social-icon-image:hover {
+  transform: scale(1.1); /* Scale up the icon by 10% */
+}
+
   .output-body {
     border: 1px solid rgba(99, 99, 99, 0.5);
     margin: 0 auto;
@@ -296,7 +416,6 @@
   .recipe-link:hover {
     transition: 0.15s ease-in-out;
   }
-
 
   .modal-btn-text {
     font-weight: var(--textThickness);

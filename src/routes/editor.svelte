@@ -261,7 +261,7 @@
     containerCount.set(length);
 
     socialLinksList.update((links) => {
-      // Here's where you'd establish default keys if necessary
+      // Here's where you could establish default keys if necessary
       // For instance, if buttonNames included 'home', 'twitter', 'youtube', you'd ensure defaults
       // Loop over your expected keys (in this case 'home', 'twitter', 'youtube') to ensure they exist
       $buttonNames.forEach((name) => {

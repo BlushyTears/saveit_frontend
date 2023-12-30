@@ -10,6 +10,11 @@
   import InstagramLogo from '../assets/instagram_logo.png'
   import FacebookLogo from '../assets/facebook_logo.png'
   import TwitterLogo from '../assets/twitter_logo.png'
+  import RedditLogo from '../assets/reddit_logo.png'
+  import LinkedInLogo from '../assets/linkedin_logo.png'
+  import MediumLogo from '../assets/medium_logo.png'
+  import DiscordLogo from '../assets/discord_logo.png'
+  import TiktokLogo from '../assets/tiktok_logo.png'
 
   import {
     showPreviewModal,
@@ -301,51 +306,111 @@
 
         <div style="margin-top: 6rem;" >
           {#if $socialLinksList.home}
-          <a href="{$socialLinksList.home}" class='social-icon' target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.home}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
             <img
               class="social-icon-image"
               src={HomeLogo}
               alt="Home"
+              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
           
           {#if $socialLinksList.twitter}
-          <a href="{$socialLinksList.twitter}" class='social-icon' target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.twitter}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
             <img
               class="social-icon-image"
               src={TwitterLogo}
               alt="Twitter"
+              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
-
+    
           {#if $socialLinksList.instagram}
-          <a href="{$socialLinksList.instagram}" class='social-icon' target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.instagram}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
             <img
-              class="social-icon-image"
               src={InstagramLogo}
+              class="social-icon-image"
               alt="Twitter"
+              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
-
+    
           {#if $socialLinksList.facebook}
-          <a href="{$socialLinksList.facebook}" class='social-icon' target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.facebook}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
             <img
-              class="social-icon-image"
               src={FacebookLogo}
+              class="social-icon-image"
               alt="Twitter"
+              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
           
           {#if $socialLinksList.youtube}
-          <a href="{$socialLinksList.youtube}" class='social-icon' target="_blank" rel="noopener noreferrer">
+          <a href="{$socialLinksList.youtube}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
             <img
-              class="social-icon-image"
               src={YoutubeLogo}
+              class="social-icon-image"
               alt="YouTube"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+    
+          {#if $socialLinksList.reddit}
+          <a href="{$socialLinksList.reddit}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={RedditLogo}
+              class="social-icon-image"
+              alt="Twitter"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+    
+          {#if $socialLinksList.linkedin}
+          <a href="{$socialLinksList.linkedin}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={LinkedInLogo}
+              class="social-icon-image"
+              alt="Twitter"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+    
+          {#if $socialLinksList.tiktok}
+          <a href="{$socialLinksList.tiktok}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={TiktokLogo}
+              class="social-icon-image"
+              alt="Twitter"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+    
+          {#if $socialLinksList.medium}
+          <a href="{$socialLinksList.medium}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={MediumLogo}
+              class="social-icon-image"
+              alt="Twitter"
+              style="width: 30px; height: 30px;"
+            />
+          </a>
+          {/if}
+    
+          {#if $socialLinksList.discord}
+          <a href="{$socialLinksList.discord}" style="border-radius: 50%; padding: 5px;" target="_blank" rel="noopener noreferrer">
+            <img
+              src={DiscordLogo}
+              class="social-icon-image"
+              alt="Twitter"
+              style="width: 30px; height: 30px;"
             />
           </a>
           {/if}
