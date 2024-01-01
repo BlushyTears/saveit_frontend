@@ -73,10 +73,10 @@
         console.log("Image uploaded successfully.");
         showSuccessNotification("Image uploaded, please refresh site to see changes");
       } else {
-        showFailedNotification("Failed to upload: " + response.statusText);
+        showFailedNotification("Failed to upload. Please keep the image under 10mb");
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("Error uploading image. Please keep the image under 10mb");
       showFailedNotification("Other error");
     }
 
