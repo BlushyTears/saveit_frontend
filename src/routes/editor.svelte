@@ -95,7 +95,7 @@
   // Core stuff starts here
   function addBtn() {
     savedChanges.set(false);
-    const newNames = [...$buttonNames, `New Link`];
+    const newNames = [...$buttonNames, `New Tile`];
     buttonNames.set(newNames);
 
     showModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'

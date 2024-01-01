@@ -159,7 +159,7 @@
         <p
           style="text-align:center; background-color: #41414136; padding: 0.5rem; border-radius: 0.2rem 0.2rem 0rem 0rem;"
         >
-          Note: We suggest .jpg files because there's a 5mb limit.
+          Note: We suggest using .jpg files because we've limited uploads to 10mb.
         </p>
 
         <p

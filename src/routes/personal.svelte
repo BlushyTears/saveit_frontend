@@ -204,6 +204,10 @@
           class="verify-btn"
           on:click={verifyEmail}>Verify E-mail</button
         >
+        {:else}
+        <button
+        class="verified-btn"
+        disabled>E-mail Verified</button>
       {/if}
       <button class="generic-btn" on:click={navigateToPwRecovery}>Change Password</button>
 
@@ -305,6 +309,17 @@ button.verify-btn {
 button.verify-btn:hover {
   background-color: #b62a2a;
 }
+
+.verified-btn {
+  font-size: 1.3em;
+  background-color: rgb(6, 177, 120);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
 
 .image-section {
   display: flex;

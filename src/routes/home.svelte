@@ -327,9 +327,7 @@
         <p
           style="color: #F2F2F2; font-size: calc(1em + 0.3vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
         >
-          Build your following and expand your reach with 1 link. Pursue your
-          passion online amongst other creators and monetize your recipes,
-          routines, guides and so on..
+          Our philosophy is that you get up and running within Minutes! Build a following and monetize your recipes, routines and so on.. 
         </p>
       </div>
 
@@ -366,8 +364,9 @@
         />
         <div class="text-chunk-section2">
           <h2 style="color: white; font-size: calc(3em + 2vw);">
-            Favedis recipe and share it
+            Fave-dis recipe and share it
           </h2>
+          <br />
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
             Whether it's ground beef, banana bread or chicken you want for
             dinner: There's always a talented creator waiting for you. Sign up

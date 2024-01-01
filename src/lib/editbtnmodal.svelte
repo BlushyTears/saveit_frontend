@@ -40,7 +40,7 @@
   function copyButton(copyFromIndex = null) {
     console.log(copyFromIndex);
     savedChanges.set(false);
-  const newNames = [...$buttonNames, `New recipe`];
+  const newNames = [...$buttonNames, `New Tile`];
   buttonNames.set(newNames);
 
   showModal.update((arr) => [...arr, false]); // Add a new modal state set to 'closed'
