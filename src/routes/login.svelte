@@ -222,6 +222,10 @@
 
   @media (max-width: 600px) {
 
+    .all-login-form {
+    margin-top: 0rem;
+}
+
     .login-form {
         flex: 0 0 100%;
         padding: 1rem;

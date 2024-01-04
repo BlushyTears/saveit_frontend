@@ -235,6 +235,10 @@
   }
 
 @media (max-width: 600px) {
+  .all-register-form {
+    margin-top: 0rem;
+}
+
     .register-box {
         flex: 0 0 100%;
         padding: 1rem;
