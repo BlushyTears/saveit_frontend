@@ -164,7 +164,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(95vh + 5.6rem);
+    min-height: calc(95vh + 10.6rem);
     padding: 2rem;
     flex-wrap: wrap;
 }
@@ -236,7 +236,7 @@
 
 @media (max-width: 600px) {
   .all-register-form {
-    margin-top: 0rem;
+    margin-top: -5rem;
 }
 
     .register-box {

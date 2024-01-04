@@ -22,7 +22,9 @@
   import { linkname, userImage, isEmailVerified } from "../lib/builderstore";
   import { getCookie } from "../lib/helpers";
   import TwitterLogo from "../assets/twitter_logo.png";
-
+  import YoutubeLogo from "../assets/youtube_logo.png";
+  import InstagramLogo from "../assets/instagram_logo.png";
+  
   let showLoggedOutNotifBar = false;
   let showSuccessBar = false;
   let showFailedBar = false;
@@ -225,14 +227,14 @@
   let loading = false;
 
   // Animations section 2
-  let originalHeadline = "Minutes Away from Getting Started.";
+  let originalHeadline = "Minutes Away from Getting Started";
   let newHeadline = "Build your own customized creator page";
   let headline = originalHeadline;
 
   let originalDescription =
-    "Favedis is a linksharing site for sharing information such as cooking, drinks and more.";
+    "Favedis is a linksharing site for sharing information such as cooking, drinks and more with 1 simple link in bio";
   let newDescription =
-    "Using our powerful editor you can customize your own page to your liking and express your creativity";
+    "Using our powerful editor you can customize your own bio page to your liking and express your creativity";
   let description = originalDescription;
 
   let animateHeadlineOut = false;
@@ -322,12 +324,13 @@
         <h2
           style="color: #FFD700; font-size: calc(2vw + 3em); margin-bottom: 1rem; line-height: calc(2.2vw + 2.6rem);"
         >
-          Share Your Amazing Content With A Single Link.
+          Share Your Amazing Content With A Single Link In Bio.
         </h2>
         <p
           style="color: #F2F2F2; font-size: calc(1em + 0.3vw); text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10);"
         >
-          Our philosophy is that you get up and running within Minutes! Build a following and monetize your recipes, routines and so on.. 
+          Our goal is for you to get your powerful link in bio set up fast!
+           Build a following, monetize your links and become part of a wider network.
         </p>
       </div>
 
@@ -364,13 +367,11 @@
         />
         <div class="text-chunk-section2">
           <h2 style="color: white; font-size: calc(3em + 2vw);">
-            Fave-dis recipe and share it
+            Share your bio link within a minute.
           </h2>
           <br />
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Whether it's ground beef, banana bread or chicken you want for
-            dinner: There's always a talented creator waiting for you. Sign up
-            for Favedis today.
+            Share your workout routies, Runescape money-making guides, travel guides and anything that's hard to put in a 60-second video replaced with a bio link.
           </p>
           <br />
           <div>
@@ -398,8 +399,7 @@
             Join our Community
           </h2>
           <p style="color: white; font-size: calc(1.4em + 0.5vw);">
-            Favedis is not just for food and drinks. You can share virtually any
-            information with a single link: A first of a kind platform.
+            Favedis isn't just for creators to share their bio links. Casual users can also discover new content from popular creators!
           </p>
           <br />
           <button class="getStartedBtn" on:click={handleSubmit}
@@ -455,7 +455,7 @@
         <h1
           style="font-weight: 300; font-size: calc(3em + 2vw); color: #F2F2F2; padding: 0.5rem 1rem;"
         >
-          Examples
+          Examples Pages
         </h1>
       </div>
       <br />
@@ -478,7 +478,7 @@
         </h3>
         <Accordion
           title="What is the core concept behind Favedis?"
-          content="Favedis serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space. In some ways it can be seen as a Linktree alternative."
+          content="Favedis serves as a centralized platform where users can explore a diverse range of foods and beverages. It aims to bring culinary enthusiasts and creators together in a community-oriented space. In some ways it can be seen as an alternative to popular bio linking services."
         />
         <Accordion
           title="Is there an opportunity for creators to monetize their content?"
@@ -527,11 +527,35 @@
           <img
             src={TwitterLogo}
             style="height: 1.8rem; width: auto;"
-            alt="Twitter"
+            alt="Twitter biolink"
           />
         </a>
-      </div>
 
+        <a
+        href="https://www.youtube.com/channel/UCyuhXWik6C5nb9uh_2lcExw"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src={YoutubeLogo}
+          style="height: 1.8rem; width: auto;"
+          alt="Youtube biolink"
+        />
+      </a>
+
+      <a
+      href="https://www.instagram.com/favedis1/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={InstagramLogo}
+        style="height: 1.8rem; width: auto;"
+        alt="Youtube biolink"
+      />
+    </a>
+      </div>
+      
       <br />
 
       <p>Contact: support@favedis.com</p>
@@ -719,7 +743,7 @@
 
   .guestEditorBtn {
     padding: 1rem 2rem;
-    font-size: calc(1.5em + 0.7vw);
+    font-size: calc(1.3em + 0.7vw);
     background-color: #8f8f8f;
     color: white;
     border: none;
@@ -759,7 +783,7 @@
   .section2-illustration {
     width: calc(20vw + 20rem);
     height: calc(20vw + 20rem);
-    margin-top: 10rem;
+    margin-top: 13rem;
     margin-left: 15vw;
   }
 
@@ -933,14 +957,20 @@
   }
 
   .socials-div {
+    gap: 0.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%; /* Adjust the height as needed */
+    height: 100%;
+  }
+
+  .socials-div img:hover {
+    transition: transform 0.15s;
+    transform: scale(1.1);
   }
 
   .socials-div p {
-    margin-right: 10px; /* Adjust the space between the text and the logo as needed */
+    margin-right: 10px;
   }
 
   /* FOOTER END */
@@ -1048,10 +1078,6 @@
       box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .section3 {
-      height: auto;
-    }
-
     .section1-illustration {
       padding-top: 10rem;
       width: 90%;
@@ -1080,11 +1106,6 @@
       margin-top: 0;
     }
 
-    .text-chunk-section3 {
-      font-size: calc(1em + 1vw);
-      margin-top: -12rem;
-    }
-
     .section2-main {
       min-height: 85rem;
     }
@@ -1102,6 +1123,15 @@
       font-size: calc(1em + 1vw);
     }
 
+    .section3 {
+      height: auto;
+    }
+
+    .text-chunk-section3 {
+      font-size: calc(1em + 1vw);
+      margin-top: -5rem;
+    }
+
     .section3-main {
       min-height: 65rem;
     }
@@ -1111,7 +1141,7 @@
     }
 
     .text-chunk-section3 {
-      margin-top: -15rem;
+      margin-top: -18rem;
     }
 
     .section5::after {
